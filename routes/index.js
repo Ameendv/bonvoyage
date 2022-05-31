@@ -1,25 +1,25 @@
-const express = require("express");
-const { ObjectId } = require("mongodb");
+const express = require('express');
+const { ObjectId } = require('mongodb');
 
 const router = express.Router();
-const accountSid = "AC0a3458453ec2d49d897a813ce1cd243c";
-const authToken = "2f433c22ae4835d63fbaa81568cd8aaa";
-const client = require("twilio")(accountSid, authToken);
-const userHelpers = require("../helpers/user-helpers");
+const accountSid = 'AC0a3458453ec2d49d897a813ce1cd243c';
+const authToken = '2f433c22ae4835d63fbaa81568cd8aaa';
+const client = require('twilio')(accountSid, authToken);
+const userHelpers = require('../helpers/user-helpers');
 
 const verifyLogin = (req, res, next) => {
   if (req.session.loggedIn) {
     next();
   } else {
-    res.redirect("/login");
+    res.redirect('/login');
   }
 };
 
 /* GET users listing. */
-router.get("/", (req, res) => {
+router.get('/', (req, res) => {
   userHelpers.getLocation().then((locations) => {
     req.session.locations = locations;
-    res.render("index", {
+    res.render('index', {
       roomSelecter: true,
       user: req.session.loggedIn,
       details: req.session.user,
@@ -28,74 +28,74 @@ router.get("/", (req, res) => {
   });
 });
 
-router.get("/signup", (req, res) => {
-  res.render("users/signup");
+router.get('/signup', (req, res) => {
+  res.render('users/signup');
 });
 
-router.post("/otpCheck", (req, res) => {
+router.post('/otpCheck', (req, res) => {
   req.session.userDetails = req.body;
-  const code = "+91";
+  const code = '+91';
   const number = code.concat(req.body.number);
   req.session.verifyNumber = number;
   client.verify
-    .services("VA4a705f250cfb012f021b653b34f9252f")
-    .verifications.create({ to: number, channel: "sms" })
-    .then(() => res.render("users/otpVerify", { number: req.body.number }));
+    .services('VA4a705f250cfb012f021b653b34f9252f')
+    .verifications.create({ to: number, channel: 'sms' })
+    .then(() => res.render('users/otpVerify', { number: req.body.number }));
 });
 
-router.post("/verifyOtp", (req, res) => {
+router.post('/verifyOtp', (req, res) => {
   const otpObj = req.body;
   const toNumber = req.session.verifyNumber;
   const otpArr = Object.values(otpObj);
-  const otp = otpArr.join("");
+  const otp = otpArr.join('');
 
   client.verify
-    .services("VA4a705f250cfb012f021b653b34f9252f")
+    .services('VA4a705f250cfb012f021b653b34f9252f')
     .verificationChecks.create({ to: toNumber, code: otp })
     .then((verification_check) => {
-      if (verification_check.status == "approved") {
+      if (verification_check.status == 'approved') {
         userHelpers.doSignup(req.session.userDetails).then((data) => {
           if (data.emailExists) {
-            res.send("Email already registered");
+            res.send('Email already registered');
           } else if (data.status) {
             req.session.loggedIn = true;
             req.session.user = data;
             req.session.userName = req.session.userDetails.name;
-            res.redirect("/");
+            res.redirect('/');
           }
         });
       }
     });
 });
 
-router.get("/login", (req, res) => {
+router.get('/login', (req, res) => {
   if (req.session.loggedIn) {
-    res.redirect("/");
+    res.redirect('/');
   } else {
-    res.render("users/login", { logErr: req.session.logErr });
+    res.render('users/login', { logErr: req.session.logErr });
     req.session.logErr = false;
   }
 });
 
-router.post("/login", (req, res) => {
+router.post('/login', (req, res) => {
   userHelpers.doLogin(req.body).then((response) => {
     if (response.status) {
       console.log(response);
       req.session.user = response.user;
       req.session.loggedIn = true;
-      res.redirect("/");
+      res.redirect('/');
     } else {
       req.session.logErr = true;
-      res.redirect("/login");
+      res.redirect('/login');
     }
   });
 });
 
-router.get("/searchRooms", (req, res) => {
-  res.redirect("/");
+router.get('/searchRooms', (req, res) => {
+  res.redirect('/');
 });
 
-router.post("/searchRooms", (req, res) => {
+router.post('/searchRooms', (req, res) => {
   console.log(req.body);
   const date_1 = new Date(req.body.checkOut);
   const date_2 = new Date(req.body.checkIn);
@@ -121,7 +121,7 @@ router.post("/searchRooms", (req, res) => {
   req.session.dates = dates;
 
   userHelpers.getRooms(req.body).then((rooms) => {
-    res.render("users/roomsList", {
+    res.render('users/roomsList', {
       rooms,
       user: req.session.loggedIn,
       userName: req.session.userName,
@@ -134,12 +134,12 @@ router.post("/searchRooms", (req, res) => {
   });
 });
 
-router.get("/roomDetails", (req, res) => {
+router.get('/roomDetails', (req, res) => {
   const roomId = req.query.id;
   userHelpers.getRoomDetails(roomId).then((roomDetails) => {
     req.session.roomDetails = roomDetails;
 
-    res.render("users/roomDetails", {
+    res.render('users/roomDetails', {
       user: req.session.loggedIn,
       userName: req.session.userName,
       roomDetails: req.session.roomDetails,
@@ -152,7 +152,7 @@ router.get("/roomDetails", (req, res) => {
   });
 });
 
-router.get("/bookNow", (req, res) => {
+router.get('/bookNow', (req, res) => {
   const roomId = req.query.id;
 
   userHelpers.getRoomDetails(roomId).then((roomDetails) => {
@@ -161,10 +161,9 @@ router.get("/bookNow", (req, res) => {
     const { days } = req.session.searchDetails; // NUMBER OF days
     req.session.searchDetails.discount = 0;
     req.session.searchDetails.amount = price * rooms * days;
-    req.session.searchDetails.total =
-      price * rooms * days - req.session.searchDetails.discount;
+    req.session.searchDetails.total = price * rooms * days - req.session.searchDetails.discount;
 
-    res.render("users/bookNow", {
+    res.render('users/bookNow', {
       user: req.session.loggedIn,
       userName: req.session.userName,
       roomDetails,
@@ -175,7 +174,7 @@ router.get("/bookNow", (req, res) => {
   });
 });
 
-router.post("/confirmBook", (req, res) => {
+router.post('/confirmBook', (req, res) => {
   req.session.searchDetails.paymentMode = req.body.paymentMode;
   const bookingDetails = {
     bookingId: new ObjectId(),
@@ -192,7 +191,8 @@ router.post("/confirmBook", (req, res) => {
     billAmt: req.session.searchDetails.amount,
     amountPaid: req.session.searchDetails.total,
     paymentMode: req.session.searchDetails.paymentMode,
-    bookingDate: new Date().toISOString().split("T")[0],
+    bookingDate: new Date().toISOString().split('T')[0],
+    bookingStatus:'Payment Pending'
   };
 
   req.session.bookingDetails = bookingDetails;
@@ -204,16 +204,17 @@ router.post("/confirmBook", (req, res) => {
         userHelpers
           .updateQty(bookingDetails, req.session.user._id)
           .then((status) => {
-            if (req.body.paymentMode === "hotel") {
+            if (req.body.paymentMode === 'hotel') {
               res.json({});
             } else {
               console.log(req.body.paymentMode);
               userHelpers
                 .generateRazorpay(
                   bookingDetails.bookingId,
-                  bookingDetails.billAmt * 100
+                  bookingDetails.billAmt * 100,
                 )
                 .then((response) => {
+                console.log(response)
                   res.json({ response, check: true, user: req.session.user });
                 });
             }
@@ -222,30 +223,32 @@ router.post("/confirmBook", (req, res) => {
     });
 });
 
-router.post("/verifyPayment", (req, res) => {
+router.post('/verifyPayment', (req, res) => {
+  console.log('verifying payment');
   userHelpers
     .verifyPayment(req.body)
     .then(() => {
       userHelpers
         .changePaymentStatus(
-          req.body["order[receipt]"],
-          req.body["payment[razorpay_payment_id]"]
+          req.body['order[receipt]'],
+          req.body['payment[razorpay_payment_id]'],
         )
         .then((status) => {
+          console.log(status,"status");
           res.json({ status: true });
         });
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err,'err');
       res.json({ status: false });
     });
 });
 
-router.get("/bookingStatus", (req, res) => {
+router.get('/bookingStatus', (req, res) => {
   req.session.bookingDetails.bookingDate = dateFormat(
-    req.session.bookingDetails.bookingDate
+    req.session.bookingDetails.bookingDate,
   );
-  res.render("users/bookingPlaced", {
+  res.render('users/bookingPlaced', {
     booked: true,
     bookingDetails: req.session.bookingDetails,
     dates: req.session.dates,
@@ -254,58 +257,63 @@ router.get("/bookingStatus", (req, res) => {
   });
 });
 
-router.get("/profile", (req, res) => {
-  res.render("users/profile", {
+router.post('/paymentFailed',(req,res)=>{
+ console.log(req.body)
+})
+
+
+router.get('/profile', (req, res) => {
+  res.render('users/profile', {
     user: req.session.loggedIn,
     details: req.session.user,
   });
 });
 
-router.post("/uploadId/:id", (req, res) => {
+router.post('/uploadId/:id', (req, res) => {
   const image1 = req.files;
 
   if (image1 == null) {
     res.json(false);
   } else {
     const image1 = req.files.theFile;
-    imageUpload("user-ids", req.params.id, image1).then((response) => {
+    imageUpload('user-ids', req.params.id, image1).then((response) => {
       res.json(response);
     });
   }
 });
 
-router.post("/loginBook", (req, res) => {
+router.post('/loginBook', (req, res) => {
   userHelpers.doLogin(req.body).then((response) => {
     if (response.status) {
       req.session.user = response.user;
       req.session.loggedIn = true;
 
-      res.redirect("/bookNow");
+      res.redirect('/bookNow');
     } else {
       req.session.logErr = true;
-      res.redirect("/login");
+      res.redirect('/login');
     }
   });
 });
 
-router.get("/logout", (req, res) => {
+router.get('/logout', (req, res) => {
   req.session.loggedIn = false;
   req.session.user = false;
-  res.redirect("/");
+  res.redirect('/');
 });
 
-router.get("/ajaxCheck/:id", (req, res) => {
+router.get('/ajaxCheck/:id', (req, res) => {
   userHelpers.getRoomDetails(req.params.id).then((roomDetails) => {
     res.json(roomDetails);
   });
 });
 
 function dateFormat(date) {
-  const dateData = date.split("-"); // For example
+  const dateData = date.split('-'); // For example
   const dateObject = new Date(Date.parse(dateData));
   const dateReadable = dateObject.toDateString();
-  const [, M, Dt, Y] = dateReadable.split(" ");
-  const dateString = [M, Dt, Y].join(" ");
+  const [, M, Dt, Y] = dateReadable.split(' ');
+  const dateString = [M, Dt, Y].join(' ');
   return dateString;
 }
 

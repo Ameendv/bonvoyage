@@ -102,6 +102,7 @@ function confirmOrder(Mode) {
     data: { paymentMode },
     success: (data) => {
       if (data.check) {
+
         razorpayPayment(data.response);
       } else {
         location.href = "/bookingStatus";
@@ -120,9 +121,8 @@ function razorpayPayment(order) {
     image: "https://example.com/your_logo",
     order_id: order.id, // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     handler: (response) => {
-      alert(
-        `Your payment id:   ${response.razorpay_payment_id}\nYour order Id:   ${response.razorpay_order_id}`
-      );
+
+
       verifyPayment(response, order);
     },
     prefill: {
@@ -139,17 +139,36 @@ function razorpayPayment(order) {
   };
   const rzp1 = new Razorpay(options);
   rzp1.open();
+  rzp1.on('payment.failed', function (response) {
+    alert(response.description)
+  })
+
 }
 
 function verifyPayment(payment, order) {
+  console.log('payment', payment, order, 'order')
   $.ajax({
     url: "/verifyPayment",
     data: { payment, order },
     method: "post",
     success: (response) => {
+      console.log(response);
       if (response.status) {
         location.href = "/bookingStatus";
+      } else {
+        console.log('failed')
       }
     },
   });
 }
+
+// function paymentFailed(payment){
+//   $.ajax({
+//     url:'/paymentFailed',
+//     data:{payment},
+//     method:'post',
+//     success:(response)=>{
+
+//     }
+//   })
+// }

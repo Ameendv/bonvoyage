@@ -1,5 +1,5 @@
 <div class="col-lg-10 ms-auto pt-5" style="background-color: #FFE8D2;height: 100%;">
-  <table id="example" class="table text-dark" style="width:100%">
+  <table id="example" class="table text-dark" style="width:100%;background-color: #FFE8D2">
     <thead class="" style="color: #750404;">
       <tr>
         <th>Customer</th>
@@ -8,10 +8,10 @@
         <th>check In</th>
         <th>Check out</th>
         <th>Bill Amount</th>
-        <th>Payment Status</th>
+        <th>Booking Status</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody >
       {{#each bookingData}}
       <tr>
         <td>{{this.name}}</td>
@@ -22,7 +22,7 @@
         <td>{{this.bookings.checkOut}}</td>
         <td>{{this.bookings.billAmt}}</td>
         <td>
-          {{this.bookings.paymentMode}}
+          {{this.bookings.bookingStatus}}
 
         </td>
       </tr>
