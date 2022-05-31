@@ -1,0 +1,21 @@
+<h1>{{message}}</h1>
+<h2>{{error.status}}</h2>
+<pre>{{error.stack}}</pre>
+<div class="select-option mt-3">
+
+  <select name="rooms" class="form-select mb-3" id="state" size="1">
+    <option value="" selected="selected">Select Rooms</option>
+  </select>
+</div>
+
+<div class="select-option mt-3">
+
+  <select name="state" class="form-select mb-3" id="guests" size="1">
+    <option value="" selected="selected">Guest</option>
+  </select>
+  <div style="display: none">
+    <select name="district" class="form-select mb-3" id="districtSel" size="1">
+      <option value="" selected="selected">District</option>
+    </select>
+  </div>
+</div>

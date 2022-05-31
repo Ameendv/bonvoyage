@@ -1,0 +1,147 @@
+<!--Main Navigation-->
+<header>
+  <!-- Sidebar -->
+  <nav
+    id="sidebarMenu"
+    class="collapse d-lg-block sidebar collapse text-light"
+    style="background-color: #FFE8D2;"
+  >
+    <div class="position-sticky">
+
+      <div class="list-group list-group-flush mx-3 mt-4 text-dark">
+        <a
+          href="#"
+          class="list-group-item list-group-item-action py-2 ripple text-dark"
+          aria-current="true"
+          style="background-color: #F4DABF;"
+        >
+          <i class="bi bi-speedometer text-danger me-3"></i><span>Main dashboard</span>
+        </a>
+        <a
+          href="/vendor/rooms"
+          class="list-group-item list-group-item-action py-2 text-dark ripple active"
+          style="background-color: #F4DABF;"
+        >
+          <i class="bi bi-briefcase text-success me-3"></i>
+          <span>View listed rooms</span>
+        </a>
+
+        <a
+          href="/vendor/viewBookings"
+          class="list-group-item list-group-item-action py-2 ripple text-dark"
+          style="background-color: #F4DABF;"
+        >
+          <i class="bi bi-house-door text-warning me-3"></i><span>
+            Todays Bookings</span></a>
+        <a
+          href="#"
+          class="list-group-item list-group-item-action py-2 ripple text-dark"
+          style="background-color: #F4DABF;"
+        >
+          <i class="bi bi-book-half me-3 text-primary"></i><span
+          >Reservations</span>
+        </a>
+        <a
+          href="#"
+          class="list-group-item list-group-item-action py-2 ripple text-dark"
+          style="background-color: #F4DABF;"
+        ><i class="bi bi-person-circle me-3 text-info"></i><span
+          >Cancellations</span></a>
+        <a
+          href="#"
+          class="list-group-item list-group-item-action py-2 ripple text-dark"
+          style="background-color: #F4DABF;"
+        ><i class="bi bi-receipt text-success me-3"></i><span>Sales</span></a>
+
+      </div>
+    </div>
+  </nav>
+  <!-- Sidebar -->
+
+  <!-- Navbar -->
+  <nav
+    id="main-navbar"
+    class="navbar navbar-expand-lg navbar-light bg-white fixed-top"
+  >
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+      <!-- Toggle button -->
+      <button
+        class="navbar-toggler me-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#sidebarMenu"
+        aria-controls="sidebarMenu"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Brand -->
+      <a class="navbar-brand" href="#">
+        <span class="">{{vendor.user}}</span>
+      </a>
+      <!-- Search form -->
+      <form class="d-none d-md-flex input-group w-auto me-auto">
+        <input
+          autocomplete="off"
+          type="search"
+          class="form-control rounded"
+          placeholder='Search (ctrl + "/" to focus)'
+          style="min-width: 225px;"
+        />
+        <span class="input-group-text border-0"><i
+            class="fas fa-search"
+          ></i></span>
+      </form>
+
+      <!-- Right links -->
+      <ul class="navbar-nav me-5 d-flex flex-row">
+        <!-- Notification dropdown -->
+
+        <!-- Avatar -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center"
+            href="#"
+            id="navbarDropdownMenuLink"
+            role="button"
+            data-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp"
+              class="rounded-circle"
+              height="22"
+              alt="Avatar"
+              loading="lazy"
+            />
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="navbarDropdownMenuLink"
+          >
+            <li>
+              <a class="dropdown-item" href="#">My profile</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Settings</a>
+            </li>
+            <li>
+
+              <a class="dropdown-item" href="/vendor/logout">Logout</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!-- Container wrapper -->
+  </nav>
+  <!-- Navbar -->
+</header>
+<!--Main Navigation-->
+
+<!--Main layout-->
+
+<!--Main layout-->

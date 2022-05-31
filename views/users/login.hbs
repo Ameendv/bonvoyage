@@ -1,0 +1,39 @@
+<div class="container-fluid vh-100 col-xs-12" >
+    <div class="" style="margin-top:100px">
+        <div class="rounded d-flex justify-content-center ">
+            <div class="col-xs-12 col-sm-12 col-lg-4 col-md-6 shadow-lg p-5 bg-light">
+                <div class="text-center">
+                    <h3 class="text-dark">Login</h3>
+                </div>
+                <div class="p-4">
+                    <form action="/login" method="post" id="userLogin">
+
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text register-form"><i
+                                    class="bi bi-envelope text-white"></i></span>
+                            <input type="email" class="form-control" placeholder="Email" name="email">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text register-form"><i
+                                    class="bi bi-key-fill text-white"></i></span>
+                            <input type="password" class="form-control" placeholder="password" name="password">
+                        </div>
+                        <div class="d-grid col-12 mx-auto">
+                            <button class="btn btn-outline-warning" type="submit"><span></span> Login</button>
+                        </div>
+                        {{#if logErr}}
+                        <div>
+                            <p class="text-danger">Invalid Mail id or password</p>
+                        </div>  
+                        {{/if}}
+                        <p class="text-center mt-3">Dont have an account ?
+                            <a href="/signup">Register</span>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

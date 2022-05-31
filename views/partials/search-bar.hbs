@@ -1,0 +1,58 @@
+<div class="s002 border-bottom border-warning" style="background-color: #e1e5ea;">
+
+    <form action="/searchRooms" method="post" id="searchRooms">
+        <div class="d-flex  justify-content-center s001">
+            <div class="location check-date mt-3 col-lg-2" style="padding: 0px !important;">
+                <label for="location">Location</label>
+                <input list="location" name="location" class=" form-control location bg-light inpSearch" name="location"
+                    id="locationId" type="text" value="{{searchDetails.location}}">
+
+                <datalist id="location">
+                    {{#each locations}}
+                    <option value="{{this.district}}">
+                        {{/each}}
+
+                </datalist>
+
+
+            </div>
+            <div class="check-date mt-3  col-lg-2" style="padding: 0px !important;">
+                <label for="location">Check-in</label>
+                <input class="datepicker1 form-control bg-light inpSearch" name="checkIn" id="checkin" type="text"
+                    value="{{searchDetails.checkIn}}">
+
+
+            </div>
+            <div class="check-date mt-3 col-lg-2" style="padding: 0px !important;">
+                <label for="location">Check-out</label>
+                <input class="datepicker2 form-control inpSearch" name="checkOut" id="checkout" type="text"
+                    value="{{dates.checkOutDate}}">
+
+
+            </div>
+            <div class="select-option check-date mt-3 col-lg-2 " style="padding: 0px !important;">
+                <label for="location">Rooms</label>
+                <select name="room" class="form-select mb-3 text-secondary inpSearch" id="state" size="1">
+                    <option value="" selected="selected" >{{searchDetails.room}}</option>
+                </select>
+            </div>
+
+            <div class="select-option check-date mt-3 col-lg-2" style="padding: 0px !important;">
+                <label for="location">Guests</label>
+                <select name="guests" class="form-select text-secondary inpSearch" id="guests" size="1">
+                    <option value="" selected="selected">{{searchDetails.guests}}</option>
+                </select>
+                <div style="display: none"> <select name="" class="form-select mb-3" id="districtSel" size="1">
+                        <option value="" selected="selected">District</option>
+                    </select>
+                </div>
+            </div>
+            <div class="select-option check-date mt-3  " style="padding: 0px !important;">
+                <label for="location" style="color:rgba(0, 0, 0, 0);">Search Bar</label><br>
+                <button type="submit" class="btn  btn-warning " size="1">Search</button>
+            </div>
+
+
+        </div>
+    </form>
+</div>

@@ -1,0 +1,100 @@
+<section class="light">
+  <div class="container py-2 col-xs-12 col-lg-9">
+    <div class="h1 text-center text-dark" id="pageHeaderTitle"></div>
+    {{#each rooms}}
+
+      <article class="postcard light red mt-4">
+        <a class="postcard__img_link" href="#">
+          <img
+            class="postcard__img"
+            src="/images/rooms/{{this.rooms.roomId}}0.jpg"
+            alt="Image Title"
+          />
+        </a>
+        <div class="postcard__text t-dark">
+
+          <table>
+            <tr>
+              <td>
+                <h1 class="postcard__title blue"><a
+                    href="#"
+                  >{{this.name}}</a></h1>
+              </td>
+              <td><span class="">{{this.rooms.category}} rooms</span></td>
+              <td>
+                <p class="text-info"><span
+                    class="small mark font-weight-bold"
+                  >Hurry! only
+                    {{this.rooms.qty}}
+                    rooms left</span>
+                </p>
+              </td>
+            </tr>
+          </table>
+
+          <div class="postcard__subtitle small">
+            <address>
+              <i
+                class="fa-solid fa-location-pin me-3"
+              ></i>{{this.state}},{{this.district}}
+            </address>
+          </div>
+
+          <div class="postcard__bar"></div>
+          <div class="postcard__preview-txt"><span
+              class="bg-success text-white"
+            >&nbsp;4.1&nbsp;<i class="bi bi-star-fill text-white"></i>&nbsp;
+            </span>
+            {{#if this.rooms.ameneties.ac}}<span class="ms-5"><i
+                  class="fa-solid fa-wifi me-3"
+                ></i>Free Wifi</span>{{/if}}
+            {{#if this.rooms.ameneties.powerbackup}}<span class="ms-5"><i
+                  class="fa-solid fa-car-battery me-3"
+                ></i>Power backup</span>{{/if}}
+            {{#if this.rooms.ameneties.parking}}
+              <span class="ms-5"><i
+                  class="fa-solid fa-square-parking me-3"
+                ></i>Free parking</span>{{/if}}
+            <div class="price"><span class="priceDetails text-danger">₹
+                {{this.rooms.price}}</span><span
+                class="realPrice ms-4 text-secondary"
+              ><strike>₹1500</strike></span>
+              <span class="ms-3 text-primary font-weight-bold">40% off</span>
+            </div>
+            <ul class="postcard__tagbox d-flex justify-content-between">
+              <li>
+                <span
+                  class="border border-secondary text-secondary font-weight-bold"
+                >&nbsp; Fully vaccinated staffs &nbsp; </span>
+                <span
+                  class="border border-secondary text-secondary ms-3 font-weight-bold"
+                >&nbsp; Sanitized rooms&nbsp; </span>
+              </li>
+              <li> </li>
+              <li><a href="/roomDetails?id={{this.rooms.roomId}}"><button
+                    type="button"
+                    class="btn btn-outline-dark me-2"
+                  >View Details</button></a>
+
+              </li>
+
+            </ul>
+
+          </div>
+        </div>
+      </article>
+      <hr
+        class="bg-warning"
+        style="height:3px ;width: 100%;border: 2px solid;"
+      />
+    {{/each}}
+
+    <script>
+
+    </script>
+
+  </div>
+</section>
+<script>
+
+</script>

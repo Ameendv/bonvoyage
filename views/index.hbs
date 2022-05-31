@@ -1,0 +1,84 @@
+<section class="hero-section" style="background-image: url(/images/hero/hero-2.jpg);">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="hero-text">
+          <h1>Get your best </h1>
+          <p>Here are the best hotel booking sites, including recommendations for international
+            travel and for finding low-priced hotel rooms.</p>
+          <a href="#" class="primary-btn">Discover Now</a>
+
+        </div>
+
+        {{#if user}}
+
+        {{else}}
+        <div>
+          <a href="/vendor"><button type="button" class="btn btn-outline-warning mt-5  text-white">List your
+              rooms</button></a>
+        </div>
+        {{/if}}
+      </div>
+      <div class="col-xl-4 col-lg-5 offset-xl-2 offset-lg-1">
+        <div class="booking-form">
+          <h3>Booking Your Hotel</h3>
+          <form action="/searchRooms" method="post" id="searchRooms">
+            <div class="d-flex flex-column justify-content-around">
+              <div class="location check-date">
+
+
+                <i class="bi bi-geo-alt-fill" style='color:#ff7e00'></i>
+                <input list="location" name="location" class=" form-control location" name="location" id="locationId"
+                  placeholder="Location" type="text">
+
+                <datalist id="location">
+                  {{#each locations}}
+                  <option value="{{this.district}}">
+                    {{/each}}
+
+                </datalist>
+
+              </div>
+              <div class="check-date mt-3">
+
+                <input class="datepicker1" name="checkIn" id="checkin" type="text" placeholder="Check in">
+                <i class='bx bxs-calendar icon_calendar' style='color:#ff7e00'></i>
+
+              </div>
+              <div class="check-date mt-3">
+
+                <input class="datepicker2" name="checkOut" id="checkout" type="text" placeholder="Check out">
+                <i class='bx bxs-calendar icon_calendar' style='color:#ff7e00'></i>
+
+              </div>
+              <div class="select-option mt-3 ">
+
+                <select name="room" class="form-select mb-3" id="state" size="1">
+                  <option value="" selected="selected">Select Rooms</option>
+                </select>
+              </div>
+
+              <div class="select-option mt-2">
+
+                <select name="guests" class="form-select " id="guests" size="1">
+                  <option value="" selected="selected">Guest</option>
+                </select>
+                <div style="display: none"> <select name="" class="form-select mb-3" id="districtSel" size="1">
+                    <option value="" selected="selected">District</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit">Check Availability</button>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</section>
+
+
+

@@ -1,0 +1,42 @@
+<div class="col-lg-10 ms-auto pt-5" style="background-color: #FFE8D2;height: 100%;">
+  <table id="example" class="table text-dark" style="width:100%">
+    <thead class="" style="color: #750404;">
+      <tr>
+        <th>Customer</th>
+        <th>Booking date</th>
+        <th>Category</th>
+        <th>check In</th>
+        <th>Check out</th>
+        <th>Bill Amount</th>
+        <th>Payment Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each bookingData}}
+      <tr>
+        <td>{{this.name}}</td>
+        <td>{{this.bookings.bookingDate}}</td>
+        <td>{{this.bookings.category}}</td>
+        <td>{{this.bookings.checkIn}}
+        </td>
+        <td>{{this.bookings.checkOut}}</td>
+        <td>{{this.bookings.billAmt}}</td>
+        <td>
+          {{this.bookings.paymentMode}}
+
+        </td>
+      </tr>
+      {{/each}}
+
+      </li>
+
+    </tbody>
+  
+  </table>
+</div>
+
+<script>
+
+
+
+</script>

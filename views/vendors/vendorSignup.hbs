@@ -1,0 +1,88 @@
+<div class="container-fluid vh-100">
+    <div class="" style="margin-top:200px">
+        <div class="rounded d-flex justify-content-center">
+            <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
+                <div class="text-center">
+                    <h3 class="text-dark">Create Account</h3>
+                </div>
+                <div class="p-4">
+                    <form action="/vendor/signup" method="post" id="vendorSignup" enctype="multipart/form-data">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text  register-form"><i
+                                    class="bi bi-person-plus-fill text-white"></i></span>
+                            <input type="text" class="form-control" placeholder="Username" name="name">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text register-form"><i
+                                    class="bi bi-envelope text-white"></i></span>
+                            <input type="email" class="form-control" placeholder="Email" name="email">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text register-form"><i
+                                    class="bi bi-telephone-fill text-white"></i></span>
+                            <input type="tel" class="form-control" placeholder="Number" name="number">
+                        </div>
+
+
+
+
+                        <div> <select name="country" class="form-select mb-3" id="countySel" size="1">
+                                <option value="" selected="selected">Select Country</option>
+                            </select>
+                        </div>
+
+
+                        <div> <select name="state" class="form-select mb-3" id="stateSel" size="1">
+                                <option value="" selected="selected">State</option>
+                            </select>
+                        </div>
+
+
+                        <div> <select name="district" class="form-select mb-3" id="districtSel" size="1">
+                                <option value="" selected="selected">District</option>
+                            </select>
+                        </div>
+
+                        <label for="idProof">Upload your id proof</label>
+                        <div class="input-group mb-3">
+
+                            <span class="input-group-text register-form text-white"><i
+                                    class="bi bi-card-text"></i></span>
+
+                            <input type="file" id="file" class="form-control" placeholder="Number" name="idProof">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text register-form"><i
+                                    class="bi bi-key-fill text-white"></i></span>
+                            <input type="password" class="form-control" placeholder="password" name="password"
+                                id="password">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text register-form"><i
+                                    class="bi bi-key-fill text-white"></i></span>
+                            <input type="password" class="form-control" placeholder="Re-enter password"
+                                name="cPassword">
+                        </div>
+                        <div class="d-grid col-12 mx-auto">
+                            <button class="btn btn-warning text-dark" type="submit"><span></span> Sign up</button>
+                        </div>
+
+                </div>
+
+
+                <p class="text-center mt-3">Already registered?
+                    <a href="/vendor/login">Login</span>
+                </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>

@@ -1,0 +1,147 @@
+<section class="container">
+  <div class="d-flex justify-content-between align-items-center mb-5">
+    <div class="d-flex flex-row align-items-center">
+
+      <a href="" style="text-decoration:none;"> <span class="ms-2 me-3 text-danger">
+          < Modify your booking</span></a>
+    </div>
+    <a href="#!">Cancel and return to the website</a>
+  </div>
+
+  <div class="row ">
+    <div class="col-xs-12 col-md-7 col-lg-7 col-xl-6 mb-4 mb-md-0 ">
+
+      <div class="border d-flex align-items-center justify-content-center"
+        style="height: 10%; background-color: #0059ff16;border-color: #0059ff3a;"><span class="text-primary">🎉 Yay! you
+          just
+          saved ₹1735 on this booking!</span></div>
+      <div class="mt-5 col-auto border container-fluid" style="padding: 0px; !important">
+        <div class="form-control-lg " style="background-color: #f9f9fb;"><span
+            class="detailsHead text-dark font-weight-bold">Enter your
+            details</span></div>
+        <form class="mt-5 ">
+          <div class="row ms-3 me-3">
+            <div class="col ">
+              <label for="name" class="font-weight-bold">Full Name</label>
+              <input type="text" id="name" class="form-control" {{#if details}} value="{{details.name}}" disabled
+                {{/if}}name="name" placeholder="Full name">
+            </div>
+            <div class="col">
+              <label for="email" class="font-weight-bold">Email</label>
+              <input type="email" class="form-control" id="email" {{#if details}}value="{{details.email}}" disabled
+                {{/if}} name="email" placeholder="abc@gmail.com">
+            </div>
+          </div>
+          <div class="row mt-4 ms-3">
+            <div class=" col me-4 mb-3">
+              <label for="number" class="font-weight-bold d-flex justify-content-between">Mobile Number{{#if details}}<span><i
+                  class="ms-5 bi bi-check-circle text-success"></i><span
+                  class="ms-2 font-italic text-success">Verified</span></span>{{/if}}</label>
+              <input type="text" class="form-control" {{#if details}} value="{{details.number}}" disabled {{/if}}
+                name="number" placeholder="Number">
+
+            </div>
+
+          </div>
+          {{#if details}}
+          <div class="row mt-3 ms-3">
+            <div class=" col me-4 mb-4">
+              <label for="file" class="font-weight-bold text-danger">Upload your id</label>
+              <input type="file" id="fileUpload" class="form-control" {{#if details}}value="{{details.number}}" {{/if}}
+                name="file" placeholder="Number" required>
+            </div>
+
+          </div>
+
+          <div class="d-flex justify-content-center mb-3">
+            <h4 id="imageErr"> </h4>
+            <div><button type="button" class="btn btn-success" onclick="confirmBook('{{details._id}}')">Continue
+                Booking</button></div>
+          </div>
+          {{else}}
+          <div class="row mt-2 ms-3">
+            <div class=" col me-4 mb-3">
+              <label for="password" class="font-weight-bold">Password</label>
+              <input type="password" id="password" class="form-control" value="" name="password" placeholder="Password">
+            </div>
+            <div class="d-flex justify-content-center mb-3">
+              <button type="button" class="btn btn-success"
+                onclick="login(document.getElementById('name').value,document.getElementById('email').value,document.getElementById('password').value)">Login</button>
+            </div>
+          </div>
+
+          {{/if}}
+
+
+        </form>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-5 col-lg-4 col-xl-4 offset-lg-1 offset-xl-2">
+      <form action="" method="">
+        <div class="p-3 border" style="background-color: rgba(238, 238, 238, 0.459);">
+          <div class="d-flex justify-content-between"><span class="fw-bold mt-2">{{roomDetails.0.name}}</span>
+            <div style="width: 8rem;height: 5rem;"><img src="/images/rooms/{{roomDetails.0.rooms.roomId}}0.jpg"
+                class="border border-dark"></div>
+          </div>
+          <div class="d-flex justify-content-between mt-2">
+            <span></span> <span></span>
+          </div>
+          <div class="d-flex flex-column mt-2">
+            <div class="font-weight-bold bookNowReceiptFonts"><i class="fa-regular fa-calendar-days text-secondary">
+              </i>
+              {{dates.checkInDate}}-{{dates.checkOutDate}}</div>
+            <div class="font-weight-bold bookNowReceiptFonts "><i class="bi bi-bookmark-check"></i>
+              {{searchDetails.room}} rooms,{{searchDetails.guests}}
+              Guests</div>
+          </div>
+          <div class="d-flex justify-content-between mt-4">
+            <span class="font-weight-bold bookNowReceiptFonts "><i class='bx bx-door-open text-secondary'></i>
+              {{roomDetails.0.rooms.category}}</span> <span class="font-weight-bold bookNowReceiptFonts">₹
+              {{roomDetails.0.rooms.price}}</span>
+          </div>
+          <div class="d-flex justify-content-between mt-2">
+            <span></span> <span></span>
+          </div>
+          <hr />
+          <div class="d-flex justify-content-between mt-2">
+            <span class="lh-sm bookNowReceiptFonts">Room for {{searchDetails.days}} night X {{searchDetails.room}} Rooms
+            </span>
+            <span class="bookNowReceiptFonts font-weight-bold">{{searchDetails.amount}}</span>
+          </div>
+          <div class="d-flex justify-content-between mt-3">
+            <span class="lh-sm bookNowReceiptFonts">Discount </span>
+            <span class="bookNowReceiptFonts font-weight-bold">₹ {{searchDetails.discount}}</span>
+          </div>
+          <hr />
+          <div class="d-flex justify-content-between mt-2">
+            <span class="bookNowReceiptFonts"></span> <span class="bookNowReceiptFonts font-weight-bold"></span>
+          </div>
+          <div class="d-flex justify-content-between mt-2">
+            <span></span> <span></span>
+          </div>
+          <hr />
+          <div class="d-flex justify-content-between mt-2">
+            <span>Total </span> <span class="text-success">₹ {{searchDetails.total}}</span>
+          </div>
+          <div class="btn-group mt-3 d-flex justify-content-center">
+            <input type="radio" class="btn-check " name="options" id="option1" autocomplete="off" value="hotel"
+              required />
+            <label class="btn btn-secondary border border-warning text-warning" for="option1">Pay at Hotel</label>
+
+            <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off" value="online" />
+            <label class="btn btn-secondary border border-warning text-warning" for="option2" required>Pay Online</label>
+          </div>
+          <div class="col d-flex justify-content-around mt-1 mb-5">
+            <button type="button" class="btn btn-outline-dark btn-lg" id="payButton" disabled>Pay 1785</button>
+
+            <button type="button" id="payNow" class="btn btn-success btn-lg disabled"
+              onclick="confirmOrder(document.getElementsByName('options'))">Pay Now</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+  </div>
+</section>
+

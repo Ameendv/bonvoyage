@@ -1,0 +1,91 @@
+<div class="container-fluid vh-100 col-lg-9">
+    <div class="" style="margin-top:50px">
+        <div class="rounded d-flex justify-content-center">
+            <div class="col-md-4 col-sm-12 col-lg-6 shadow-lg p-5 bg-light">
+                <div class="text-center">
+                    <h3 class="text-dark">Add Rooms</h3>
+                </div>
+                <div class="p-4">
+                    <form action="/vendor/addrooms" method="post" id="" enctype="multipart/form-data">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text  register-form"><i
+                                    class="fa-solid fa-indian-rupee-sign text-white"></i></span>
+                            <input type="text" class="form-control" placeholder="Price" name="price">
+                        </div>
+
+                        <div class="input-group mb-3 select-option">
+                            <select class="form-select" name="category" aria-label="Default select example">
+                                <option> Category</option>
+                                <option value="Deluxe">Deluxe</option>
+                                <option value="Single">Single</option>
+                                <option value="Double">Double</option>
+                                <option value="Suite">Suite</option>
+                            </select>
+
+                        </div>
+                        <div class="input-group mb-3 select-option">
+                            <input type="number" id="typeNumber" placeholder="Quantity" name="qty"
+                                class="form-control" />
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" name="ac" type="checkbox" id="flexSwitchCheckDefault">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Ac</label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" name="wifi" type="checkbox" id="flexSwitchCheckDefault">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Free Wifi</label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" name="powerbackup" type="checkbox"
+                                id="flexSwitchCheckDefault">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Power Backup</label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" name="parking" type="checkbox" id="flexSwitchCheckDefault">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Parking</label>
+                        </div>
+                        <label for="idProof">Upload room images</label>
+                        <div class="input-group mb-3">
+
+                            <span class="input-group-text register-form text-white"><i
+                                    class="bi bi-card-text"></i></span>
+
+                            <input type="file" id="file" name="file" class="form-control" placeholder="Number"
+                                name="idProof">
+                        </div>
+                        <div class="input-group mb-3">
+
+                            <span class="input-group-text register-form text-white"><i
+                                    class="bi bi-card-text"></i></span>
+
+                            <input type="file" id="file1" name="file1" class="form-control" placeholder="Number"
+                                name="idProof">
+                        </div>
+
+
+                        <div class="d-grid col-12 mx-auto">
+                            <button class="btn btn-warning text-dark" type="submit"><span></span> Add </button>
+                        </div>
+
+                </div>
+                {{#if added}}
+                <div><span class="text-success">Room added</span></div>
+                {{/if}}
+                {{#if imgErr}}
+                <div><span class="text-success">Room added</span></div>
+                {{/if}}
+
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>

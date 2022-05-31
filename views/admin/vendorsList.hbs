@@ -1,0 +1,171 @@
+<div class="col-lg-10 ms-auto pt-5">
+  <table id="example" class="table text-white" style="width:100%">
+    <thead class="text-warning">
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Details</th>
+        <th>Id</th>
+        <th>Rooms Listed</th>
+        <th>Status</th>
+        <th>Block</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each vendors}}
+        <tr>
+          <td>{{this.name}}</td>
+          <td>{{this.email}}</td>
+          <td><button
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModal{{this._id}}"
+            >
+              View Details
+            </button>
+
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="exampleModal{{this._id}}"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body1 d-flex justify-content-center">
+                    <div class="card" style="width: 18rem;">
+                      <ul class="list-group list-group-flus">
+                        <li
+                          class="list-group-item bg-primary"
+                        >Country:{{this.country}}</li>
+                        <li
+                          class="list-group-item bg-primary"
+                        >State:{{this.state}}</li>
+                        <li
+                          class="list-group-item bg-primary"
+                        >District:{{this.district}}</li>
+                        <li
+                          class="list-group-item bg-primary"
+                        >Contact:{{this.number}}</li>
+                      </ul>
+                    </div>
+
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <!-- Button trigger modal -->
+            <!-- Button trigger modal -->
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModal1{{this._id}}"
+            >
+              View Id
+            </button>
+
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="exampleModal1{{this._id}}"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body1">
+                    <img src="/images/ids/{{this._id}}.jpg" />
+
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td><a href="/admin/roomsList?id={{this._id}}"><button
+                type="button"
+                class="btn btn-success"
+              >View Rooms</button></a></td>
+          <td>
+            <div class="dropdown">
+              <button
+                class="btn btn-warning dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Pending
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item bg-success" href="#">Accept</a></li>
+                <li><a class="dropdown-item bg-danger" href="#">Reject</a></li>
+
+              </ul>
+            </div>
+
+          </td>
+          <td><button type="button" class="btn btn-danger">Block</button></td>
+        </tr>
+      {{/each}}
+
+    </tbody>
+    {{! <tfoot class="text-warning">
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Contact</th>
+        <th>Address</th>
+        <th>Id</th>
+        <th>Status</th>
+        <th>Block</th>
+      </tr>
+    </tfoot> }}
+  </table>
+</div>
