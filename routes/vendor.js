@@ -6,19 +6,7 @@ const vendorHelpers = require('../helpers/vendor-helpers');
 const store = require('../middleware/multer')
 
 
-const path = require('path')
-const multer = require('multer')
-const storage = multer.diskStorage({
-  destination: (req, file, callback) => {
-    callback(null, '/public/images')
-  },
-  filename: (req, file, callback) => {
-    console.log(file);
-    callback(null, Date.now() + path.extname(file.originalname))
-  }
-})
 
-const upload = multer({ storage: storage })
 
 
 
@@ -99,6 +87,7 @@ router.post('/login', (req, res) => {
 
 router.get('/rooms', (req, res) => {
   vendorHelpers.getRooms(req.session.vendor.id).then((rooms) => {
+    console.log(rooms,"rooms")
     res.render('vendors/rooms', { rooms, vendor: req.session.vendor });
   });
 });
@@ -216,6 +205,22 @@ router.get('/deleteRoom', (req, res) => {
 
 router.get('/viewBookings', (req, res) => {
   vendorHelpers.getBookings(req.session.vendor.id).then((bookingData) => {
+
+    for(const x in bookingData){
+      checkIn=new Date(bookingData[x].bookings.checkIn).setHours(0,0,0,0)
+      checkOut=new Date(bookingData[x].bookings.checkOut).setHours(0,0,0,0)
+      now = new Date().setHours(0,0,0,0)
+
+      if(now>=checkIn && now<=checkIn){
+        bookingData[x].bookings.isActive=true
+      }else if(now<checkIn){
+        bookingData[x].bookings.canCancel=true
+      }else if(now>checkOut){
+        bookingData[x].bookings.checkedOut=true
+      }
+    }
+
+
     res.render('vendors/viewBookings', {
       vendor: req.session.vendor,
       bookingData,
@@ -233,21 +238,21 @@ router.get('/logout', (req, res) => {
 
 
 
-router.get('/imageUpload', (req, res) => {
-  res.render("vendors/imageUpload")
-})
+// router.get('/imageUpload', (req, res) => {
+//   res.render("vendors/imageUpload")
+// })
 
-router.post('/imageUpload', store.array("images", 12), (req, res, next) => {
-  console.log('hai')
-  const files = req.files;
+// router.post('/imageUpload', store.single("images",12), (req, res, next) => {
+//   console.log('hai')
+//   const files = req.files;
 
-  if (!files) {
-    const error = new Error('Please choose files');
-    error.httpStatusCode = 400;
-    return next(error)
-  }
-  console.log(('image uploaded'));
-})
+//   if (!files) {
+//     const error = new Error('Please choose files');
+//     error.httpStatusCode = 400;
+//     return next(error)
+//   }
+//   console.log(('image uploaded'));
+// })
 
 
 

@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 
 const router = express.Router();
 const accountSid = 'AC0a3458453ec2d49d897a813ce1cd243c';
-const authToken = '2f433c22ae4835d63fbaa81568cd8aaa';
+const authToken = '15a5560236561a6b855c9546688e9443';
 const client = require('twilio')(accountSid, authToken);
 const userHelpers = require('../helpers/user-helpers');
 
@@ -35,13 +35,19 @@ router.get('/signup', (req, res) => {
 router.post('/otpCheck', (req, res) => {
   console.log('otp');
   req.session.userDetails = req.body;
+  console.log(req.body);
   const code = '+91';
   const number = code.concat(req.body.number);
   req.session.verifyNumber = number;
+  console.log(number);
   client.verify
     .services('VA4a705f250cfb012f021b653b34f9252f')
     .verifications.create({ to: number, channel: 'sms' })
-    .then(() => res.render('users/otpVerify', { number: req.body.number }));
+    .then(() => res.render('users/otpVerify', { number: req.body.number })).catch((err) => {
+      if (err) {
+        res.send("Network Issue please try again later")
+      }
+    });
 });
 
 router.post('/verifyOtp', (req, res) => {
@@ -202,23 +208,21 @@ router.post('/confirmBook', (req, res) => {
     .doBookings(bookingDetails, req.session.user._id)
     .then((status) => {
       if (status) {
-        userHelpers
-          .updateQty(bookingDetails, req.session.user._id)
-          .then((status) => {
-            if (req.body.paymentMode === 'hotel') {
-              res.json({});
-            } else {
-              userHelpers
-                .generateRazorpay(
-                  bookingDetails.bookingId,
-                  bookingDetails.billAmt * 100,
-                )
-                .then((response) => {
-                  console.log(response);
-                  res.json({ response, check: true, user: req.session.user });
-                });
-            }
-          });
+
+        if (req.body.paymentMode === 'hotel') {
+          res.json({});
+        } else {
+          userHelpers
+            .generateRazorpay(
+              bookingDetails.bookingId,
+              bookingDetails.billAmt * 100,
+            )
+            .then((response) => {
+              console.log(response);
+              res.json({ response, check: true, user: req.session.user });
+            });
+        }
+        ;
       }
     });
 });
@@ -333,7 +337,10 @@ router.get('/viewBookings', (req, res) => {
       }
     }
 
-    res.render('users/viewBookings', { booking,viewbookings:true });
+    res.render('users/viewBookings', {
+      booking, viewbookings: true, user: req.session.loggedIn,
+      details: req.session.user,
+    });
   });
 });
 

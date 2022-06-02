@@ -1,7 +1,5 @@
-
-
 const multer=require('multer')
-
+const path = require('path')
 
 //set storage
 var storage=multer.diskStorage({
@@ -9,6 +7,7 @@ var storage=multer.diskStorage({
         callback(null,'uploads')
     },
     filename:function(req,file,callback){
+      
         
         
         var ext=file.originalname.substring(file.originalname.lastIndexOf('.'))
@@ -19,5 +18,4 @@ var storage=multer.diskStorage({
 
 
 var store=multer({storage:storage});
-
-module.exports = store;
+module.exports=store;
