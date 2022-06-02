@@ -205,3 +205,14 @@ function updateData(userId){
 }
 
 
+//user view bookings datatable
+$(document).ready( function () {
+  $('#table_id').DataTable({
+    order: [[5, 'desc']],
+  });
+  
+} );
+
+
+
+

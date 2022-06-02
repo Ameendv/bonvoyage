@@ -2,9 +2,9 @@ const bcrypt = require('bcrypt');
 
 const { ObjectId } = require('mongodb');
 const Razorpay = require('razorpay');
+const { resolve } = require('path');
 const db = require('../config/connection');
 const collection = require('../config/collection');
-const { resolve } = require('path');
 
 const instance = new Razorpay({
   key_id: 'rzp_test_pVpVEwHMBqRS5h',
@@ -201,16 +201,13 @@ module.exports = {
         resolve(status);
       });
   }),
-  getProfile: (userId) => {
-    return new Promise(async (resolve, reject) => {
-      let user = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectId(userId) })
-      resolve(user)
-
-    })
-  },
+  getProfile: (userId) => new Promise(async (resolve, reject) => {
+    const user = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectId(userId) });
+    resolve(user);
+  }),
   updateProfile: (data, userId) => {
     console.log('here again');
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
       db.get().collection(collection.USER_COLLECTION).updateOne({ _id: ObjectId(userId) }, {
         $set: {
           name: data.name,
@@ -218,12 +215,16 @@ module.exports = {
           email: data.email,
           country: data.country,
           state: data.state,
-          district: data.district
-        }
-      }).then((status)=>{
-        resolve(status)
-      })
-    })
-  }
+          district: data.district,
+        },
+      }).then((status) => {
+        resolve(status);
+      });
+    });
+  },
+  getBookings: (userId) => new Promise(async (resolve, reject) => {
+    const bookings = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectId(userId) });
+    resolve(bookings);
+  }),
 
 };

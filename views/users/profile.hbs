@@ -1,6 +1,6 @@
 <div class="container rounded bg-white mt-5 mb-5">
-    <div class="row">
-        <div class="col-md-3 border-right">
+    <div class="row d-flex justify-content-center col-xs-12">
+        <div class="col-md-3 border-right col-xs-12 col-sm-12 col-md-6 col-lg-3">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5"
                     width="150px"
                     src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span
@@ -8,32 +8,37 @@
                     class="text-black-50">{{details.email}}</span><span>
 
                 </span></div>
+            <div class="d-flex justify-content-center"><a href="/viewBookings?id={{details._id}}"><button
+                        class="btn btn-warning my-auto">View Bookings</button></a></div>
         </div>
-        <div class="col-md-5 border-right">
+        <div class="col-md-5 border-right flex-fill col-xs-12 col-sm-12 col-md-6 col-lg-9">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="text-right">Profile Settings </h4>
                 </div>
-               
+
                 <div class="row mt-3">
-                     <div class="col-md-6"><label class="labels">Name</label><span id=""><input type="text" id="name"
-                            class="form-control " placeholder="Full name" value="{{details.name}}" disabled></span></div>
+                    <div class="col-md-6"><label class="labels">Name</label><span id=""><input type="text" id="name"
+                                class="form-control " placeholder="Full name" value="{{details.name}}" disabled></span>
+                    </div>
                     <div class="col-md-12"><label class="labels">Mobile Number</label>
-                    <input type="text" id="number"
-                            class="form-control" placeholder="MobileNumber" value="{{details.number}}" disabled></div>
+                        <input type="text" id="number" class="form-control" placeholder="MobileNumber"
+                            value="{{details.number}}" disabled>
+                    </div>
                     <div class="col-md-12"><label class="labels">Country</label><input id="country" type="text"
-                            class="form-control" placeholder="Country" value="" disabled></div>
+                            class="form-control" placeholder="Country" value="{{details.country}}" disabled></div>
                     <div class="col-md-12"><label class="labels">State</label><input id="state" type="text"
-                            class="form-control" placeholder="State" value="" disabled></div>
+                            class="form-control" placeholder="State" value="{{details.state}}" disabled></div>
                     <div class="col-md-12"><label class="labels">District</label><input id="district" type="text"
-                            class="form-control" placeholder="District" value="" disabled></div>
+                            class="form-control" placeholder="District" value="{{details.district}}" disabled></div>
 
                     <div class="col-md-12"><label class="labels">Email ID</label><input id="email" type="text"
                             class="form-control" placeholder="Email" value="{{details.email}}" disabled></div>
-                    <div class="mt-5 text-center"><button id="save" class="btn btn-primary profile-button" type="button" onclick="updateData('{{details._id}}')"
-                            disabled>Save
+                    <div class="mt-5 text-center"><button id="save" class="btn  profile-button" type="button"
+                            onclick="updateData('{{details._id}}')" disabled>Save
                             Profile</button>
-                        <button type="button" class="btn btn-success" id="button" onclick="editProfile()">Edit Profile</button>
+                        <button type="button" class="btn btn-success" id="button" onclick="editProfile()">Edit
+                            Profile</button>
                     </div>
                 </div>
 
@@ -52,42 +57,35 @@
 
     .form-control:focus {
         box-shadow: none;
-        border-color: #BA68C8
+        border-color: #ffc23d
     }
 
     .profile-button {
-        background: rgb(99, 39, 120);
+        background: #ffc23d;
         box-shadow: none;
         border: none
     }
 
     .profile-button:hover {
-        background: #682773
+        background: #ffc23d
     }
 
     .profile-button:focus {
-        background: #682773;
+        background: #ffc23d;
         box-shadow: none
     }
 
     .profile-button:active {
-        background: #682773;
+        background: #ffc23d;
         box-shadow: none
     }
 
     .back:hover {
-        color: #682773;
+        color: #ffc23d;
         cursor: pointer
     }
 
     .labels {
         font-size: 11px
-    }
-
-    .add-experience:hover {
-        background: #BA68C8;
-        color: #fff;
-        cursor: pointer;
-        border: solid 1px #BA68C8
     }
 </style>

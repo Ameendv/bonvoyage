@@ -14,6 +14,9 @@
     {{#if booked}}
      <link rel="stylesheet" href="/stylesheets/booked.css" type="text/css">
      {{else}}
+     {{#if viewbookings}}
+  <link rel="stylesheet" href="/stylesheets/bookings.css" type="text/css">
+     {{else}}
     <link rel='stylesheet' href='/stylesheets/style.css' />
     
     <link rel="stylesheet" href="/stylesheets/roomsLists.css" type="text/css">
@@ -28,7 +31,7 @@
     <link rel="stylesheet" href="/stylesheets/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/stylesheets/vendor.css" type="text/css" />
     <link href="/stylesheets/main.css" rel="stylesheet" />
-    {{/if}}
+    {{/if}}{{/if}}
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
       
@@ -128,6 +131,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+  
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 
 
 

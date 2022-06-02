@@ -7,15 +7,6 @@ const authToken = '2f433c22ae4835d63fbaa81568cd8aaa';
 const client = require('twilio')(accountSid, authToken);
 const userHelpers = require('../helpers/user-helpers');
 
-
-
-
-
-
-
-
-
-
 const verifyLogin = (req, res, next) => {
   if (req.session.loggedIn) {
     next();
@@ -42,6 +33,7 @@ router.get('/signup', (req, res) => {
 });
 
 router.post('/otpCheck', (req, res) => {
+  console.log('otp');
   req.session.userDetails = req.body;
   const code = '+91';
   const number = code.concat(req.body.number);
@@ -201,7 +193,7 @@ router.post('/confirmBook', (req, res) => {
     amountPaid: req.session.searchDetails.total,
     paymentMode: req.session.searchDetails.paymentMode,
     bookingDate: new Date().toISOString().split('T')[0],
-    bookingStatus: 'Payment Pending'
+    bookingStatus: 'Payment Pending',
   };
 
   req.session.bookingDetails = bookingDetails;
@@ -216,14 +208,13 @@ router.post('/confirmBook', (req, res) => {
             if (req.body.paymentMode === 'hotel') {
               res.json({});
             } else {
-
               userHelpers
                 .generateRazorpay(
                   bookingDetails.bookingId,
                   bookingDetails.billAmt * 100,
                 )
                 .then((response) => {
-                  console.log(response)
+                  console.log(response);
                   res.json({ response, check: true, user: req.session.user });
                 });
             }
@@ -243,7 +234,7 @@ router.post('/verifyPayment', (req, res) => {
           req.body['payment[razorpay_payment_id]'],
         )
         .then((status) => {
-          console.log(status, "status");
+          console.log(status, 'status');
           res.json({ status: true });
         });
     })
@@ -267,40 +258,36 @@ router.get('/bookingStatus', (req, res) => {
 });
 
 router.post('/paymentFailed', (req, res) => {
-  console.log(req.body)
-})
-
+  console.log(req.body);
+});
 
 router.get('/profile', (req, res) => {
   userHelpers.getProfile(req.query.id).then((details) => {
-
     res.render('users/profile', {
       user: req.session.loggedIn,
       details: req.session.user,
-      
-      details
+
+      details,
     });
-  })
-
-
+  });
 });
 
-router.post('/updateProfile',(req,res)=>{
-  console.log("here");
-  const data={
-    name:req.body.name,
-    email:req.body.email,
-    number:req.body.number,
-    district:req.body.district,
-    state:req.body.state,
-    country:req.body.country,
-  }
+router.post('/updateProfile', (req, res) => {
+  console.log('here');
+  const data = {
+    name: req.body.name,
+    email: req.body.email,
+    number: req.body.number,
+    district: req.body.district,
+    state: req.body.state,
+    country: req.body.country,
+  };
 
-  userHelpers.updateProfile(data,req.body.userId).then((status)=>{
+  userHelpers.updateProfile(data, req.body.userId).then((status) => {
     console.log(status);
-    res.json({data:true})
-  })
-})
+    res.json({ data: true });
+  });
+});
 
 router.post('/uploadId/:id', (req, res) => {
   const image1 = req.files;
@@ -329,6 +316,27 @@ router.post('/loginBook', (req, res) => {
   });
 });
 
+router.get('/viewBookings', (req, res) => {
+  userHelpers.getBookings(req.query.id).then((bookings) => {
+    const booking = bookings.bookings;
+
+    for (const x in booking) {
+      checkIn = new Date(booking[x].checkIn).setHours(0, 0, 0, 0);
+      checkOut = new Date(booking[x].checkOut).setHours(0, 0, 0, 0);
+      const now = new Date().setHours(0, 0, 0, 0);
+      if (now >= checkIn && now <= checkOut) {
+        booking[x].isActive = true;
+      } else if (now >= checkOut) {
+        booking[x].checkedOut = true;
+      } else if (now <= checkIn && now <= checkOut) {
+        booking[x].canCancel = true;
+      }
+    }
+
+    res.render('users/viewBookings', { booking,viewbookings:true });
+  });
+});
+
 router.get('/logout', (req, res) => {
   req.session.loggedIn = false;
   req.session.user = false;
@@ -340,9 +348,6 @@ router.get('/ajaxCheck/:id', (req, res) => {
     res.json(roomDetails);
   });
 });
-
-
-
 
 function dateFormat(date) {
   const dateData = date.split('-'); // For example
