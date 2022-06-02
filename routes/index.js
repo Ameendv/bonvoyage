@@ -7,6 +7,15 @@ const authToken = '2f433c22ae4835d63fbaa81568cd8aaa';
 const client = require('twilio')(accountSid, authToken);
 const userHelpers = require('../helpers/user-helpers');
 
+
+
+
+
+
+
+
+
+
 const verifyLogin = (req, res, next) => {
   if (req.session.loggedIn) {
     next();
@@ -192,7 +201,7 @@ router.post('/confirmBook', (req, res) => {
     amountPaid: req.session.searchDetails.total,
     paymentMode: req.session.searchDetails.paymentMode,
     bookingDate: new Date().toISOString().split('T')[0],
-    bookingStatus:'Payment Pending'
+    bookingStatus: 'Payment Pending'
   };
 
   req.session.bookingDetails = bookingDetails;
@@ -207,14 +216,14 @@ router.post('/confirmBook', (req, res) => {
             if (req.body.paymentMode === 'hotel') {
               res.json({});
             } else {
-              console.log(req.body.paymentMode);
+
               userHelpers
                 .generateRazorpay(
                   bookingDetails.bookingId,
                   bookingDetails.billAmt * 100,
                 )
                 .then((response) => {
-                console.log(response)
+                  console.log(response)
                   res.json({ response, check: true, user: req.session.user });
                 });
             }
@@ -234,12 +243,12 @@ router.post('/verifyPayment', (req, res) => {
           req.body['payment[razorpay_payment_id]'],
         )
         .then((status) => {
-          console.log(status,"status");
+          console.log(status, "status");
           res.json({ status: true });
         });
     })
     .catch((err) => {
-      console.log(err,'err');
+      console.log(err, 'err');
       res.json({ status: false });
     });
 });
@@ -257,17 +266,41 @@ router.get('/bookingStatus', (req, res) => {
   });
 });
 
-router.post('/paymentFailed',(req,res)=>{
- console.log(req.body)
+router.post('/paymentFailed', (req, res) => {
+  console.log(req.body)
 })
 
 
 router.get('/profile', (req, res) => {
-  res.render('users/profile', {
-    user: req.session.loggedIn,
-    details: req.session.user,
-  });
+  userHelpers.getProfile(req.query.id).then((details) => {
+
+    res.render('users/profile', {
+      user: req.session.loggedIn,
+      details: req.session.user,
+      
+      details
+    });
+  })
+
+
 });
+
+router.post('/updateProfile',(req,res)=>{
+  console.log("here");
+  const data={
+    name:req.body.name,
+    email:req.body.email,
+    number:req.body.number,
+    district:req.body.district,
+    state:req.body.state,
+    country:req.body.country,
+  }
+
+  userHelpers.updateProfile(data,req.body.userId).then((status)=>{
+    console.log(status);
+    res.json({data:true})
+  })
+})
 
 router.post('/uploadId/:id', (req, res) => {
   const image1 = req.files;
@@ -307,6 +340,9 @@ router.get('/ajaxCheck/:id', (req, res) => {
     res.json(roomDetails);
   });
 });
+
+
+
 
 function dateFormat(date) {
   const dateData = date.split('-'); // For example

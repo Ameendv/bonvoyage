@@ -8,6 +8,10 @@ jQuery.validator.addMethod(
 
 $(document).ready(() => {
   $("#userSignup").validate({
+    errorElement: 'input',
+    errorPlacement: function (error, element) {
+      error.insertAfter($(element).parent('input'))
+    },
     rules: {
       name: {
         required: true,
@@ -21,7 +25,7 @@ $(document).ready(() => {
       },
       number: {
         required: true,
-        matches: "[0-9]",
+        digits: true,
         minlength: 10,
         maxlength: 10,
       },
@@ -34,6 +38,9 @@ $(document).ready(() => {
         equalTo: "#password",
       },
     },
+    // errorPlacement:function(error,element){
+    //   element.attr("placeholder",error.text())
+    // }
   });
 });
 

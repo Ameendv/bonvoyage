@@ -150,4 +150,14 @@ module.exports = {
       .toArray();
     resolve(bookings);
   }),
+  deleteRoom: (roomId) => new Promise((resolve, reject) => {
+    db
+      .get()
+      .collection(collection.VENDOR_COLLECTION)
+      .updateMany(
+        { 'rooms.roomId': ObjectId(roomId) },
+        { $pull: { rooms: { roomId: ObjectId(roomId) } } }).then((status) => {
+          resolve(status)
+        });
+  }),
 };

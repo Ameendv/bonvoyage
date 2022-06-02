@@ -3,6 +3,25 @@ const express = require('express');
 const router = express.Router();
 const vendorHelpers = require('../helpers/vendor-helpers');
 
+const store = require('../middleware/multer')
+
+
+const path = require('path')
+const multer = require('multer')
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, '/public/images')
+  },
+  filename: (req, file, callback) => {
+    console.log(file);
+    callback(null, Date.now() + path.extname(file.originalname))
+  }
+})
+
+const upload = multer({ storage: storage })
+
+
+
 function imageUpload(location, id, image) {
   return new Promise(async (resolve, reject) => {
     await image.mv(`./public/images/${location}/${id}.jpg`, (err, done) => {
@@ -98,9 +117,13 @@ router.post('/addrooms', (req, res) => {
     price: parseInt(req.body.price),
     category: req.body.category,
     qty: parseInt(req.body.qty),
+    actualPrice: parseInt(req.body.actualPrice),
+    offer: 0,
 
     ameneties: {},
   };
+  roomData.offer = Math.round(100 - ((roomData.price / roomData.actualPrice) * 100));
+  console.log(roomData);
   if (req.body.ac === 'on') {
     roomData.ameneties.ac = true;
   }
@@ -113,6 +136,7 @@ router.post('/addrooms', (req, res) => {
   if (req.body.parking === 'on') {
     roomData.ameneties.parking = true;
   }
+
 
   vendorHelpers.addRooms(roomData, req.session.vendor.id).then((data) => {
     const image1 = req.files.file;
@@ -182,6 +206,14 @@ router.post('/editRooms', (req, res) => {
   });
 });
 
+router.get('/deleteRoom', (req, res) => {
+  console.log(req.query.roomId);
+  vendorHelpers.deleteRoom(req.query.id).then((status) => {
+    res.redirect('/vendor/rooms')
+
+  })
+})
+
 router.get('/viewBookings', (req, res) => {
   vendorHelpers.getBookings(req.session.vendor.id).then((bookingData) => {
     res.render('vendors/viewBookings', {
@@ -195,5 +227,28 @@ router.get('/logout', (req, res) => {
   req.session.vendorLogged = false;
   res.redirect('/vendor');
 });
+
+
+
+
+
+
+router.get('/imageUpload', (req, res) => {
+  res.render("vendors/imageUpload")
+})
+
+router.post('/imageUpload', store.array("images", 12), (req, res, next) => {
+  console.log('hai')
+  const files = req.files;
+
+  if (!files) {
+    const error = new Error('Please choose files');
+    error.httpStatusCode = 400;
+    return next(error)
+  }
+  console.log(('image uploaded'));
+})
+
+
 
 module.exports = router;

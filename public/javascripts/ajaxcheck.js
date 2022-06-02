@@ -162,13 +162,46 @@ function verifyPayment(payment, order) {
   });
 }
 
-// function paymentFailed(payment){
-//   $.ajax({
-//     url:'/paymentFailed',
-//     data:{payment},
-//     method:'post',
-//     success:(response)=>{
+// $("#button").on('click', function () {
 
-//     }
-//   })
-// }
+//   $("#name").prop("disabled", false)
+// })
+
+function editProfile() {
+
+  $('#email').removeAttr('disabled')
+  $('#number').removeAttr('disabled')
+  $('#name').removeAttr('disabled')
+  $('#country').removeAttr('disabled')
+  $('#state').removeAttr('disabled')
+  $('#district').removeAttr('disabled')
+  $('#save').removeAttr('disabled')
+
+}
+
+function updateData(userId){
+  
+    name=$("#name").val()
+    email=$("#email").val()
+    number=$("#number").val()
+    country=$("#country").val()
+    state=$("#state").val()
+    district=$("#district").val()
+
+  
+  
+  $.ajax({
+    url:'/updateProfile',
+    method:'post',
+    data:{name,email,number,country,state,district,userId},
+    success:(response)=>{
+      if(response.data){
+        alert("profile updated")
+        location.reload()
+        
+      }
+    }
+  })
+}
+
+

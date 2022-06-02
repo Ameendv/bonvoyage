@@ -11,8 +11,8 @@
         <th>Category</th>
         <th>Images</th>
         <th>Ameneties</th>
-        <th>Bookings</th>
-        <th>Remaining</th>
+        {{!-- <th>Bookings</th> --}}
+        
         <th>Edit</th>
         <th>Delete</th>
       </tr>
@@ -187,14 +187,14 @@
                 </div>
               </div>
             </div></td>
-          <td>{{this.rooms.bookingCount}}</td>
-          <td>{{this.rooms.qty}}</td>
+          {{!-- <td>{{this.rooms.bookingCount}}</td> --}}
+          
           <td><a href="/vendor/editRooms?id={{this.rooms.roomId}}"><i
                 class="fa-regular fa-pen-to-square text-dark btn"
               ></i></a></td>
-          <td><span class="material-icons text-danger btn">
+          <td><a href="/vendor/deleteRoom?id={{this.rooms.roomId}}"><span class="material-icons text-danger btn" onclick="return confirm('Do you want to delete this room?');">
               delete
-            </span></td>
+            </span></a></td>
         </tr>
       {{/each}}
 

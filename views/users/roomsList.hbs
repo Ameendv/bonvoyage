@@ -58,8 +58,8 @@
             <div class="price"><span class="priceDetails text-danger">₹
                 {{this.rooms.price}}</span><span
                 class="realPrice ms-4 text-secondary"
-              ><strike>₹1500</strike></span>
-              <span class="ms-3 text-primary font-weight-bold">40% off</span>
+              ><strike>₹{{this.rooms.actualPrice}}</strike></span>
+              <span class="ms-3 text-primary font-weight-bold">{{this.rooms.offer}}% off</span>
             </div>
             <ul class="postcard__tagbox d-flex justify-content-between">
               <li>
