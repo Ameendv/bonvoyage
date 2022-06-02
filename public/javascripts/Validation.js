@@ -8,10 +8,7 @@ jQuery.validator.addMethod(
 
 $(document).ready(() => {
   $("#userSignup").validate({
-    errorElement: 'input',
-    errorPlacement: function (error, element) {
-      error.insertAfter($(element).parent('input'))
-    },
+    
     rules: {
       name: {
         required: true,
@@ -38,6 +35,15 @@ $(document).ready(() => {
         equalTo: "#password",
       },
     },
+    errorElement: 'span',
+    errorClass: 'help-block',
+    errorPlacement: function (error, element) {
+      if (element.parent('.input-group').length) {
+        error.insertAfter(element.parent());
+      } else {
+        error.insertAfter(element);
+      }
+    }
     // errorPlacement:function(error,element){
     //   element.attr("placeholder",error.text())
     // }
