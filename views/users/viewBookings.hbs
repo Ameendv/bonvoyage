@@ -45,7 +45,7 @@
                                             <span class="bg-light-blue">₹{{this.billAmt}}</span></span>
                                         <span><span class="badge badge-primary mx-3">Payment
                                                 Status</span>{{#if
-                                                this.paymentId}}<span class="badge badge-danger" style="color: green;">Paid</span>{{else}}<span class="badge badge-danger" style="color: red;">Pending</span>{{/if}}</span>
+                                                this.paymentId}}<span class="badge badge-danger" id="payment" style="color: green;">Paid</span>{{else}}<span class="badge badge-danger" style="color: red;">Pending</span>{{/if}}</span>
                                     </div>
 
                                 </div>
@@ -54,10 +54,14 @@
                                 {{#if this.isActive}}
                                 <button class="btn btn-success" disabled>Active</button>
                                 {{else}}
+                                {{#if this.cancelled}}
+                                <button class="btn btn-success" disabled>Cancelled</button>
+                                {{else}}
                                 {{#if this.canCancel}}
-                                <button class="btn btn-danger">Cancel Booking</button>
+                                <button class="btn btn-danger" onclick="cancelBooking('{{this.bookingId}}')">Cancel Booking</button>
                                 {{else}}
                                 <button class="btn btn-primary" disabled>Checked Out</button>
+                                {{/if}}
                                 {{/if}}
                                 {{/if}}
                             </div>

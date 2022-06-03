@@ -205,5 +205,10 @@ $(document).ready(() => {
     },
   });
 });
+$(document).ready( function () {
+  $('#example').DataTable({
+     order: [[3, 'asc']]
+  });
+} );
 
 

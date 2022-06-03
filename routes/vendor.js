@@ -87,7 +87,7 @@ router.post('/login', (req, res) => {
 
 router.get('/rooms', (req, res) => {
   vendorHelpers.getRooms(req.session.vendor.id).then((rooms) => {
-    console.log(rooms,"rooms")
+    console.log(rooms, "rooms")
     res.render('vendors/rooms', { rooms, vendor: req.session.vendor });
   });
 });
@@ -206,19 +206,27 @@ router.get('/deleteRoom', (req, res) => {
 router.get('/viewBookings', (req, res) => {
   vendorHelpers.getBookings(req.session.vendor.id).then((bookingData) => {
 
-    for(const x in bookingData){
-      checkIn=new Date(bookingData[x].bookings.checkIn).setHours(0,0,0,0)
-      checkOut=new Date(bookingData[x].bookings.checkOut).setHours(0,0,0,0)
-      now = new Date().setHours(0,0,0,0)
+    for (const x in bookingData) {
+      checkIn = new Date(bookingData[x].bookings.checkIn).setHours(0, 0, 0, 0)
+      checkOut = new Date(bookingData[x].bookings.checkOut).setHours(0, 0, 0, 0)
+      now = new Date().setHours(0, 0, 0, 0)
 
-      if(now>=checkIn && now<=checkIn){
-        bookingData[x].bookings.isActive=true
-      }else if(now<checkIn){
-        bookingData[x].bookings.canCancel=true
-      }else if(now>checkOut){
-        bookingData[x].bookings.checkedOut=true
+      if (now >= checkIn && now <= checkIn) {
+        bookingData[x].bookings.isActive = true
+      } else if (now < checkIn) {
+
+        if (bookingData[x].bookings.bookingStatus === 'cancelled') {
+          bookingData[x].bookings.cancelled = true
+        } else {
+          bookingData[x].bookings.canCancel = true
+        }
+
+
+      } else if (now > checkOut) {
+        bookingData[x].bookings.checkedOut = true
       }
     }
+    console.log(bookingData);
 
 
     res.render('vendors/viewBookings', {
@@ -227,6 +235,12 @@ router.get('/viewBookings', (req, res) => {
     });
   });
 });
+
+
+router.get('/cancellation',(req,res)=>{
+  res.render('vendors/cancellations',{vendor: req.session.vendor})
+})
+
 
 router.get('/logout', (req, res) => {
   req.session.vendorLogged = false;

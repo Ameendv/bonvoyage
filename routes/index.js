@@ -339,16 +339,31 @@ router.get('/viewBookings', (req, res) => {
       } else if (now >= checkOut) {
         booking[x].checkedOut = true;
       } else if (now <= checkIn && now <= checkOut) {
-        booking[x].canCancel = true;
+        if (booking[x].bookingStatus === 'cancelled') {
+          booking[x].cancelled = true
+        } else {
+          booking[x].canCancel = true;
+        }
+
       }
     }
-
+    console.log(booking, "booking", req.session.user, "details");
     res.render('users/viewBookings', {
       booking, viewbookings: true, user: req.session.loggedIn,
       details: req.session.user,
     });
   });
 });
+
+
+router.post('/cancelBooking', (req, res) => {
+
+  userHelpers.cancelBooking(req.body.bookingId).then(() => {
+    res.json({status:true})
+  })
+})
+
+
 
 router.get('/logout', (req, res) => {
   req.session.loggedIn = false;

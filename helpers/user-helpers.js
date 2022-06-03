@@ -226,5 +226,23 @@ module.exports = {
     const bookings = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectId(userId) });
     resolve(bookings);
   }),
+  cancelBooking: (bookingId) => new Promise(async (resolve, reject) => {
+    db.get()
+      .collection(collection.USER_COLLECTION)
+      .updateOne(
+        {
+          'bookings.bookingId': ObjectId(bookingId),
+        },
+        {
+          $set:
+          {
+            'bookings.$.bookingStatus': 'cancelled',
+          },
+        },
+      )
+      .then((status) => {
+       resolve(status);
+      });
+  }),
 
 };
