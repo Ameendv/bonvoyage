@@ -27,7 +27,7 @@
 
         </td>
         {{#if this.bookings.isActive}}
-        <td class="btn btn-green-outline disabled">Active</td>
+        <td class="btn btn-outline-success disabled">Active</td>
         {{else}}{{#if this.bookings.canCancel}}
         <td class="btn btn-outline-dark ">Cancel</td>{{else}}{{#if this.bookings.checkedOut}}<td>Checked out</td>
         {{/if}}{{/if}}{{/if}}

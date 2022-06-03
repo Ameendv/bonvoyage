@@ -8,7 +8,7 @@ jQuery.validator.addMethod(
 
 $(document).ready(() => {
   $("#userSignup").validate({
-    
+
     rules: {
       name: {
         required: true,
@@ -205,3 +205,5 @@ $(document).ready(() => {
     },
   });
 });
+
+

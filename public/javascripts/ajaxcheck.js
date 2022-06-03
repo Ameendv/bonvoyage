@@ -87,13 +87,29 @@ $(".inputs").keyup(function () {
   }
 });
 
+
+
+var option = document.getElementsByName('yesno');
+
+
+
+
+
 function confirmOrder(Mode) {
+
+
+
+
   for (let i = 0, { length } = Mode; i < length; i++) {
     if (Mode[i].checked) {
       var paymentMode = Mode[i].value;
       // do whatever you want with the checked radio
       // only one radio can be logically checked, don't check the rest
       break;
+    }
+    else {
+      alert("Please Select Payment mode");
+      return false;
     }
   }
   $.ajax({
@@ -179,26 +195,26 @@ function editProfile() {
 
 }
 
-function updateData(userId){
-  
-    name=$("#name").val()
-    email=$("#email").val()
-    number=$("#number").val()
-    country=$("#country").val()
-    state=$("#state").val()
-    district=$("#district").val()
+function updateData(userId) {
 
-  
-  
+  name = $("#name").val()
+  email = $("#email").val()
+  number = $("#number").val()
+  country = $("#country").val()
+  state = $("#state").val()
+  district = $("#district").val()
+
+
+
   $.ajax({
-    url:'/updateProfile',
-    method:'post',
-    data:{name,email,number,country,state,district,userId},
-    success:(response)=>{
-      if(response.data){
+    url: '/updateProfile',
+    method: 'post',
+    data: { name, email, number, country, state, district, userId },
+    success: (response) => {
+      if (response.data) {
         alert("profile updated")
         location.reload()
-        
+
       }
     }
   })
@@ -206,12 +222,12 @@ function updateData(userId){
 
 
 //user view bookings datatable
-$(document).ready( function () {
+$(document).ready(function () {
   $('#table_id').DataTable({
     order: [[5, 'desc']],
   });
-  
-} );
+
+});
 
 
 

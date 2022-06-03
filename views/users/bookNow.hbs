@@ -34,9 +34,9 @@
           </div>
           <div class="row mt-4 ms-3">
             <div class=" col me-4 mb-3">
-              <label for="number" class="font-weight-bold d-flex justify-content-between">Mobile Number{{#if details}}<span><i
-                  class="ms-5 bi bi-check-circle text-success"></i><span
-                  class="ms-2 font-italic text-success">Verified</span></span>{{/if}}</label>
+              <label for="number" class="font-weight-bold d-flex justify-content-between">Mobile Number{{#if
+                details}}<span><i class="ms-5 bi bi-check-circle text-success"></i><span
+                    class="ms-2 font-italic text-success">Verified</span></span>{{/if}}</label>
               <input type="text" class="form-control" {{#if details}} value="{{details.number}}" disabled {{/if}}
                 name="number" placeholder="Number">
 
@@ -77,7 +77,7 @@
       </div>
     </div>
     <div class="col-xs-12 col-md-5 col-lg-4 col-xl-4 offset-lg-1 offset-xl-2">
-      <form action="" method="">
+      <form id="bookNow">
         <div class="p-3 border" style="background-color: rgba(238, 238, 238, 0.459);">
           <div class="d-flex justify-content-between"><span class="fw-bold mt-2">{{roomDetails.0.name}}</span>
             <div style="width: 8rem;height: 5rem;"><img src="/images/rooms/{{roomDetails.0.rooms.roomId}}0.jpg"
@@ -124,12 +124,20 @@
             <span>Total </span> <span class="text-success">₹ {{searchDetails.total}}</span>
           </div>
           <div class="btn-group mt-3 d-flex justify-content-center">
-            <input type="radio" class="btn-check " name="options" id="option1" autocomplete="off" value="hotel"
-              required />
-            <label class="btn btn-secondary border border-warning text-warning" for="option1">Pay at Hotel</label>
 
-            <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off" value="online" />
-            <label class="btn btn-secondary border border-warning text-warning" for="option2" required>Pay Online</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="options" id="option1" autocomplete="off" value="hotel" 
+              >
+            <label class="form-check-label" for="flexRadioDefault1">
+              Pay at Hotel
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="options" id="option2" autocomplete="off" value="online" required >
+            <label class="form-check-label" for="flexRadioDefault2">
+              Online Payment
+            </label>
           </div>
           <div class="col d-flex justify-content-around mt-1 mb-5">
             <button type="button" class="btn btn-outline-dark btn-lg" id="payButton" disabled>Pay 1785</button>
@@ -144,4 +152,3 @@
 
   </div>
 </section>
-

@@ -163,12 +163,17 @@ router.get('/bookNow', (req, res) => {
   const roomId = req.query.id;
 
   userHelpers.getRoomDetails(roomId).then((roomDetails) => {
-    const { price } = req.session.roomDetails[0].rooms; // GETTING PRICE OF ROOM
-    const rooms = req.session.searchDetails.room; // NUMBER ROOMS
-    const { days } = req.session.searchDetails; // NUMBER OF days
-    req.session.searchDetails.discount = 0;
-    req.session.searchDetails.amount = price * rooms * days;
-    req.session.searchDetails.total = price * rooms * days - req.session.searchDetails.discount;
+    try {
+      const { price } = req.session.roomDetails[0].rooms; // GETTING PRICE OF ROOM
+      const rooms = req.session.searchDetails.room; // NUMBER ROOMS
+      const { days } = req.session.searchDetails; // NUMBER OF days
+      req.session.searchDetails.discount = 0;
+      req.session.searchDetails.amount = price * rooms * days;
+      req.session.searchDetails.total = price * rooms * days - req.session.searchDetails.discount;
+    }
+    catch (err) {
+      console.log(err);
+    }
 
     res.render('users/bookNow', {
       user: req.session.loggedIn,
@@ -179,6 +184,7 @@ router.get('/bookNow', (req, res) => {
       details: req.session.user,
     });
   });
+
 });
 
 router.post('/confirmBook', (req, res) => {
