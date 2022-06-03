@@ -1,4 +1,5 @@
 const express = require('express');
+const userHelpers = require('../helpers/user-helpers');
 
 const router = express.Router();
 const vendorHelpers = require('../helpers/vendor-helpers');
@@ -238,7 +239,12 @@ router.get('/viewBookings', (req, res) => {
 
 
 router.get('/cancellation',(req,res)=>{
-  res.render('vendors/cancellations',{vendor: req.session.vendor})
+  
+  vendorHelpers.getCancelled(req.session.vendor.id).then((cancelled)=>{
+    res.render('vendors/cancellations',{vendor: req.session.vendor,cancelled})
+  })
+
+  
 })
 
 

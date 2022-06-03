@@ -1,6 +1,21 @@
 
+
+
+
 <div class="col-lg-10 ms-auto pt-5 mt-3" style="background-color: #FFE8D2;height: 100%;">
-  <table id="example" class="table text-dark" style="width:100%;background-color: #FFE8D2">
+<table border="0" cellspacing="5" cellpadding="5">
+        <tbody><tr>
+            <td>Minimum date:</td>
+            <td><input type="text" id="min" name="min" ></td>
+        </tr>
+        <tr>
+            <td>Maximum date:</td>
+            <td><input type="text" id="max" name="max"></td>
+        </tr>
+    </tbody></table>
+
+
+  <table id="example" class="table text-dark"  style="width:100%;background-color: #FFE8D2">
     <thead class="" style="color: #750404;">
       <tr>
         <th>Customer</th>
@@ -10,7 +25,7 @@
         <th>Check out</th>
         <th>Bill Amount</th>
         <th>Booking Status</th>
-        <th>Guest status</th>
+        <th>status</th>
       </tr>
     </thead>
     <tbody>
@@ -42,7 +57,7 @@
         {{/if}}
         {{/if}}
         {{/if}}
-      </tr>
+      </tr> 
       {{/each}}
 
       </li>

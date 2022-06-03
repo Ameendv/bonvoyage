@@ -199,7 +199,7 @@ function updateData(userId) {
 function cancelBooking(bookingId)
 {
   
-  if(confirm('are you sure?')){
+  if(confirm('Do you want to cancel booking?')){
     $.ajax({
       url:'/cancelBooking',
       method:'post',

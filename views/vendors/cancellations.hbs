@@ -6,24 +6,26 @@
         <th>Customer</th>
         <th>Booking date</th>
         <th>Category</th>
+        <th>Rooms</th>
         <th>check In</th>
         <th>Check out</th>
-        <th>Bill Amount</th>
-        <th>Booking Status</th>
+        
         <th>Guest status</th>
       </tr>
     </thead>
     <tbody>
+        {{#each cancelled}}
       <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{this.name}}</td>
+          <td>{{this.bookings.bookingDate}}</td>
+          <td>{{this.bookings.category}}</td>
+          <td>{{this.bookings.roomCount}}</td>
+          <td>{{this.bookings.checkIn}}</td>
+          <td>{{this.bookings.checkOut}}</td>
+          <td>{{this.bookings.bookingStatus}}</td>
+          
       </tr>
+      {{/each}}
     </tbody>
 
   </table>

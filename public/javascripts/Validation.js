@@ -205,10 +205,62 @@ $(document).ready(() => {
     },
   });
 });
-$(document).ready( function () {
-  $('#example').DataTable({
-     order: [[3, 'asc']]
+
+var minDate, maxDate;
+
+$(function () {
+  $("#min").datepicker();
+});
+
+$(function () {
+  $("#max").datepicker();
+});
+
+$('#max').blur(function () {
+  $.fn.dataTable.ext.search.push(
+
+
+    function (settings, data, dataIndex) {
+      
+      var min = new Date($('#min').val())
+      var max = new Date($('#max').val())
+      var date = new Date(data[3]);
+      
+      if (
+        (min === null && max === null) ||
+        (min === null && date <= max) ||
+        (min <= date && max === null) ||
+        (min <= date && date <= max)
+      ) {
+        
+        return true;
+      }
+      return false;
+    }
+  );
+})
+
+
+
+
+
+$(document).ready(function () {
+  // Create date inputs
+  minDate = new Date($('#min'), {
+    format: 'MMMM Do YYYY'
   });
-} );
+  maxDate = new Date($('#max'), {
+    format: 'MMMM Do YYYY'
+  });
+
+  // DataTables initialisation
+  var table = $('#example').DataTable();
+
+  // Refilter the table
+  $('#min, #max').on('change', function () {
+    table.draw();
+  });
+});
+
 
 

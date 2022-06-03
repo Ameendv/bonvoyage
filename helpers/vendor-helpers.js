@@ -160,4 +160,27 @@ module.exports = {
           resolve(status)
         });
   }),
+  getCancelled: (hotelId) => {
+    return new Promise(async (resolve, reject) => {
+      cancelled = await db
+        .get()
+        .collection(collection.USER_COLLECTION).
+        aggregate([
+          {
+            $unwind: "$bookings"
+          }, {
+            $match: {
+              $and:
+                [
+                  { 'bookings.hotelId': ObjectId(hotelId) },
+                  { 'bookings.bookingStatus': 'cancelled' }
+                ]
+
+            }
+          }
+        ])
+        .toArray()
+      resolve(cancelled)
+    })
+  }
 };
