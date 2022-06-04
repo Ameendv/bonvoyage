@@ -6,7 +6,7 @@ const logger = require("morgan");
 const hbs = require("express-handlebars");
 const session = require("express-session");
 
-const fileUpload = require("express-fileupload");
+// const fileUpload = require("express-fileupload");
 const indexRouter = require("./routes/index");
 
 const adminRouter = require("./routes/admin");
@@ -48,7 +48,7 @@ db.connect((err) => {
   else console.log("Connection success");
 });
 
-app.use(fileUpload());
+// app.use(fileUpload());
 app.use("/", indexRouter);
 
 app.use("/admin", adminRouter);

@@ -254,7 +254,9 @@ $(document).ready(function () {
   });
 
   // DataTables initialisation
-  var table = $('#example').DataTable();
+  var table = $('#example').DataTable({
+    order: [[3, 'asc']]
+  });
 
   // Refilter the table
   $('#min, #max').on('change', function () {

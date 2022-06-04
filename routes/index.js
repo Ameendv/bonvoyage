@@ -2,8 +2,10 @@ const express = require('express');
 const { ObjectId } = require('mongodb');
 
 const router = express.Router();
-const accountSid = 'AC0a3458453ec2d49d897a813ce1cd243c';
-const authToken = '15a5560236561a6b855c9546688e9443';
+require('dotenv').config()
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+
 const client = require('twilio')(accountSid, authToken);
 const userHelpers = require('../helpers/user-helpers');
 

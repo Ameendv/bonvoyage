@@ -1,5 +1,5 @@
 const multer=require('multer')
-const path = require('path')
+
 
 //set storage
 var storage=multer.diskStorage({
@@ -11,8 +11,8 @@ var storage=multer.diskStorage({
         
         
         var ext=file.originalname.substring(file.originalname.lastIndexOf('.'))
-        console.log(ext);
-        callback(null,file.filename+'-'+Date.now()+ext)
+        console.log(ext,file.originalname,file);
+        callback(null,file.fieldname+'-'+Date.now()+ext)
     }
 })
 

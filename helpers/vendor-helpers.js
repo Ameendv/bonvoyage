@@ -20,6 +20,7 @@ module.exports = {
           } else {
             vendorData.isApproved = false;
             vendorData.isBlocked = false;
+
             db.get()
               .collection(collection.VENDOR_COLLECTION)
               .insertOne(vendorData)
@@ -32,6 +33,14 @@ module.exports = {
           }
         });
     });
+  },
+  idUpload: (id, idProof) => {
+    console.log(id, "id", idProof, "idproof");
+    return new Promise(async (resolve, reject) => {
+      db.get().collection(collection.VENDOR_COLLECTION).updateOne({ _id: id }, { $set: { idProof: { ...idProof } } }, { upsert: true }).then((status) => {
+        resolve(status);
+      })
+    })
   },
   doLogin: (vendorData) => new Promise(async (resolve, reject) => {
     const vendor = await db
@@ -77,11 +86,28 @@ module.exports = {
         resolve(data);
       });
   }),
-  getRooms: (hotelId) => new Promise(async (resolve, reject) => {
+  roomUpload: (roomId, imagesData) => {
+    
+ 
+   
+ 
+    return new Promise(async (resolve, reject) => {
+      db.get().collection(collection.VENDOR_COLLECTION).updateOne({ 'rooms.roomId': ObjectId(roomId) }, { $set: { 'rooms.$.images':imagesData}} , { upsert: true }).then((status)=>{
+        if(status){
+          resolve(status)
+        }
+        else{
+          reject(error)
+        }
+      })
+    })
+
+  },
+  getRooms: (hotelId) => new Promise(async (resolve, reject) => { 
     const rooms = await db
       .get()
       .collection(collection.VENDOR_COLLECTION)
-      .aggregate([
+      .aggregate([ 
         {
           $match: { _id: ObjectId(hotelId) },
         },

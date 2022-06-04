@@ -4,12 +4,8 @@ const userHelpers = require('../helpers/user-helpers');
 const router = express.Router();
 const vendorHelpers = require('../helpers/vendor-helpers');
 
-const store = require('../middleware/multer')
-
-
-
-
-
+const store = require('../middleware/multer');
+const fs = require('fs');
 
 function imageUpload(location, id, image) {
   return new Promise(async (resolve, reject) => {
@@ -38,20 +34,36 @@ router.get('/signup', (_, res) => {
   });
 });
 
-router.post('/signup', (req, res) => {
+router.post('/signup', store.array('idProof'), (req, res, next) => {
   vendorHelpers.doSignup(req.body).then((response) => {
     // req.session.image.id = response
     if (response.exists) {
       console.log('exists');
     } else {
-      const image = req.files.idProof;
+      const { files } = req;
 
-      imageUpload('ids', response.id, image).then((state) => {
-        if (state) {
+      if (!files) {
+        const error = new Error('Please select file');
+        error.httpStatusCode = 400;
+        return next(error);
+      }
+      const imgArray = files.map((file) => {
+        const img = fs.readFileSync(file.path);
+
+        return encode_image = img.toString('base64');
+      });
+      imgArray.map((src, index) => {
+        const finalImg = {
+          filename: files[index].originalname,
+          contentType: files[index].mimetype,
+          imageBase64: src,
+        };
+        console.log(response);
+        vendorHelpers.idUpload(response.id, finalImg).then((status) => {
           req.session.vendorLogged = true;
           req.session.vendor = response;
           res.redirect('/vendor');
-        }
+        });
       });
     }
   });
@@ -88,7 +100,7 @@ router.post('/login', (req, res) => {
 
 router.get('/rooms', (req, res) => {
   vendorHelpers.getRooms(req.session.vendor.id).then((rooms) => {
-    console.log(rooms, "rooms")
+    console.log(rooms, 'rooms');
     res.render('vendors/rooms', { rooms, vendor: req.session.vendor });
   });
 });
@@ -102,7 +114,7 @@ router.get('/addRooms', (req, res) => {
   req.session.added = false;
 });
 
-router.post('/addrooms', (req, res) => {
+router.post('/addrooms', store.array("file"),(req, res) => {
   const roomData = {
     price: parseInt(req.body.price),
     category: req.body.category,
@@ -127,22 +139,48 @@ router.post('/addrooms', (req, res) => {
     roomData.ameneties.parking = true;
   }
 
-
   vendorHelpers.addRooms(roomData, req.session.vendor.id).then((data) => {
-    const image1 = req.files.file;
-    const image2 = req.files.file1;
+
+
+    const { files } = req;
+    
+
+    if (!files) {
+      const error = new Error('Please select file');
+      error.httpStatusCode = 400;
+      return next(error);
+    }
+    const imgArray = files.map((file) => {
+      const img = fs.readFileSync(file.path);
+
+      return encode_image = img.toString('base64');
+    });
+
+let finalImg=[]
+    imgArray.map((src, index) => {
+       const result = finalImg.push({
+        filename: files[index].originalname,
+        contentType: files[index].mimetype,
+        imageBase64: src,
+      });
+    });
+      
+      
+      vendorHelpers.roomUpload(data.roomId, finalImg).then((status) => {
+        
+        res.redirect('/vendor');
+      }).catch((error=>{
+        console.log(error)
+      }))
+     
+    
+
+
+
+   
     req.session.roomId = data.roomId;
 
-    imageUpload('rooms', data.roomId + 0, image1).then((state) => {
-      if (state) {
-        imageUpload('rooms', data.roomId + 1, image2).then((state) => {
-          if (state) {
-            req.session.added = true;
-            res.redirect('/vendor/addRooms');
-          }
-        });
-      }
-    });
+   
   });
 });
 
@@ -199,36 +237,30 @@ router.post('/editRooms', (req, res) => {
 router.get('/deleteRoom', (req, res) => {
   console.log(req.query.roomId);
   vendorHelpers.deleteRoom(req.query.id).then((status) => {
-    res.redirect('/vendor/rooms')
-
-  })
-})
+    res.redirect('/vendor/rooms');
+  });
+});
 
 router.get('/viewBookings', (req, res) => {
   vendorHelpers.getBookings(req.session.vendor.id).then((bookingData) => {
-
     for (const x in bookingData) {
-      checkIn = new Date(bookingData[x].bookings.checkIn).setHours(0, 0, 0, 0)
-      checkOut = new Date(bookingData[x].bookings.checkOut).setHours(0, 0, 0, 0)
-      now = new Date().setHours(0, 0, 0, 0)
+      checkIn = new Date(bookingData[x].bookings.checkIn).setHours(0, 0, 0, 0);
+      checkOut = new Date(bookingData[x].bookings.checkOut).setHours(0, 0, 0, 0);
+      now = new Date().setHours(0, 0, 0, 0);
 
       if (now >= checkIn && now <= checkIn) {
-        bookingData[x].bookings.isActive = true
+        bookingData[x].bookings.isActive = true;
       } else if (now < checkIn) {
-
         if (bookingData[x].bookings.bookingStatus === 'cancelled') {
-          bookingData[x].bookings.cancelled = true
+          bookingData[x].bookings.cancelled = true;
         } else {
-          bookingData[x].bookings.canCancel = true
+          bookingData[x].bookings.canCancel = true;
         }
-
-
       } else if (now > checkOut) {
-        bookingData[x].bookings.checkedOut = true
+        bookingData[x].bookings.checkedOut = true;
       }
     }
     console.log(bookingData);
-
 
     res.render('vendors/viewBookings', {
       vendor: req.session.vendor,
@@ -237,43 +269,32 @@ router.get('/viewBookings', (req, res) => {
   });
 });
 
-
-router.get('/cancellation',(req,res)=>{
-  
-  vendorHelpers.getCancelled(req.session.vendor.id).then((cancelled)=>{
-    res.render('vendors/cancellations',{vendor: req.session.vendor,cancelled})
-  })
-
-  
-})
-
+router.get('/cancellation', (req, res) => {
+  vendorHelpers.getCancelled(req.session.vendor.id).then((cancelled) => {
+    res.render('vendors/cancellations', { vendor: req.session.vendor, cancelled });
+  });
+});
 
 router.get('/logout', (req, res) => {
   req.session.vendorLogged = false;
   res.redirect('/vendor');
 });
 
+router.get('/imageUpload', (req, res) => {
+  res.render('vendors/imageUpload');
+});
 
+router.post('/imageUpload', store.array('images', 12), (req, res, next) => {
+  console.log('hai');
+  const { files } = req;
+  console.log(req.body, req.files);
 
-
-
-
-// router.get('/imageUpload', (req, res) => {
-//   res.render("vendors/imageUpload")
-// })
-
-// router.post('/imageUpload', store.single("images",12), (req, res, next) => {
-//   console.log('hai')
-//   const files = req.files;
-
-//   if (!files) {
-//     const error = new Error('Please choose files');
-//     error.httpStatusCode = 400;
-//     return next(error)
-//   }
-//   console.log(('image uploaded'));
-// })
-
-
+  if (!files) {
+    const error = new Error('Please choose files');
+    error.httpStatusCode = 400;
+    return next(error);
+  }
+  console.log(('image uploaded'));
+});
 
 module.exports = router;
