@@ -103,6 +103,19 @@ module.exports = {
     })
 
   },
+  editRoomImage:(roomId,images)=>{
+    return new Promise(async (resolve, reject) => {
+      db.get().collection(collection.VENDOR_COLLECTION).updateOne({ 'rooms.roomId': ObjectId(roomId) }, { $set: { 'rooms.$.images':images}} , { upsert: true }).then((status)=>{
+        if(status){
+          resolve(status)
+        }
+        else{
+          reject(error)
+        }
+      })
+    })
+
+  },
   getRooms: (hotelId) => new Promise(async (resolve, reject) => { 
     const rooms = await db
       .get()

@@ -57,27 +57,19 @@
                             <label class="form-check-label" for="flexSwitchCheckDefault">Parking</label>
                         </div>
                         <label for="idProof">Upload room images</label>
-                        <div class="d-flex justify-content-around mb-2"> <span> <label for="image1">Image 1</label><img
-                                    src="/images/rooms/{{room.0.rooms.roomId}}0.jpg" width="100px" height="100px"
-                                    id="imgView" alt="Image to edit"></span><span> <label for="image2">Image
-                                    2</label><img src="/images/rooms/{{room.0.rooms.roomId}}1.jpg" width="100px"
-                                    height="100px" id="imgView1" alt="Image to edit"></span></div>
+                        <div class="d-flex justify-content-around mb-2">{{#each rooms.0.rooms.images}} <span> <label
+                                    for="file">Image 1</label><img
+                                    src="data:{{this.contentType}};base64,{{this.imageBase64}}" width="100px"
+                                    height="100px" id="imgView" alt="Image to edit"></span>{{/each}}</div>
                         <div class="input-group mb-3">
 
                             <span class="input-group-text register-form text-white"><i
                                     class="bi bi-card-text"></i></span>
 
                             <input type="file" id="file" name="file" class="form-control" placeholder="Number"
-                                name="idProof" onchange="viewImage(event)">
+                                name="idProof" onchange="viewImage(event)" multiple required>
                         </div>
-                        <div class="input-group mb-3">
 
-                            <span class="input-group-text register-form text-white"><i
-                                    class="bi bi-card-text"></i></span>
-
-                            <input type="file" id="file1" name="file1" class="form-control" placeholder="Number"
-                                name="idProof" onchange="viewImage1(event)">
-                        </div>
 
 
                         <div class="d-grid col-12 mx-auto">
@@ -108,7 +100,5 @@
     function viewImage(event) {
         document.getElementById('imgView').src = URL.createObjectURL(event.target.files[0])
     }
-    function viewImage1(event) {
-        document.getElementById('imgView1').src = URL.createObjectURL(event.target.files[0])
-    }
+
 </script>

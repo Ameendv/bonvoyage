@@ -12,21 +12,26 @@
           data-bs-ride="carousel"
         >
           <div class="carousel-inner">
+            {{#each roomDetails.0.rooms.images}}
+            {{#if @first}}
             <div class="carousel-item active">
               <img
-                src="/images/rooms/{{roomDetails.0.rooms.roomId}}0.jpg"
+                src="data:{{this.contentType}};base64,{{this.imageBase64}}"
                 class="d-block w-100"
                 class="d-block w-100"
                 alt="..."
               />
             </div>
+            {{else}}
             <div class="carousel-item">
               <img
-                src="/images/rooms/{{roomDetails.0.rooms.roomId}}1.jpg"
+                src="data:{{this.contentType}};base64,{{this.imageBase64}}"
                 class="d-block w-100"
                 alt="..."
               />
             </div>
+            {{/if}}
+            {{/each}}
 
           </div>
           <button

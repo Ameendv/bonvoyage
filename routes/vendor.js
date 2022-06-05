@@ -194,14 +194,17 @@ router.get('/editRooms', (req, res) => {
   });
 });
 
-router.post('/editRooms', (req, res) => {
+router.post('/editRooms', store.array("file"), (req, res) => {
   const roomData = {
     price: parseInt(req.body.price),
     category: req.body.category,
     qty: parseInt(req.body.qty),
+    actualPrice: parseInt(req.body.actualPrice),
+    offer: 0,
 
     ameneties: {},
   };
+  roomData.offer = Math.round(100 - ((roomData.price / roomData.actualPrice) * 100));
   if (req.body.ac === 'on') {
     roomData.ameneties.ac = true;
   }
@@ -216,21 +219,32 @@ router.post('/editRooms', (req, res) => {
   }
 
   vendorHelpers.updateRoom(roomData, req.query.id).then(() => {
-    if (req.files) {
-      const image1 = req.files.file;
-      const image2 = req.files.file1;
-      imageUpload('rooms', req.query.id + 0, image1).then((state) => {
-        if (state) {
-          imageUpload('rooms', req.query.id + 1, image2).then((state) => {
-            req.session.edited = true;
-            res.redirect('/vendor/editRooms');
-          });
-        }
-      });
-    } else {
-      req.session.edited = true;
-      res.redirect('/vendor/editRooms');
+    const { files } = req;
+    
+
+    if (!files) {
+      const error = new Error('Please select file');
+      error.httpStatusCode = 400;
+      return next(error);
     }
+    const imgArray = files.map((file) => {
+      const img = fs.readFileSync(file.path);
+
+      return encode_image = img.toString('base64');
+    });
+
+let finalImg=[]
+    imgArray.map((src, index) => {
+       const result = finalImg.push({
+        filename: files[index].originalname,
+        contentType: files[index].mimetype,
+        imageBase64: src,
+      });
+    });
+    vendorHelpers.editRoomImage(req.query.id,finalImg).then((status)=>{
+      req.session.edited = true;
+            res.redirect('/vendor/editRooms');
+    })
   });
 });
 
