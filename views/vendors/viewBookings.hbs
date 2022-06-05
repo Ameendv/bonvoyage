@@ -1,21 +1,19 @@
-
-
-
-
 <div class="col-lg-10 ms-auto pt-5 mt-3" style="background-color: #FFE8D2;height: 100%;">
-<table border="0" cellspacing="5" cellpadding="5">
-        <tbody><tr>
-            <td>From:</td>
-            <td><input type="text" id="min" name="min" placeholder="Please select a date"></td>
-       
-            <td>To:</td>
-            <td><input type="text" id="max" name="max" placeholder="Please select a date"></td>
-            
-        </tr>
-    </tbody></table>
+  <table border="0" cellspacing="5" cellpadding="5">
+    <tbody>
+      <tr>
+        <td>From:</td>
+        <td><input type="text" id="min" name="min" placeholder="Please select a date"></td>
+
+        <td>To:</td>
+        <td><input type="text" id="max" name="max" placeholder="Please select a date"></td>
+
+      </tr>
+    </tbody>
+  </table>
 
 
-  <table id="example" class="table text-dark"  style="width:100%;background-color: #FFE8D2">
+  <table id="example" class="table text-dark" style="width:100%;background-color: #FFE8D2">
     <thead class="" style="color: #750404;">
       <tr>
         <th>Customer</th>
@@ -34,33 +32,30 @@
         <td>{{this.name}}</td>
         <td>{{this.bookings.bookingDate}}</td>
         <td>{{this.bookings.category}}</td>
-        <td>{{this.bookings.checkIn}}
-        </td>
+        <td>{{this.bookings.checkIn}}</td>
         <td>{{this.bookings.checkOut}}</td>
         <td>{{this.bookings.billAmt}}</td>
-        <td>
-          {{this.bookings.bookingStatus}}
-
-        </td>
-        {{#if this.bookings.isActive}}
-        <td><button class="badge badge-success text-sm" disabled>Active</button></td>
+        <td>{{this.bookings.bookingStatus}}</td>
+       <td> {{#if this.bookings.isActive}}
+        <button class="badge badge-success text-sm" disabled>Active</button>
         {{else}}
         {{#if this.bookings.canCancel}}
-        <td ><button class="badge badge-danger text-sm " onclick="cancelBooking('{{this.bookings.bookingId}}')">Cancel</button></td>
+        <button class="badge badge-danger text-sm "
+            onclick="cancelBooking('{{this.bookings.bookingId}}')">Cancel</button>
         {{else}}
         {{#if this.bookings.cancelled}}
-        <td><button class="badge badge-primary text-sm" disabled>Cancelled</button></td>
+        <button class="badge badge-primary text-sm" disabled>Cancelled</button>
         {{else}}
         {{#if this.bookings.checkedOut}}
-        <td>Checked out</td>
+        Checked out
         {{/if}}
         {{/if}}
         {{/if}}
-        {{/if}}
-      </tr> 
+        {{/if}}</td>
+      </tr>
       {{/each}}
 
-      </li>
+
 
     </tbody>
 
