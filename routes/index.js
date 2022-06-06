@@ -1,6 +1,6 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
-const fileUpload=require('express-fileupload')
+
 
 
 const router = express.Router();
@@ -302,7 +302,7 @@ router.post('/updateProfile', (req, res) => {
     res.json({ data: true });
   });
 });
-router.use(fileUpload());
+
 router.post('/uploadId/:id', (req, res) => {
   const image1 = req.files;
 

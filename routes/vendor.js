@@ -5,6 +5,8 @@ const vendorHelpers = require('../helpers/vendor-helpers');
 const store = require('../middleware/multer');
 const fs = require('fs');
 
+
+
 function imageUpload(location, id, image) {
   return new Promise(async (resolve, reject) => {
     await image.mv(`./public/images/${location}/${id}.jpg`, (err, done) => {
@@ -56,16 +58,20 @@ router.post('/signup', store.array('idProof'), (req, res, next) => {
           contentType: files[index].mimetype,
           imageBase64: src,
         };
-        console.log(response);
+
         vendorHelpers.idUpload(response.id, finalImg).then((status) => {
           req.session.vendorLogged = true;
           req.session.vendor = response;
-          res.redirect('/vendor');
+          res.send('Please wait for admin approval')
         });
       });
     }
+
+
   });
+
 });
+
 
 router.get('/login', (req, res) => {
   res.render('vendors/vendorSignin', {
@@ -84,8 +90,15 @@ router.post('/login', (req, res) => {
       req.session.vendorUser = response.user;
 
       req.session.vendor = response;
+      if (response.vendor.isApproved==true && response.vendor.isBlocked!=true) {
+        res.redirect('/vendor')
+      } else if (response.vendor.isBlocked) {
+        res.send('Please contact admin')
+      } else {
+        res.send('please wait untill admin approve your request')
+      }
 
-      res.redirect('/vendor');
+      
     } else if (response.passwordErr) {
       req.session.passwordErr = true;
       res.redirect('/vendor/login');

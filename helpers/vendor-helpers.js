@@ -62,11 +62,12 @@ module.exports = {
             response.logged = true;
             response.user = vendor.name;
             response.id = vendor._id;
+            response.vendor=vendor
 
             resolve(response);
           } else {
             response.passwordErr = true;
-            resolve(response);
+            resolve(response,);
           }
         });
       } else {

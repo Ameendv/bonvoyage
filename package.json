@@ -25,6 +25,7 @@
     "nodemon": "^2.0.16",
     "promise": "^8.1.0",
     "razorpay": "^2.8.1",
+    "sweetalert": "^2.1.2",
     "twilio": "^3.77.0"
   },
   "devDependencies": {
