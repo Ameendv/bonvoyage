@@ -141,7 +141,7 @@ router.get('/viewBookings', (req, res) => {
         bookings[x].bookings.checkedOut = true;
       }
     }
-    res.render('admin/viewBookings', { admin,bookings })
+    res.render('admin/viewBookings', {admin,bookings })
   }).catch((error) => {
     console.log(error);
   })

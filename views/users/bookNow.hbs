@@ -44,18 +44,11 @@
 
           </div>
           {{#if details}}
-          <div class="row mt-3 ms-3">
-            <div class=" col me-4 mb-4">
-              <label for="file" class="font-weight-bold text-danger">Upload your id</label>
-              <input type="file" id="fileUpload" class="form-control" {{#if details}}value="{{details.number}}" {{/if}}
-                name="file" placeholder="Number" required>
-            </div>
-
-          </div>
+          
 
           <div class="d-flex justify-content-center mb-3">
             <h4 id="imageErr"> </h4>
-            <div><button type="button" class="btn btn-success" onclick="confirmBook('{{details._id}}')">Continue
+            <div><button type="button" class="btn btn-success" onclick="confirmBook()">Continue
                 Booking</button></div>
           </div>
           {{else}}
@@ -144,7 +137,7 @@
             <button type="button" class="btn btn-outline-dark btn-lg" id="payButton" disabled>Pay 1785</button>
 
             <button type="button" id="payNow" class="btn btn-success btn-lg disabled"
-              onclick="confirmOrder(document.getElementsByName('options'))">Pay Now</button>
+              onclick="confirmOrder(document.getElementById('option1'),document.getElementById('option2'))">Pay Now</button>
           </div>
         </div>
       </form>

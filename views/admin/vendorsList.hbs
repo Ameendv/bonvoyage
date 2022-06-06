@@ -1,4 +1,4 @@
-<div class="col-lg-10 ms-auto mt-3 pt-5">
+<div class="col-lg-10 ms-auto mt-4 pt-5">
   <table id="example" class="table text-dark" style="width:100%">
     <thead class="text-secondary">
       <tr>
@@ -92,15 +92,11 @@
 
           <div class="dropdown">
             {{#if this.accepted}}
-            <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton1"
+            <button class="btn btn-outline-success " type="button" id="dropdownMenuButton1"
               data-bs-toggle="dropdown" aria-expanded="false">
               Accepted
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-
-              <li><button class=" dropdown-item bg-danger " onclick="rejectVendor('{{this._id}}')">Reject</button></li>
-
-            </ul>
+           
             {{else}}
             {{#if this.rejected}}
             <button class="btn btn-outline-danger dropdown-toggle" type="button" id="dropdownMenuButton1"

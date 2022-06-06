@@ -46,26 +46,18 @@ function unblockUser(userId) {
 }
 
 function confirmBook(userId) {
-  const file = $("#fileUpload")[0].files[0];
-  const fd = new FormData();
-  fd.append("theFile", file);
 
-  $.ajax({
-    url: `/uploadId/${userId}`,
-    method: "post",
-    processData: false,
-    contentType: false,
-    data: fd,
-    success: (response) => {
-      if (response) {
-        $("#payNow").removeClass("disabled").addClass(" ");
-        $("#payNow").removeClass("disabled").addClass("");
-        $("#imageErr").html("");
-      } else {
-        $("#imageErr").html("Upload your id proof").css("color", "red");
-      }
-    },
-  });
+
+
+
+
+
+
+  $("#payNow").removeClass("disabled").addClass(" ");
+  $("#payNow").removeClass("disabled").addClass("");
+  $("#imageErr").html("");
+
+
 }
 
 function login(name, email, password) {
@@ -89,33 +81,32 @@ $(".inputs").keyup(function () {
 
 const option = document.getElementsByName("yesno");
 
-function confirmOrder(Mode) {
-  console.log(Mode[0].value, Mode[1].value)
-  for (let i = 0, length = Mode; i < length; i++) {
-    if (Mode[i].checked) {
-      console.log(Mode[i].value);
-      var paymentMode = Mode[i].value;
-      // do whatever you want with the checked radio
-      // only one radio can be logically checked, don't check the rest
-      break;
-    } else {
-      console.log(Mode[i].value)
-      alert("Please Select Payment mode");
-      return false;
-    }
+function confirmOrder(hotel, online) {
+
+  if (hotel.checked) {
+    var paymentMode = hotel.value
+    console.log(paymentMode);
+  } else if (online.checked) {
+    var paymentMode = online.value
+    console.log(paymentMode)
+  } else {
+    alert('please select a value')
   }
-  $.ajax({
-    url: "/confirmBook",
-    method: "post",
-    data: { paymentMode },
-    success: (data) => {
-      if (data.check) {
-        razorpayPayment(data.response);
-      } else {
-        location.href = "/bookingStatus";
-      }
-    },
-  });
+
+  if (paymentMode) {
+    $.ajax({
+      url: "/confirmBook",
+      method: "post",
+      data: { paymentMode },
+      success: (data) => {
+        if (data.check) {
+          razorpayPayment(data.response);
+        } else {
+          location.href = "/bookingStatus";
+        }
+      },
+    });
+  }
 }
 
 function razorpayPayment(order) {
@@ -224,10 +215,10 @@ function acceptVendor(hotelId) {
 
   $.ajax({
     url: "/admin/acceptVendor",
-    method:'post',
-    data:{hotelId},
-    success:(response)=>{
-      if(response){
+    method: 'post',
+    data: { hotelId },
+    success: (response) => {
+      if (response) {
         alert('Vendor request accepted')
         location.reload()
       }
@@ -235,39 +226,39 @@ function acceptVendor(hotelId) {
   })
 }
 
-function rejectVendor(hotelId){
+function rejectVendor(hotelId) {
   $.ajax({
-    url:'/admin/rejectVendor',
-    data:{hotelId},
-    method:'post',
-    success:(response)=>{
-      if(response.status){
+    url: '/admin/rejectVendor',
+    data: { hotelId },
+    method: 'post',
+    success: (response) => {
+      if (response.status) {
         location.reload()
       }
     }
   })
 }
 
-function blockVendor(hotelId){
+function blockVendor(hotelId) {
   $.ajax({
-    url:'/admin/blockVendor',
-    data:{hotelId},
-    method:'post',
-    success:(response)=>{
-      if(response.status){
+    url: '/admin/blockVendor',
+    data: { hotelId },
+    method: 'post',
+    success: (response) => {
+      if (response.status) {
         location.reload()
       }
     }
   })
 }
 
-function unBlockVendor(hotelId){
+function unBlockVendor(hotelId) {
   $.ajax({
-    url:'/admin/unBlockVendor',
-    data:{hotelId},
-    method:'post',
-    success:(response)=>{
-      if(response.status){
+    url: '/admin/unBlockVendor',
+    data: { hotelId },
+    method: 'post',
+    success: (response) => {
+      if (response.status) {
         location.reload()
       }
     }

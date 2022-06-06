@@ -12,6 +12,8 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 const userHelpers = require('../helpers/user-helpers');
 const { application } = require('express');
+const store = require('../middleware/multer');
+const fs = require('fs');
 
 const verifyLogin = (req, res, next) => {
   if (req.session.loggedIn) {
@@ -195,6 +197,7 @@ router.get('/bookNow', (req, res) => {
 
 router.post('/confirmBook', (req, res) => {
   req.session.searchDetails.paymentMode = req.body.paymentMode;
+  console.log(req.body.paymentMode,"PayMode")
   const bookingDetails = {
     bookingId: new ObjectId(),
     hotelId: ObjectId(req.session.roomDetails[0]._id),
@@ -303,18 +306,6 @@ router.post('/updateProfile', (req, res) => {
   });
 });
 
-router.post('/uploadId/:id', (req, res) => {
-  const image1 = req.files;
-
-  if (image1 == null) {
-    res.json(false);
-  } else {
-    const image1 = req.files.theFile;
-    imageUpload('user-ids', req.params.id, image1).then((response) => {
-      res.json(response);
-    });
-  }
-});
 
 router.post('/loginBook', (req, res) => {
   userHelpers.doLogin(req.body).then((response) => {
