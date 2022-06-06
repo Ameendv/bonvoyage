@@ -139,34 +139,34 @@ router.post('/addrooms', store.array('file'), (req, res) => {
 
   vendorHelpers.addRooms(roomData, req.session.vendor.id).then((data) => {
     const { files } = req;
-console.log(files,"vendor");
-    // if (!files) {
-    //   const error = new Error('Please select file');
-    //   error.httpStatusCode = 400;
-    //   return next(error);
-    // }
-    // const imgArray = files.map((file) => {
-    //   const img = fs.readFileSync(file.path);
 
-    //   return encode_image = img.toString('base64');
-    // });
+    if (!files) {
+      const error = new Error('Please select file');
+      error.httpStatusCode = 400;
+      return next(error);
+    }
+    const imgArray = files.map((file) => {
+      const img = fs.readFileSync(file.path);
 
-    // const finalImg = [];
-    // imgArray.map((src, index) => {
-    //   const result = finalImg.push({
-    //     filename: files[index].originalname,
-    //     contentType: files[index].mimetype,
-    //     imageBase64: src,
-    //   });
-    // });
+      return encode_image = img.toString('base64');
+    });
 
-    // vendorHelpers.roomUpload(data.roomId, finalImg).then((status) => {
-    //   res.redirect('/vendor');
-    // }).catch(((error) => {
-    //   console.log(error);
-    // }));
+    const finalImg = [];
+    imgArray.map((src, index) => {
+      const result = finalImg.push({
+        filename: files[index].originalname,
+        contentType: files[index].mimetype,
+        imageBase64: src,
+      });
+    });
 
-    // req.session.roomId = data.roomId;
+    vendorHelpers.roomUpload(data.roomId, finalImg).then((status) => {
+      res.redirect('/vendor');
+    }).catch(((error) => {
+      console.log(error);
+    }));
+
+    req.session.roomId = data.roomId;
   });
 });
 

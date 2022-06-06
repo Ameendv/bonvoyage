@@ -2,6 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 const adminHelpers = require("../helpers/admin-helpers");
+const userHelpers = require("../helpers/user-helpers");
 
 const verifyLogin = (req, res, next) => {
   if (req.session.adminLog) {
@@ -103,28 +104,47 @@ router.post('/rejectVendor', (req, res) => {
   })
 })
 
-router.post('/blockVendor',(req,res)=>{
-  adminHelpers.blockVendor(req.body.hotelId).then((status)=>{
-    
-      res.json({status:true})
-    
-  }).catch((error)=>{
+router.post('/blockVendor', (req, res) => {
+  adminHelpers.blockVendor(req.body.hotelId).then((status) => {
+
+    res.json({ status: true })
+
+  }).catch((error) => {
     console.log(error)
   })
 })
 
-router.post('/unBlockVendor',(req,res)=>{
-  adminHelpers.unBlockVendor(req.body.hotelId).then((status)=>{
-    
-      res.json({status:true})
-    
-  }).catch((error)=>{
+router.post('/unBlockVendor', (req, res) => {
+  adminHelpers.unBlockVendor(req.body.hotelId).then((status) => {
+
+    res.json({ status: true })
+
+  }).catch((error) => {
     console.log(error)
   })
 })
 
-router.get('/viewBookings',(req,res)=>{
-  console.log(req.query.id);
+router.get('/viewBookings', (req, res) => {
+  adminHelpers.viewBookings(req.query.id).then((bookings) => {
+    for (const x in bookings) {
+      checkIn = new Date(bookings[x].bookings.checkIn).setHours(0, 0, 0, 0);
+      checkOut = new Date(bookings[x].bookings.checkOut).setHours(0, 0, 0, 0);
+      now = new Date().setHours(0, 0, 0, 0);
+
+      if (now >= checkIn && now <= checkIn) {
+        bookings[x].bookings.isActive = true;
+      } else if (now < checkIn) {
+        if (bookings[x].bookings.bookingStatus === 'cancelled') {
+          bookings[x].bookings.cancelled = true;
+        }
+      } else if (now > checkOut) {
+        bookings[x].bookings.checkedOut = true;
+      }
+    }
+    res.render('admin/viewBookings', { admin,bookings })
+  }).catch((error) => {
+    console.log(error);
+  })
 })
 
 router.get("/logout", (req, res) => {
