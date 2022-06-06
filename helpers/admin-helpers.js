@@ -72,4 +72,45 @@ module.exports = {
           resolve(status);
         });
     }),
+    acceptVendor:(hotelId)=>{
+      return new Promise(async(resolve,reject)=>{
+        db.get().collection(collection.VENDOR_COLLECTION).updateOne({_id:ObjectId(hotelId)},{$set:{isApproved:true}}).then((status)=>{
+          if(status)
+          resolve(status)
+          else{
+            reject(error)
+          }
+        })
+      })
+    },
+    rejectVendor:(hotelId)=>{
+      return new Promise(async(resolve,reject)=>{
+        db.get().collection(collection.VENDOR_COLLECTION).updateOne({_id:ObjectId(hotelId)},{$set:{isApproved:'rejected'}}).then((status)=>{
+          if(status)
+          resolve(status)
+          else
+          reject(error)
+        })
+      })
+    },
+    blockVendor:(hotelId)=>{
+      return new Promise((resolve,reject)=>{
+        db.get().collection(collection.VENDOR_COLLECTION).updateOne({_id:ObjectId(hotelId)},{$set:{isBlocked:true}}).then((status)=>{
+          if(status)
+          resolve(status)
+          else
+          reject(error)
+        })
+      })
+    },
+    unBlockVendor:(hotelId)=>{
+      return new Promise((resolve,reject)=>{
+        db.get().collection(collection.VENDOR_COLLECTION).updateOne({_id:ObjectId(hotelId)},{$set:{isBlocked:false}}).then((status)=>{
+          if(status)
+          resolve(status)
+          else
+          reject(error)
+        })
+      })
+    }
 };

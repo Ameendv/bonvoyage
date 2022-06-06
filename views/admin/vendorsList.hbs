@@ -1,158 +1,142 @@
-<div class="col-lg-10 ms-auto pt-5">
-  <table id="example" class="table text-white" style="width:100%">
-    <thead class="text-warning">
+<div class="col-lg-10 ms-auto mt-3 pt-5">
+  <table id="example" class="table text-dark" style="width:100%">
+    <thead class="text-secondary">
       <tr>
         <th>Name</th>
-        <th>Email</th>
+
         <th>Details</th>
         <th>Id</th>
         <th>Rooms Listed</th>
+        <th>Bookings</th>
         <th>Status</th>
         <th>Block</th>
       </tr>
     </thead>
     <tbody>
       {{#each vendors}}
-        <tr>
-          <td>{{this.name}}</td>
-          <td>{{this.email}}</td>
-          <td><button
-              type="button"
-              class="btn btn-primary"
-              data-toggle="modal"
-              data-target="#exampleModal{{this._id}}"
-            >
-              View Details
-            </button>
+      <tr>
+        <td>{{this.name}}</td>
 
-            <!-- Modal -->
-            <div
-              class="modal fade"
-              id="exampleModal{{this._id}}"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body1 d-flex justify-content-center">
-                    <div class="card" style="width: 18rem;">
-                      <ul class="list-group list-group-flus">
-                        <li
-                          class="list-group-item bg-primary"
-                        >Country:{{this.country}}</li>
-                        <li
-                          class="list-group-item bg-primary"
-                        >State:{{this.state}}</li>
-                        <li
-                          class="list-group-item bg-primary"
-                        >District:{{this.district}}</li>
-                        <li
-                          class="list-group-item bg-primary"
-                        >Contact:{{this.number}}</li>
-                      </ul>
-                    </div>
+        <td><button type="button" class="btn btn-outline-dark" data-toggle="modal"
+            data-target="#exampleModal{{this._id}}">
+            View Details
+          </button>
 
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body1 d-flex justify-content-center">
+                  <div class="card" style="width: 18rem;">
+                    <ul class="list-group list-group-flus">
+                      <li class="list-group-item ">Email:{{this.email}}</li>
+                      <li class="list-group-item ">Number:{{this.number}}</li>
+                      <li class="list-group-item ">Country:{{this.country}}</li>
+                      <li class="list-group-item ">State:{{this.state}}</li>
+                      <li class="list-group-item ">District:{{this.district}}</li>
+                      <li class="list-group-item ">Contact:{{this.number}}</li>
+                    </ul>
                   </div>
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-dismiss="modal"
-                    >Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                  </div>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
               </div>
             </div>
-          </td>
-          <td>
-            <!-- Button trigger modal -->
-            <!-- Button trigger modal -->
-            <button
-              type="button"
-              class="btn btn-primary"
-              data-toggle="modal"
-              data-target="#exampleModal1{{this._id}}"
-            >
-              View Id
-            </button>
+          </div>
+        </td>
+        <td>
+          <!-- Button trigger modal -->
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-outline-dark" data-toggle="modal"
+            data-target="#exampleModal1{{this._id}}">
+            View Id
+          </button>
 
-            <!-- Modal -->
-            <div
-              class="modal fade"
-              id="exampleModal1{{this._id}}"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body1">
-                    <img src="data:{{this.idProof.contentType}};base64,{{this.idProof.imageBase64}}" />
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal1{{this._id}}" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body1">
+                  <img src="data:{{this.idProof.contentType}};base64,{{this.idProof.imageBase64}}" />
 
-                  </div>
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-dismiss="modal"
-                    >Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
               </div>
             </div>
-          </td>
-          <td><a href="/admin/roomsList?id={{this._id}}"><button
-                type="button"
-                class="btn btn-success"
-              >View Rooms</button></a></td>
-          <td>
-            <div class="dropdown">
-              <button
-                class="btn btn-warning dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton1"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Pending
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item bg-success" href="#">Accept</a></li>
-                <li><a class="dropdown-item bg-danger" href="#">Reject</a></li>
+          </div>
+        </td>
+        <td><a href="/admin/roomsList?id={{this._id}}"><button type="button" class="btn btn-outline-success">View
+              Rooms</button></a></td>
+        <td> <a href="/admin/viewBookings?id={{this._id}}"><button class="btn btn-outline-dark" >View Bookings</button></a></td>
+        <td>
 
-              </ul>
-            </div>
+          <div class="dropdown">
+            {{#if this.accepted}}
+            <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton1"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Accepted
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 
-          </td>
-          <td><button type="button" class="btn btn-danger">Block</button></td>
-        </tr>
+              <li><button class=" dropdown-item bg-danger " onclick="rejectVendor('{{this._id}}')">Reject</button></li>
+
+            </ul>
+            {{else}}
+            {{#if this.rejected}}
+            <button class="btn btn-outline-danger dropdown-toggle" type="button" id="dropdownMenuButton1"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Rejected
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><button class=" dropdown-item bg-success " onclick="acceptVendor('{{this._id}}')">Accept</button></li>
+
+
+            </ul>
+            {{else}}
+            <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton1"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Pending
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><button class=" dropdown-item bg-success " onclick="acceptVendor('{{this._id}}')">Accept</button></li>
+              <li><button class=" dropdown-item bg-danger text-white"
+                  onclick="rejectVendor('{{this._id}}')">Reject</button></li>
+
+            </ul>
+            {{/if}}
+            {{/if}}
+
+          </div>
+
+        </td>
+
+        <td>{{#if this.isBlocked}}
+          <button type="button" class="btn btn-success" onclick="unBlockVendor('{{this._id}}')">Unblock</button>
+          {{else}}
+          <button type="button" class="btn btn-danger" onclick="blockVendor('{{this._id}}')">Block</button>
+          {{/if}}
+        </td>
+      </tr>
       {{/each}}
 
     </tbody>

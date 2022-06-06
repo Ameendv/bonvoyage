@@ -46,6 +46,18 @@ router.post("/login", (req, res) => {
 
 router.get("/vendorsList", verifyLogin, (req, res) => {
   adminHelpers.getVendors().then((vendors) => {
+
+    for (const x in vendors) {
+      if (vendors[x].isApproved == true) {
+        vendors[x].accepted = true
+      }
+      else if (vendors[x].isApproved == "rejected") {
+        vendors[x].rejected = true
+      } else {
+        vendors[x].pending = true
+      }
+    }
+
     res.render("admin/vendorsList", { admin, vendors });
   });
 });
@@ -73,6 +85,47 @@ router.get("/unblock/:id", (req, res) => {
     res.json(status);
   });
 });
+
+router.post('/acceptVendor', (req, res) => {
+  adminHelpers.acceptVendor(req.body.hotelId).then((status) => {
+    res.json({ status: true })
+
+  }).catch((error) => {
+    console.log(error)
+  })
+})
+
+router.post('/rejectVendor', (req, res) => {
+  adminHelpers.rejectVendor(req.body.hotelId).then((status) => {
+    res.json({ status: true })
+  }).catch((error) => {
+    console.log(error)
+  })
+})
+
+router.post('/blockVendor',(req,res)=>{
+  adminHelpers.blockVendor(req.body.hotelId).then((status)=>{
+    
+      res.json({status:true})
+    
+  }).catch((error)=>{
+    console.log(error)
+  })
+})
+
+router.post('/unBlockVendor',(req,res)=>{
+  adminHelpers.unBlockVendor(req.body.hotelId).then((status)=>{
+    
+      res.json({status:true})
+    
+  }).catch((error)=>{
+    console.log(error)
+  })
+})
+
+router.get('/viewBookings',(req,res)=>{
+  console.log(req.query.id);
+})
 
 router.get("/logout", (req, res) => {
   req.session.adminLog = false;

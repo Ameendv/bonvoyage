@@ -90,8 +90,8 @@ $(".inputs").keyup(function () {
 const option = document.getElementsByName("yesno");
 
 function confirmOrder(Mode) {
-  console.log(Mode[0].value,Mode[1].value)
-  for (let i = 0,length = Mode; i < length; i++) {
+  console.log(Mode[0].value, Mode[1].value)
+  for (let i = 0, length = Mode; i < length; i++) {
     if (Mode[i].checked) {
       console.log(Mode[i].value);
       var paymentMode = Mode[i].value;
@@ -219,3 +219,59 @@ function cancelBooking(bookingId) {
     });
   }
 }
+
+function acceptVendor(hotelId) {
+
+  $.ajax({
+    url: "/admin/acceptVendor",
+    method:'post',
+    data:{hotelId},
+    success:(response)=>{
+      if(response){
+        alert('Vendor request accepted')
+        location.reload()
+      }
+    }
+  })
+}
+
+function rejectVendor(hotelId){
+  $.ajax({
+    url:'/admin/rejectVendor',
+    data:{hotelId},
+    method:'post',
+    success:(response)=>{
+      if(response.status){
+        location.reload()
+      }
+    }
+  })
+}
+
+function blockVendor(hotelId){
+  $.ajax({
+    url:'/admin/blockVendor',
+    data:{hotelId},
+    method:'post',
+    success:(response)=>{
+      if(response.status){
+        location.reload()
+      }
+    }
+  })
+}
+
+function unBlockVendor(hotelId){
+  $.ajax({
+    url:'/admin/unBlockVendor',
+    data:{hotelId},
+    method:'post',
+    success:(response)=>{
+      if(response.status){
+        location.reload()
+      }
+    }
+  })
+}
+
+
