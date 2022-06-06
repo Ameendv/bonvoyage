@@ -1,9 +1,7 @@
 const express = require('express');
 const userHelpers = require('../helpers/user-helpers');
-
 const router = express.Router();
 const vendorHelpers = require('../helpers/vendor-helpers');
-
 const store = require('../middleware/multer');
 const fs = require('fs');
 
@@ -114,7 +112,7 @@ router.get('/addRooms', (req, res) => {
   req.session.added = false;
 });
 
-router.post('/addrooms', store.array("file"),(req, res) => {
+router.post('/addrooms', store.array('file'), (req, res) => {
   const roomData = {
     price: parseInt(req.body.price),
     category: req.body.category,
@@ -140,47 +138,35 @@ router.post('/addrooms', store.array("file"),(req, res) => {
   }
 
   vendorHelpers.addRooms(roomData, req.session.vendor.id).then((data) => {
-
-
     const { files } = req;
-    
+console.log(files,"vendor");
+    // if (!files) {
+    //   const error = new Error('Please select file');
+    //   error.httpStatusCode = 400;
+    //   return next(error);
+    // }
+    // const imgArray = files.map((file) => {
+    //   const img = fs.readFileSync(file.path);
 
-    if (!files) {
-      const error = new Error('Please select file');
-      error.httpStatusCode = 400;
-      return next(error);
-    }
-    const imgArray = files.map((file) => {
-      const img = fs.readFileSync(file.path);
+    //   return encode_image = img.toString('base64');
+    // });
 
-      return encode_image = img.toString('base64');
-    });
+    // const finalImg = [];
+    // imgArray.map((src, index) => {
+    //   const result = finalImg.push({
+    //     filename: files[index].originalname,
+    //     contentType: files[index].mimetype,
+    //     imageBase64: src,
+    //   });
+    // });
 
-let finalImg=[]
-    imgArray.map((src, index) => {
-       const result = finalImg.push({
-        filename: files[index].originalname,
-        contentType: files[index].mimetype,
-        imageBase64: src,
-      });
-    });
-      
-      
-      vendorHelpers.roomUpload(data.roomId, finalImg).then((status) => {
-        
-        res.redirect('/vendor');
-      }).catch((error=>{
-        console.log(error)
-      }))
-     
-    
+    // vendorHelpers.roomUpload(data.roomId, finalImg).then((status) => {
+    //   res.redirect('/vendor');
+    // }).catch(((error) => {
+    //   console.log(error);
+    // }));
 
-
-
-   
-    req.session.roomId = data.roomId;
-
-   
+    // req.session.roomId = data.roomId;
   });
 });
 
@@ -194,7 +180,8 @@ router.get('/editRooms', (req, res) => {
   });
 });
 
-router.post('/editRooms', store.array("file"), (req, res) => {
+
+router.post('/editRooms', store.array('file'), (req, res) => {
   const roomData = {
     price: parseInt(req.body.price),
     category: req.body.category,
@@ -220,7 +207,6 @@ router.post('/editRooms', store.array("file"), (req, res) => {
 
   vendorHelpers.updateRoom(roomData, req.query.id).then(() => {
     const { files } = req;
-    
 
     if (!files) {
       const error = new Error('Please select file');
@@ -233,18 +219,18 @@ router.post('/editRooms', store.array("file"), (req, res) => {
       return encode_image = img.toString('base64');
     });
 
-let finalImg=[]
+    const finalImg = [];
     imgArray.map((src, index) => {
-       const result = finalImg.push({
+      const result = finalImg.push({
         filename: files[index].originalname,
         contentType: files[index].mimetype,
         imageBase64: src,
       });
     });
-    vendorHelpers.editRoomImage(req.query.id,finalImg).then((status)=>{
+    vendorHelpers.editRoomImage(req.query.id, finalImg).then((status) => {
       req.session.edited = true;
-            res.redirect('/vendor/editRooms');
-    })
+      res.redirect('/vendor/editRooms');
+    });
   });
 });
 

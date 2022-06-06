@@ -1,13 +1,17 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
+const fileUpload=require('express-fileupload')
+
 
 const router = express.Router();
-require('dotenv').config()
+require('dotenv').config();
+
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 
 const client = require('twilio')(accountSid, authToken);
 const userHelpers = require('../helpers/user-helpers');
+const { application } = require('express');
 
 const verifyLogin = (req, res, next) => {
   if (req.session.loggedIn) {
@@ -45,9 +49,10 @@ router.post('/otpCheck', (req, res) => {
   client.verify
     .services('VA4a705f250cfb012f021b653b34f9252f')
     .verifications.create({ to: number, channel: 'sms' })
-    .then(() => res.render('users/otpVerify', { number: req.body.number })).catch((err) => {
+    .then(() => res.render('users/otpVerify', { number: req.body.number }))
+    .catch((err) => {
       if (err) {
-        res.send("Network Issue please try again later")
+        res.send('Network Issue please try again later');
       }
     });
 });
@@ -165,6 +170,7 @@ router.get('/bookNow', (req, res) => {
   const roomId = req.query.id;
 
   userHelpers.getRoomDetails(roomId).then((roomDetails) => {
+   
     try {
       const { price } = req.session.roomDetails[0].rooms; // GETTING PRICE OF ROOM
       const rooms = req.session.searchDetails.room; // NUMBER ROOMS
@@ -172,8 +178,7 @@ router.get('/bookNow', (req, res) => {
       req.session.searchDetails.discount = 0;
       req.session.searchDetails.amount = price * rooms * days;
       req.session.searchDetails.total = price * rooms * days - req.session.searchDetails.discount;
-    }
-    catch (err) {
+    } catch (err) {
       console.log(err);
     }
 
@@ -186,7 +191,6 @@ router.get('/bookNow', (req, res) => {
       details: req.session.user,
     });
   });
-
 });
 
 router.post('/confirmBook', (req, res) => {
@@ -216,7 +220,6 @@ router.post('/confirmBook', (req, res) => {
     .doBookings(bookingDetails, req.session.user._id)
     .then((status) => {
       if (status) {
-
         if (req.body.paymentMode === 'hotel') {
           res.json({});
         } else {
@@ -230,7 +233,6 @@ router.post('/confirmBook', (req, res) => {
               res.json({ response, check: true, user: req.session.user });
             });
         }
-        ;
       }
     });
 });
@@ -300,7 +302,7 @@ router.post('/updateProfile', (req, res) => {
     res.json({ data: true });
   });
 });
-
+router.use(fileUpload());
 router.post('/uploadId/:id', (req, res) => {
   const image1 = req.files;
 
@@ -342,30 +344,27 @@ router.get('/viewBookings', (req, res) => {
         booking[x].checkedOut = true;
       } else if (now <= checkIn && now <= checkOut) {
         if (booking[x].bookingStatus === 'cancelled') {
-          booking[x].cancelled = true
+          booking[x].cancelled = true;
         } else {
           booking[x].canCancel = true;
         }
-
       }
     }
-    console.log(booking, "booking", req.session.user, "details");
+    console.log(booking, 'booking', req.session.user, 'details');
     res.render('users/viewBookings', {
-      booking, viewbookings: true, user: req.session.loggedIn,
+      booking,
+      viewbookings: true,
+      user: req.session.loggedIn,
       details: req.session.user,
     });
   });
 });
 
-
 router.post('/cancelBooking', (req, res) => {
-
   userHelpers.cancelBooking(req.body.bookingId).then(() => {
-    res.json({status:true})
-  })
-})
-
-
+    res.json({ status: true });
+  });
+});
 
 router.get('/logout', (req, res) => {
   req.session.loggedIn = false;

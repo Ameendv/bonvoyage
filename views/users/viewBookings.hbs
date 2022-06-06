@@ -1,179 +1,126 @@
+<div
+  class="container d-flex justify-content-center col-xs-12 col-md-8 bg-warning mt-5"
+>
+  <div class="row flex-fill">
 
-<div class="container d-flex justify-content-center col-xs-12 col-md-8 bg-warning mt-5 ">
-    <div class="row flex-fill ">
-        <div class="">
-            <div class="card card-white mb-5 mt-3">
-                <div class="card-heading clearfix border-bottom mb-4 d-flex justify-content-center">
-                    <h4 class="card-title">Booking History</h4>
+    <div class="card card-white mb-5 mt-3">
+      <div
+        class="card-heading clearfix border-bottom mb-4 d-flex justify-content-center"
+      >
+        <h4 class="card-title">Booking History</h4>
+      </div>
+      {{#each booking}}
+        <div class="card-body border mt-5 bg-light">
+          <ul class="list-unstyled">
+            <li class="position-relative booking">
+              <div class="media">
+
+                <div class="media-body">
+                  <span class="d-flex justify-content-center">
+                    <h3 class="mb-4">{{this.hotelName}}</h3>
+                  </span>
+
+                  <div class="mb-3">
+                    <span
+                      class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0"
+                    >Booking Date:</span>
+                    <span class="bg-light-blue">{{this.bookingDate}}</span>
+                  </div>
+                  <div class="mb-3">
+                    <span
+                      class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0"
+                    >Check In</span>
+                    <span class="bg-light-blue">{{this.checkIn}}</span>
+                    <span
+                      class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0"
+                    >Check Out</span>
+                    <span class="bg-light-blue">{{this.checkOut}}</span>
+                  </div>
+                  <div class="mb-3">
+                    <span
+                      class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0"
+                    >Rooms:</span>
+                    <span class="bg-light-blue">{{this.roomCount}} Room</span>
+                    <span
+                      class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0"
+                    >Guests:</span>
+                    <span class="bg-light-blue">{{this.guests}} Guests</span>
+
+                  </div>
+                  <div class="mb-3">
+                    <span
+                      class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0"
+                    >Category:</span>
+                    <span class="bg-light-blue">{{this.category}}</span>
+                  </div>
+
+                  <div class="mb-3 d-flex justify-content-between">
+                    <span>
+                      <span
+                        class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0"
+                      >Price:</span>
+                      <span
+                        class="bg-light-blue"
+                      >₹{{this.billAmt}}</span></span>
+                    <span><span class="badge badge-primary mx-3">Payment Status</span>{{#if
+                        this.paymentId
+                      }}<span
+                          class="badge badge-danger"
+                          id="payment"
+                          style="color: green;"
+                        >Paid</span>{{else}}<span
+                          class="badge badge-danger"
+                          style="color: red;"
+                        >Pending</span>{{/if}}</span>
+                  </div>
+
                 </div>
-                {{#each booking}}
-                <div class="card-body border mt-5 bg-light">
-                    <ul class="list-unstyled">
-                        <li class="position-relative booking">
-                            <div class="media">
+              </div>
+              <div class="buttons-to-right">
+                {{#if this.isActive}}
+                  <button class="btn btn-success" disabled>Active</button>
+                {{else}}
+                  {{#if this.cancelled}}
+                    <button class="btn btn-success" disabled>Cancelled</button>
+                  {{else}}
+                    {{#if this.canCancel}}
+                      <button
+                        class="btn btn-danger"
+                        onclick="cancelBooking('{{this.bookingId}}')"
+                      >Cancel Booking</button>
+                    {{else}}
+                      <button class="btn btn-primary" disabled>Checked Out</button>
+                    {{/if}}
+                  {{/if}}
+                {{/if}}
+              </div>
+            </li>
 
-                                <div class="media-body">
-                                    <span class="d-flex justify-content-center">
-                                        <h3 class="mb-4">{{this.hotelName}}</h3>
-                                    </span>
+          </ul>
 
-                                    <div class="mb-3">
-                                        <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Booking
-                                            Date:</span>
-                                        <span class="bg-light-blue">{{this.bookingDate}}</span>
-                                    </div>
-                                    <div class="mb-3">
-                                        <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Check In</span>
-                                        <span class="bg-light-blue">{{this.checkIn}}</span>
-                                        <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Check Out</span>
-                                        <span class="bg-light-blue">{{this.checkOut}}</span>
-                                    </div>
-                                    <div class="mb-3">
-                                        <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Rooms:</span>
-                                        <span class="bg-light-blue">{{this.roomCount}} Room</span>
-                                        <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Guests:</span>
-                                        <span class="bg-light-blue">{{this.guests}} Guests</span>
-
-                                    </div>
-                                    <div class="mb-3">
-                                        <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Category:</span>
-                                        <span class="bg-light-blue">{{this.category}}</span>
-                                    </div>
-
-                                    <div class="mb-3 d-flex justify-content-between">
-                                        <span> <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Price:</span>
-                                            <span class="bg-light-blue">₹{{this.billAmt}}</span></span>
-                                        <span><span class="badge badge-primary mx-3">Payment
-                                                Status</span>{{#if
-                                                this.paymentId}}<span class="badge badge-danger" id="payment" style="color: green;">Paid</span>{{else}}<span class="badge badge-danger" style="color: red;">Pending</span>{{/if}}</span>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="buttons-to-right">
-                                {{#if this.isActive}}
-                                <button class="btn btn-success" disabled>Active</button>
-                                {{else}}
-                                {{#if this.cancelled}}
-                                <button class="btn btn-success" disabled>Cancelled</button>
-                                {{else}}
-                                {{#if this.canCancel}}
-                                <button class="btn btn-danger" onclick="cancelBooking('{{this.bookingId}}')">Cancel Booking</button>
-                                {{else}}
-                                <button class="btn btn-primary" disabled>Checked Out</button>
-                                {{/if}}
-                                {{/if}}
-                                {{/if}}
-                            </div>
-                        </li>
-
-
-                    </ul>
-
-                </div>
-                {{/each}}
-            </div>
-            <style>
-                body{
-    background: #f6f9fc;
-    margin-top:20px;}
-/* booking */
-
-.bg-light-blue {
-    background-color: #e9f7fe !important;
-    color: #3184ae;
-    padding: 7px 18px;
-    border-radius: 4px;
-}
-
-.bg-light-green {
-    background-color: rgba(40, 167, 69, 0.2) !important;
-    padding: 7px 18px;
-    border-radius: 4px;
-    color: #28a745 !important;
-}
-
-.buttons-to-right {
-    position: absolute;
-    right: 0;
-    top: 40%;
-}
-
-.btn-gray {
-    color: #666;
-    background-color: #eee;
-    padding: 7px 18px;
-    border-radius: 4px;
-}
-
-.booking:hover .buttons-to-right .btn-gray {
-    opacity: 1;
-    transition: .3s;
-}
-
-.buttons-to-right .btn-gray {
-    opacity: 0;
-    transition: .3s;
-}
-
-.btn-gray:hover {
-    background-color: #36a3f5;
-    color: #fff;
-}
-
-.booking {
-    margin-bottom: 30px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 30px;
-}
-
-.booking:last-child {
-    margin-bottom: 0px;
-    border-bottom: none;
-    padding-bottom: 0px;
-}
-
-@media screen and (max-width: 575px) {
-    .buttons-to-right {
-        top: 10%;
-    }
-    .buttons-to-right a {
-        display: block;
-        margin-bottom: 20px;
-    }
-    .buttons-to-right a:last-child {
-        margin-bottom: 0px;
-    }
-    .bg-light-blue,
-    .bg-light-green,
-    .btn-gray {
-        padding: 7px;
-    }
-}
-
-.card {
-    margin-bottom: 20px;
-    background-color: #fff;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-    border-radius: 4px;
-    box-shadow: none;
-    border: none;
-    padding: 25px;
-}
-.mb-5, .my-5 {
-    margin-bottom: 3rem!important;
-}
-.msg-img {
-    margin-right: 20px;
-}
-.msg-img img {
-    width: 60px;
-    border-radius: 50%;
-}
-img {
-    max-width: 100%;
-    height: auto;
-}
-            </style>
+        </div>
+      {{/each}}
+    </div>
+  </div></div>
+<style>
+  body{ background: #f6f9fc; margin-top:20px;} /* booking */ .bg-light-blue {
+  background-color: #e9f7fe !important; color: #3184ae; padding: 7px 18px;
+  border-radius: 4px; } .bg-light-green { background-color: rgba(40, 167, 69,
+  0.2) !important; padding: 7px 18px; border-radius: 4px; color: #28a745
+  !important; } .buttons-to-right { position: absolute; right: 0; top: 40%; }
+  .btn-gray { color: #666; background-color: #eee; padding: 7px 18px;
+  border-radius: 4px; } .booking:hover .buttons-to-right .btn-gray { opacity: 1;
+  transition: .3s; } .buttons-to-right .btn-gray { opacity: 0; transition: .3s;
+  } .btn-gray:hover { background-color: #36a3f5; color: #fff; } .booking {
+  margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 30px; }
+  .booking:last-child { margin-bottom: 0px; border-bottom: none; padding-bottom:
+  0px; } @media screen and (max-width: 575px) { .buttons-to-right { top: 10%; }
+  .buttons-to-right a { display: block; margin-bottom: 20px; } .buttons-to-right
+  a:last-child { margin-bottom: 0px; } .bg-light-blue, .bg-light-green,
+  .btn-gray { padding: 7px; } } .card { margin-bottom: 20px; background-color:
+  #fff; border-radius: 4px; -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); border-radius: 4px; box-shadow:
+  none; border: none; padding: 25px; } .mb-5, .my-5 { margin-bottom:
+  3rem!important; } .msg-img { margin-right: 20px; } .msg-img img { width: 60px;
+  border-radius: 50%; } img { max-width: 100%; height: auto; }
+</style>
