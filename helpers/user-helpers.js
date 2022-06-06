@@ -68,8 +68,7 @@ module.exports = {
       const locations = await db
         .get()
         .collection(collection.VENDOR_COLLECTION)
-        .find({}, { _id: 0, district: 1 })
-        .toArray();
+        .aggregate([{ $unwind: "$rooms" }, { $match: { 'rooms.qty': { $gte: 1 } } }, { $group: { _id: "$district" } }]).toArray()
       resolve(locations);
     }),
   getRooms: (searchDatas) =>

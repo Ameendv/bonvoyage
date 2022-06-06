@@ -26,7 +26,12 @@ const verifyLogin = (req, res, next) => {
 /* GET users listing. */
 router.get('/', (req, res) => {
   userHelpers.getLocation().then((locations) => {
-    req.session.locations = locations;
+    let location=[]
+    for(const x in locations){
+      location[x]=locations[x]._id
+    }
+    console.log(location);
+    req.session.locations = location;
     res.render('index', {
       roomSelecter: true,
       user: req.session.loggedIn,
