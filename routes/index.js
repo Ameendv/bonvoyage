@@ -162,7 +162,7 @@ router.get('/roomDetails', (req, res) => {
 
     res.render('users/roomDetails', {
       user: req.session.loggedIn,
-      userName: req.session.userName,
+      userName: req.session.userName, 
       roomDetails: req.session.roomDetails,
       searchbar: true,
       searchDetails: req.session.searchDetails,
@@ -177,14 +177,18 @@ router.get('/bookNow', (req, res) => {
   const roomId = req.query.id;
 
   userHelpers.getRoomDetails(roomId).then((roomDetails) => {
+    console.log(roomDetails);
    
     try {
-      const { price } = req.session.roomDetails[0].rooms; // GETTING PRICE OF ROOM
+      const discPrice=req.session.roomDetails[0].rooms.actualPrice-req.session.roomDetails[0].rooms.price;
+      
+      const { actualPrice } = req.session.roomDetails[0].rooms; // GETTING PRICE OF ROOM
       const rooms = req.session.searchDetails.room; // NUMBER ROOMS
       const { days } = req.session.searchDetails; // NUMBER OF days
-      req.session.searchDetails.discount = 0;
-      req.session.searchDetails.amount = price * rooms * days;
-      req.session.searchDetails.total = price * rooms * days - req.session.searchDetails.discount;
+      req.session.searchDetails.savedPrice=discPrice*rooms*days
+      req.session.searchDetails.amount = actualPrice * rooms * days;
+      req.session.searchDetails.total = actualPrice * rooms * days - req.session.searchDetails.savedPrice;
+      
     } catch (err) {
       console.log(err);
     }
@@ -196,6 +200,7 @@ router.get('/bookNow', (req, res) => {
       searchDetails: req.session.searchDetails,
       dates: req.session.dates,
       details: req.session.user,
+      searchbar: true
     });
   });
 });

@@ -108,7 +108,7 @@ module.exports = {
           },
         ])
         .toArray();
-
+ 
       resolve(room);
     }),
   doBookings: (details, userId) =>

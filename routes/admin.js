@@ -121,7 +121,7 @@ router.post('/unBlockVendor', (req, res) => {
 
   }).catch((error) => {
     console.log(error)
-  })
+  }) 
 })
 
 router.get('/viewBookings', (req, res) => {
@@ -146,6 +146,38 @@ router.get('/viewBookings', (req, res) => {
     console.log(error);
   })
 })
+
+router.get('/viewUserBooking',(req,res)=>{
+  console.log(req.session.booking);
+  res.render('admin/viewUserBookings',{  booking:req.session.booking,
+    
+    admin})
+})
+
+router.get('/viewUserBookings', (req, res) => {
+  userHelpers.getBookings(req.query.userId).then((bookings) => {
+    const booking = bookings.bookings;
+
+    for (const x in booking) {
+      checkIn = new Date(booking[x].checkIn).setHours(0, 0, 0, 0);
+      checkOut = new Date(booking[x].checkOut).setHours(0, 0, 0, 0);
+      const now = new Date().setHours(0, 0, 0, 0);
+      if (now >= checkIn && now <= checkOut) {
+        booking[x].isActive = true;
+      } else if (now >= checkOut) {
+        booking[x].checkedOut = true;
+      } else if (now <= checkIn && now <= checkOut) {
+        if (booking[x].bookingStatus === 'cancelled') {
+          booking[x].cancelled = true;
+        } else {
+          booking[x].canCancel = true;
+        }
+      }
+    }
+   req.session.booking=booking
+    res.json(true)
+  });
+});
 
 router.get("/logout", (req, res) => {
   req.session.adminLog = false;

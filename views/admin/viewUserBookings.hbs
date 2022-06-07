@@ -1,0 +1,67 @@
+<div class="col-lg-10 ms-auto pt-5 mt-3 bg-light">
+    <table border="0" cellspacing="5" cellpadding="5">
+        <tbody>
+            <tr>
+                <td>From:</td>
+                <td><input type="text" id="min" name="min" placeholder="Please select a date"></td>
+
+                <td>To:</td>
+                <td><input type="text" id="max" name="max" placeholder="Please select a date"></td>
+
+            </tr>
+        </tbody>
+    </table>
+
+
+    <table id="example" class="table text-dark bg-light">
+        <thead class="" style="color: #750404;">
+            <tr>
+                <th>Hotel</th>
+                <th>Booking date</th>
+                <th>Category</th>
+                <th>check In</th>
+                <th>Check out</th>
+                <th>Bill Amount</th>
+                <th>Payment Status</th>
+                <th>status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each booking}}
+            <tr class="mt-2">
+                <td>{{this.bookingDate}}</td>
+                <td>{{this.hotelName}}</td>
+                <td>{{this.category}}</td>
+                <td>{{this.checkIn}}</td>
+                <td>{{this.checkOut}}</td>
+                <td>{{this.billAmt}}</td>
+                <td>{{this.bookingStatus}}</td>
+                <td>{{#if this.isActive}}
+                    <button class="badge badge-success text-sm" disabled>Active</button>
+                    {{else}}
+
+                    {{#if this.booking.cancelled}}
+                    <button class="badge badge-primary text-sm" disabled>Cancelled</button>
+                    {{else}}
+                    {{#if this.booking.checkedOut}}
+                    Checked out
+
+                    {{/if}}
+                    {{/if}}
+                    {{/if}}
+                </td>
+            </tr>
+            {{/each}}
+
+
+
+        </tbody>
+
+    </table>
+</div>
+
+<script>
+
+
+
+</script>

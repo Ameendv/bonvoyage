@@ -1,12 +1,12 @@
-<div class="col-lg-10 ms-auto pt-5">
-  <table id="example" class="table text-white" style="width:100%">
+<div class="col-lg-10 ms-auto pt-5 mt-4">
+  <table id="example" class="table text-dark" style="width:100%">
     <thead class="text-warning">
       <tr>
         <th>Name</th>
         <th>Email</th>
         <th>Contact</th>
-        <th>Id</th>
-        <th>Delete</th>
+
+        <th>Bookings</th>
         <th>Block/Unblock</th>
       </tr>
     </thead>
@@ -17,21 +17,27 @@
         <td>{{this.email}}</td>
         <td>{{this.number}}
         </td>
-        <td>
-          <!-- Button trigger modal -->
-          <!-- Button trigger modal -->
 
-        </td>
-        <td><button type="button" class="btn btn-danger">Delete</button></td>
         <td>
-          {{#if this.isBlocked}}<button type="button" class="btn btn-success"  onclick="unblockUser('{{this._id}}');" id="{{this._id}}">Unblock</button>
-        {{else}}  <button type="button" class="btn btn-danger"  onclick="blockUser('{{this._id}}');" id="{{this._id}}">Block</button>{{/if}}
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary"  onclick="getBookings('{{this._id}}')">
+            View
+          </button>
+
+          <!-- Modal -->
           
+        </td>
+        <td>
+          {{#if this.isBlocked}}<button type="button" class="btn btn-success" onclick="unblockUser('{{this._id}}');"
+            id="{{this._id}}">Unblock</button>
+          {{else}} <button type="button" class="btn btn-danger" onclick="blockUser('{{this._id}}');"
+            id="{{this._id}}">Block</button>{{/if}}
+
         </td>
       </tr>
       {{/each}}
 
-                                    </li>
+      </li>
 
     </tbody>
     {{!-- <tfoot class="text-warning">
@@ -47,9 +53,3 @@
     </tfoot> --}}
   </table>
 </div>
-
-<script>
-
-
-
-</script>

@@ -1,0 +1,96 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+    integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<script src="https://www.gstatic.com/charts/loader.js">
+</script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+
+<div class="col-lg-10 ms-auto pt-5 mt-3 d-flex flew-row justify-content-around" style="background-color: #FFE8D2;">
+    <div class="card ms-2 bg-light  " style="width: 13rem;height: 7rem;">
+        <div class="card-body" >
+            <h5 class="card-title">Total Sales </h5>
+            <h6 class="card-subtitle mb-2 text-muted">32000/-</h6>
+
+        </div>
+
+    </div>
+     <div class="card ms-2 bg-light" style="width: 13rem;height: 7rem;">
+        <div class="card-body">
+            <h5 class="card-title">Total rooms</h5>
+            <h6 class="card-subtitle mb-2 text-muted">12</h6>
+
+        </div>
+
+    </div>
+     <div class="card ms-2 bg-light" style="width: 13rem;height: 7rem;">
+        <div class="card-body">
+            <h5 class="card-title">Bookings</h5>
+            <h6 class="card-subtitle mb-2 text-muted">10</h6>
+
+        </div>
+
+    </div>
+     <div class="card ms-2 bg-light" style="width: 13rem;height: 7rem;">
+        <div class="card-body">
+            <h5 class="card-title">Reservations</h5>
+            <h6 class="card-subtitle mb-2 text-muted">3</h6>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+<div class="col-lg-10 ms-auto pt-5  d-flex flew-row" style="background-color: #FFE8D2;height: 100%;">
+
+    <div class="col-lg-5 me-auto pt-5 mt-3" style="background-color: #ffe8d2;height: 100%;">
+        <div id="myChart" style="max-width:700px; height:400px;"></div>
+    </div>
+    <div class="col-lg-5 me-auto pt-5 mt-3" style="background-color: #ffe8d2;height: 100%;">
+        <div id="myPlot" style="max-width:700px; height:400px"></div>
+    </div>
+
+
+</div>
+<script>
+    google.charts.load('current', { packages: ['corechart'] });
+
+    google.charts.setOnLoadCallback(drawChart);
+
+    var xArray = ["Italy", "France", "Spain", "USA", "Argentina"];
+    var yArray = [55, 49, 44, 24, 15];
+
+    var data = [{
+        x: xArray,
+        y: yArray,
+        type: "bar"
+    }];
+
+    var layout = { title: "World Wide Wine Production" };
+
+    Plotly.newPlot("myPlot", data, layout);
+
+
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Contry', 'Mhl'],
+            ['Italy', 54.8],
+            ['France', 48.6],
+            ['Spain', 44.4],
+            ['USA', 23.9],
+            ['Argentina', 14.5]
+        ]);
+
+        var options = {
+            title: 'World Wide Wine Production'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('myChart'));
+        chart.draw(data, options);
+    }
+</script>

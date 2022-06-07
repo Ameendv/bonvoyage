@@ -288,6 +288,10 @@ router.get('/cancellation', (req, res) => {
   });
 });
 
+router.get('/sales',(req,res)=>{
+  res.render('vendors/sales',{vendor: req.session.vendor})
+})
+
 router.get('/logout', (req, res) => {
   req.session.vendorLogged = false;
   res.redirect('/vendor');

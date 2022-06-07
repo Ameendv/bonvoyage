@@ -19,10 +19,7 @@ function blockUser(userId) {
     success: (response) => {
       if (response) {
         $(`#${userId}`)
-          .html("unblock")
-          .addClass("btn-success")
-          .removeClass("btn-danger ")
-          .attr("onclick", `unblockUser('${param1}')`);
+          location.reload()
       }
     },
   });
@@ -35,9 +32,7 @@ function unblockUser(userId) {
     success: (response) => {
       if (response) {
         $(`#${userId}`)
-          .html("Block")
-          .addClass("btn-danger")
-          .removeClass("btn-success ");
+          location.reload()
 
         $;
       }
@@ -262,6 +257,17 @@ function unBlockVendor(hotelId) {
         location.reload()
       }
     }
+  })
+}
+
+function getBookings(userId){
+  $.ajax({
+    url:'/admin/viewUserBookings',
+    method:'get',
+    data:{userId},
+    success:((response)=>{
+      location.href='/admin/viewUserBooking'
+    })
   })
 }
 
