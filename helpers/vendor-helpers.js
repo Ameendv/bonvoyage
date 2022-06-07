@@ -62,12 +62,12 @@ module.exports = {
             response.logged = true;
             response.user = vendor.name;
             response.id = vendor._id;
-            response.vendor=vendor
+            response.vendor = vendor;
 
             resolve(response);
           } else {
             response.passwordErr = true;
-            resolve(response,);
+            resolve(response);
           }
         });
       } else {
@@ -240,4 +240,38 @@ module.exports = {
         .toArray();
       resolve(cancelled);
     }),
+  getSales: (hotelId) => {
+    return new Promise(async (resolve, reject) => {
+      const sales = await db
+        .get()
+        .collection(collection.USER_COLLECTION)
+        .aggregate([
+          {
+            $unwind: "$bookings",
+          },
+          {
+            $match: {
+              $and: [
+                { "bookings.hotelId": ObjectId(hotelId) },
+                { "bookings.paymentMode": "online" },
+              ],
+            },
+          },
+          {
+            $group: {
+              _id: {
+                name: "$name",
+                bookingDate: "$bookings.bookingDate",
+                paymentMode:"$bookings.paymentMode",
+                category: "$bookings.category",
+                total: { $sum: "$bookings.billAmt" },
+              },
+            },
+          },
+        ])
+        .toArray();
+        console.log(sales);
+      resolve(sales);
+    });
+  },
 };

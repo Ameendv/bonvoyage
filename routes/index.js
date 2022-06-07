@@ -223,6 +223,7 @@ router.post('/confirmBook', (req, res) => {
     billAmt: req.session.searchDetails.amount,
     amountPaid: req.session.searchDetails.total,
     paymentMode: req.session.searchDetails.paymentMode,
+   
     bookingDate: new Date().toISOString().split('T')[0],
     bookingStatus: 'Payment Pending',
   };

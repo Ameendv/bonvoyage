@@ -266,3 +266,64 @@ $(document).ready(function () {
 
 
 
+//for sales
+
+var min1Date, max1Date;
+
+$(function () {
+  $("#min1").datepicker();
+});
+
+$(function () {
+  $("#max1").datepicker();
+});
+
+$('#max1').blur(function () {
+  $.fn.dataTable.ext.search.push(
+
+
+    function (settings, data, dataIndex) {
+      
+      var min1 = new Date($('#min1').val())
+      var max1 = new Date($('#max1').val())
+      var date = new Date(data[0]);
+      
+      if (
+        (min1 === null && max1 === null) ||
+        (min1 === null && date <= max1) ||
+        (min1 <= date && max1 === null) ||
+        (min1 <= date && date <= max1)
+      ) {
+        
+        return true;
+      }
+      return false;
+    }
+  );
+})
+
+
+
+
+
+$(document).ready(function () {
+  // Create date inputs
+  min1Date = new Date($('#min1'), {
+    format: 'MMMM Do YYYY'
+  });
+  max1Date = new Date($('#max1'), {
+    format: 'MMMM Do YYYY'
+  });
+
+  // DataTables initialisation
+  var table = $('#sales').DataTable({
+    order: [[3, 'asc']]
+  });
+
+  // Refilter the table
+  $('#min1, #max1').on('change', function () {
+    table.draw();
+  });
+});
+
+

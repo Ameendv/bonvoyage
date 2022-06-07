@@ -289,7 +289,11 @@ router.get('/cancellation', (req, res) => {
 });
 
 router.get('/sales',(req,res)=>{
-  res.render('vendors/sales',{vendor: req.session.vendor})
+
+  vendorHelpers.getSales(req.query.id).then((sales)=>{
+    res.render('vendors/sales',{vendor: req.session.vendor,sales})
+  })
+  
 })
 
 router.get('/logout', (req, res) => {
