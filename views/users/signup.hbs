@@ -35,7 +35,11 @@
                         </div>
                         <div class="d-grid col-12 mx-auto">
                             <button class="btn btn-warning text-dark" type="submit"><span></span> Sign up</button>
+                        </div>{{#if emailExists}}
+                        <div class="d-grid col-12 mx-auto">
+                            <p>Email already registered</p>
                         </div>
+                        {{/if}}
                         
                         <p class="text-center mt-3">Dont have an account ?
                             <a href="/login">Login</span>

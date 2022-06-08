@@ -44,9 +44,7 @@ $(document).ready(() => {
         error.insertAfter(element);
       }
     }
-    // errorPlacement:function(error,element){
-    //   element.attr("placeholder",error.text())
-    // }
+
   });
 });
 
@@ -62,6 +60,16 @@ $(document).ready(() => {
         minlength: 3,
       },
     },
+
+    errorElement: 'span',
+    errorClass: 'help-block',
+    errorPlacement: function (error, element) {
+      if (element.parent('.input-group').length) {
+        error.insertAfter(element.parent());
+      } else {
+        error.insertAfter(element);
+      }
+    }
   });
 });
 $(document).ready(() => {
@@ -119,6 +127,16 @@ $(document).ready(() => {
         required: true,
       },
     },
+
+    errorElement: 'span',
+    errorClass: 'help-block',
+    errorPlacement: function (error, element) {
+      if (element.parent('.input-group').length) {
+        error.insertAfter(element.parent());
+      } else {
+        error.insertAfter(element);
+      }
+    }
   });
 });
 
@@ -221,18 +239,18 @@ $('#max').blur(function () {
 
 
     function (settings, data, dataIndex) {
-      
+
       var min = new Date($('#min').val())
       var max = new Date($('#max').val())
       var date = new Date(data[3]);
-      
+
       if (
         (min === null && max === null) ||
         (min === null && date <= max) ||
         (min <= date && max === null) ||
         (min <= date && date <= max)
       ) {
-        
+
         return true;
       }
       return false;
@@ -283,18 +301,18 @@ $('#max1').blur(function () {
 
 
     function (settings, data, dataIndex) {
-      
+
       var min1 = new Date($('#min1').val())
       var max1 = new Date($('#max1').val())
       var date = new Date(data[0]);
-      
+
       if (
         (min1 === null && max1 === null) ||
         (min1 === null && date <= max1) ||
         (min1 <= date && max1 === null) ||
         (min1 <= date && date <= max1)
       ) {
-        
+
         return true;
       }
       return false;

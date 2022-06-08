@@ -10,10 +10,9 @@ module.exports = {
       .findOne({ name: data.name, password: Number(data.password) })
       .then((state) => {
         if (state) {
-          console.log(state, 'admin Logged');
+          
           resolve(state);
         } else {
-
           resolve(state);
         }
       });
@@ -43,7 +42,7 @@ module.exports = {
         { $unwind: '$rooms' },
       ])
       .toArray();
-    console.log(rooms);
+    
     resolve(rooms);
   }),
   doBlock: (userId) => new Promise(async (resolve, reject) => {
@@ -129,12 +128,34 @@ module.exports = {
           },
         ])
         .toArray();
-        if(bookings){
-          resolve(bookings)
-        }else{
-          reject(error)
-        }
-      
+      if (bookings) {
+        resolve(bookings);
+      } else {
+        reject(error);
+      }
+    });
+  },
+  getSales: () => {
+    return new Promise(async (resolve, reject) => {
+      const sales = await db
+        .get()
+        .collection(collection.USER_COLLECTION)
+        .aggregate([
+          { $unwind: '$bookings' },
+          { $match: { 'bookings.paymentMode': 'online' } },
+          {
+            $group: {
+              _id: {
+                date: '$bookings.bookingDate',
+                vendor: '$bookings.hotelName',
+                mode: '$bookings.paymentMode',
+              },
+              total: { $sum: '$bookings.billAmt' },
+            },
+          },
+        ])
+        .toArray();
+      resolve(sales);
     });
   },
 };

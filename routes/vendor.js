@@ -1,11 +1,10 @@
 const express = require('express');
 const userHelpers = require('../helpers/user-helpers');
+
 const router = express.Router();
 const vendorHelpers = require('../helpers/vendor-helpers');
 const store = require('../middleware/multer');
 const fs = require('fs');
-
-
 
 function imageUpload(location, id, image) {
   return new Promise(async (resolve, reject) => {
@@ -62,16 +61,12 @@ router.post('/signup', store.array('idProof'), (req, res, next) => {
         vendorHelpers.idUpload(response.id, finalImg).then((status) => {
           req.session.vendorLogged = true;
           req.session.vendor = response;
-          res.send('Please wait for admin approval')
+          res.send('Please wait for admin approval');
         });
       });
     }
-
-
   });
-
 });
-
 
 router.get('/login', (req, res) => {
   res.render('vendors/vendorSignin', {
@@ -90,15 +85,13 @@ router.post('/login', (req, res) => {
       req.session.vendorUser = response.user;
 
       req.session.vendor = response;
-      if (response.vendor.isApproved==true && response.vendor.isBlocked!=true) {
-        res.redirect('/vendor')
+      if (response.vendor.isApproved == true && response.vendor.isBlocked != true) {
+        res.redirect('/vendor');
       } else if (response.vendor.isBlocked) {
-        res.send('Please contact admin')
+        res.send('Please contact admin');
       } else {
-        res.send('please wait untill admin approve your request')
+        res.send('please wait untill admin approve your request');
       }
-
-      
     } else if (response.passwordErr) {
       req.session.passwordErr = true;
       res.redirect('/vendor/login');
@@ -174,7 +167,8 @@ router.post('/addrooms', store.array('file'), (req, res) => {
     });
 
     vendorHelpers.roomUpload(data.roomId, finalImg).then((status) => {
-      res.redirect('/vendor');
+      req.session.added=true
+      res.redirect('/vendor/addRooms');
     }).catch(((error) => {
       console.log(error);
     }));
@@ -192,7 +186,6 @@ router.get('/editRooms', (req, res) => {
     });
   });
 });
-
 
 router.post('/editRooms', store.array('file'), (req, res) => {
   const roomData = {
@@ -288,13 +281,11 @@ router.get('/cancellation', (req, res) => {
   });
 });
 
-router.get('/sales',(req,res)=>{
-
-  vendorHelpers.getSales(req.query.id).then((sales)=>{
-    res.render('vendors/sales',{vendor: req.session.vendor,sales})
-  })
-  
-})
+router.get('/sales', (req, res) => {
+  vendorHelpers.getSales(req.query.id).then((sales) => {
+    res.render('vendors/sales', { vendor: req.session.vendor, sales });
+  });
+});
 
 router.get('/logout', (req, res) => {
   req.session.vendorLogged = false;

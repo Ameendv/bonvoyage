@@ -1,8 +1,6 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
 
-
-
 const router = express.Router();
 require('dotenv').config();
 
@@ -10,10 +8,10 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 
 const client = require('twilio')(accountSid, authToken);
-const userHelpers = require('../helpers/user-helpers');
 const { application } = require('express');
-const store = require('../middleware/multer');
 const fs = require('fs');
+const userHelpers = require('../helpers/user-helpers');
+const store = require('../middleware/multer');
 
 const verifyLogin = (req, res, next) => {
   if (req.session.loggedIn) {
@@ -26,11 +24,11 @@ const verifyLogin = (req, res, next) => {
 /* GET users listing. */
 router.get('/', (req, res) => {
   userHelpers.getLocation().then((locations) => {
-    let location=[]
-    for(const x in locations){
-      location[x]=locations[x]._id
+    const location = [];
+    for (const x in locations) {
+      location[x] = locations[x]._id;
     }
-    console.log(location);
+
     req.session.locations = location;
     res.render('index', {
       roomSelecter: true,
@@ -42,7 +40,8 @@ router.get('/', (req, res) => {
 });
 
 router.get('/signup', (req, res) => {
-  res.render('users/signup');
+  res.render('users/signup', { emailExists: req.session.emailExists });
+  req.session.emailExists = false;
 });
 
 router.post('/otpCheck', (req, res) => {
@@ -77,7 +76,8 @@ router.post('/verifyOtp', (req, res) => {
       if (verification_check.status == 'approved') {
         userHelpers.doSignup(req.session.userDetails).then((data) => {
           if (data.emailExists) {
-            res.send('Email already registered');
+            req.session.emailExists = true;
+            res.redirect('/signup');
           } else if (data.status) {
             req.session.loggedIn = true;
             req.session.user = data;
@@ -117,42 +117,50 @@ router.get('/searchRooms', (req, res) => {
 });
 
 router.post('/searchRooms', (req, res) => {
-  console.log(req.body);
-  const date_1 = new Date(req.body.checkOut);
-  const date_2 = new Date(req.body.checkIn);
-  const difference = date_1.getTime() - date_2.getTime();
-  const TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
+  try {
+    const date_1 = new Date(req.body.checkOut);
+    const date_2 = new Date(req.body.checkIn);
+    const difference = date_1.getTime() - date_2.getTime();
+    const TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
 
-  req.session.days = TotalDays;
-  const searchDetails = {
-    location: req.body.location,
-    checkIn: req.body.checkIn,
-    checkOut: req.body.checkOut,
-    guests: parseInt(req.body.guests),
-    room: parseInt(req.body.room),
-    days: req.session.days,
-  };
-  req.session.searchDetails = searchDetails;
+    req.session.days = TotalDays;
+    const searchDetails = {
+      location: req.body.location,
+      checkIn: req.body.checkIn,
+      checkOut: req.body.checkOut,
+      guests: parseInt(req.body.guests),
+      room: parseInt(req.body.room),
+      days: req.session.days,
+    };
+    req.session.searchDetails = searchDetails;
 
-  const dates = {};
+    const dates = {};
 
-  dates.checkInDate = dateFormat(req.session.searchDetails.checkIn);
-  dates.checkOutDate = dateFormat(req.session.searchDetails.checkOut);
+    dates.checkInDate = dateFormat(req.session.searchDetails.checkIn);
+    dates.checkOutDate = dateFormat(req.session.searchDetails.checkOut);
 
-  req.session.dates = dates;
+    req.session.dates = dates;
+  } catch {
+    console.error();
+  }
 
-  userHelpers.getRooms(req.body).then((rooms) => {
-    res.render('users/roomsList', {
-      rooms,
-      user: req.session.loggedIn,
-      userName: req.session.userName,
-      searchDetails: req.session.searchDetails,
-      dates: req.session.dates,
-      details: req.session.user,
-      locations: req.session.locations,
-      searchbar: true,
+  userHelpers
+    .getRooms(req.body)
+    .then((rooms) => {
+      res.render('users/roomsList', {
+        rooms,
+        user: req.session.loggedIn,
+        userName: req.session.userName,
+        searchDetails: req.session.searchDetails,
+        dates: req.session.dates,
+        details: req.session.user,
+        locations: req.session.locations,
+        searchbar: true,
+      });
+    })
+    .catch((error) => {
+      console.error();
     });
-  });
 });
 
 router.get('/roomDetails', (req, res) => {
@@ -162,7 +170,7 @@ router.get('/roomDetails', (req, res) => {
 
     res.render('users/roomDetails', {
       user: req.session.loggedIn,
-      userName: req.session.userName, 
+      userName: req.session.userName,
       roomDetails: req.session.roomDetails,
       searchbar: true,
       searchDetails: req.session.searchDetails,
@@ -178,19 +186,19 @@ router.get('/bookNow', (req, res) => {
 
   userHelpers.getRoomDetails(roomId).then((roomDetails) => {
     console.log(roomDetails);
-   
+
     try {
-      const discPrice=req.session.roomDetails[0].rooms.actualPrice-req.session.roomDetails[0].rooms.price;
-      
+      const discPrice = req.session.roomDetails[0].rooms.actualPrice
+        - req.session.roomDetails[0].rooms.price;
+
       const { actualPrice } = req.session.roomDetails[0].rooms; // GETTING PRICE OF ROOM
       const rooms = req.session.searchDetails.room; // NUMBER ROOMS
       const { days } = req.session.searchDetails; // NUMBER OF days
-      req.session.searchDetails.savedPrice=discPrice*rooms*days
+      req.session.searchDetails.savedPrice = discPrice * rooms * days;
       req.session.searchDetails.amount = actualPrice * rooms * days;
       req.session.searchDetails.total = actualPrice * rooms * days - req.session.searchDetails.savedPrice;
-      
     } catch (err) {
-      console.log(err);
+      res.redirect('/');
     }
 
     res.render('users/bookNow', {
@@ -200,14 +208,14 @@ router.get('/bookNow', (req, res) => {
       searchDetails: req.session.searchDetails,
       dates: req.session.dates,
       details: req.session.user,
-      searchbar: true
+      searchbar: true,
     });
   });
 });
 
 router.post('/confirmBook', (req, res) => {
   req.session.searchDetails.paymentMode = req.body.paymentMode;
-  console.log(req.body.paymentMode,"PayMode")
+  console.log(req.body.paymentMode, 'PayMode');
   const bookingDetails = {
     bookingId: new ObjectId(),
     hotelId: ObjectId(req.session.roomDetails[0]._id),
@@ -223,7 +231,7 @@ router.post('/confirmBook', (req, res) => {
     billAmt: req.session.searchDetails.amount,
     amountPaid: req.session.searchDetails.total,
     paymentMode: req.session.searchDetails.paymentMode,
-   
+
     bookingDate: new Date().toISOString().split('T')[0],
     bookingStatus: 'Payment Pending',
   };
@@ -243,7 +251,6 @@ router.post('/confirmBook', (req, res) => {
               bookingDetails.billAmt * 100,
             )
             .then((response) => {
-              console.log(response);
               res.json({ response, check: true, user: req.session.user });
             });
         }
@@ -316,7 +323,6 @@ router.post('/updateProfile', (req, res) => {
     res.json({ data: true });
   });
 });
-
 
 router.post('/loginBook', (req, res) => {
   userHelpers.doLogin(req.body).then((response) => {
