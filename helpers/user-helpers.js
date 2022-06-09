@@ -78,6 +78,7 @@ module.exports = {
     }),
   getRooms: (searchDatas) =>
     new Promise(async (resolve, reject) => {
+      console.log(searchDatas);
       let rooms = await db
         .get()
         .collection(collection.VENDOR_COLLECTION)
@@ -113,23 +114,27 @@ module.exports = {
           { $project: { bookings: 1 } },
         ])
         .toArray();
-      console.log(rooms,'rooms',bookedRooms,"booked")
-      
+      console.log(rooms, "rooms", bookedRooms, "booked");
+
       for (const x in rooms) {
         for (const y in bookedRooms) {
           if (rooms[x].rooms.roomId.equals(bookedRooms[y].bookings.roomId)) {
             //  rooms[x].rooms.bookingCount=count++
-            
+
             rooms[x].rooms.remainingQty =
               rooms[x].rooms.qty - bookedRooms[y].bookings.roomCount;
-              if(rooms[x].rooms.remainingQty==0){
-                rooms.splice(x,1)
-              }
-          } 
+            if (
+              rooms[x].rooms.remainingQty == 0 ||
+              rooms[x].rooms.remainingQty < searchDatas.room ||
+              rooms[x].rooms.qty < searchDatas.room
+            ) {
+              rooms.splice(x, 1);
+            }
+          }
         }
       }
-      
-      resolve(rooms)
+      console.log(rooms);
+      resolve(rooms);
     }),
   getRoomDetails: (roomId) =>
     new Promise(async (resolve, reject) => {
@@ -162,7 +167,6 @@ module.exports = {
           { upsert: true }
         )
         .then((status) => {
-          
           resolve(status);
         });
     }),
