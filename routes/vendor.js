@@ -128,7 +128,7 @@ router.post('/addrooms', store.array('file'), (req, res) => {
 
     ameneties: {},
   };
-  roomData.offer = Math.round(100 - ((roomData.price / roomData.actualPrice) * 100));
+  roomData.offer = Math.round(100 - ((roomData.price / roomData.actualPrice) * 100)); 
   console.log(roomData);
   if (req.body.ac === 'on') {
     roomData.ameneties.ac = true;

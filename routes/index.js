@@ -147,6 +147,12 @@ router.post('/searchRooms', (req, res) => {
   userHelpers
     .getRooms(req.body)
     .then((rooms) => {
+
+      for(const x in rooms){
+        if(rooms[x].rooms.remainingQty){
+          rooms[x].rooms.displayremaining=true
+        }
+      }
       res.render('users/roomsList', {
         rooms,
         user: req.session.loggedIn,
@@ -228,7 +234,7 @@ router.post('/confirmBook', (req, res) => {
     roomCount: req.session.searchDetails.room,
     guests: req.session.searchDetails.guests,
     days: req.session.searchDetails.days,
-    billAmt: req.session.searchDetails.amount,
+    billAmt: req.session.searchDetails.total,
     amountPaid: req.session.searchDetails.total,
     paymentMode: req.session.searchDetails.paymentMode,
 
@@ -395,16 +401,6 @@ function dateFormat(date) {
   return dateString;
 }
 
-function imageUpload(location, id, image) {
-  return new Promise(async (resolve, reject) => {
-    await image.mv(`./public/images/${location}/${id}.jpg`, (err, done) => {
-      if (!err) {
-        resolve(true);
-      } else {
-        resolve(err);
-      }
-    });
-  });
-}
+
 
 module.exports = router;
