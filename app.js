@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const hbs = require("express-handlebars");
 const session = require("express-session");
+const nocache = require("nocache");
 
 // const fileUpload = require("express-fileupload");
 const indexRouter = require("./routes/index");
@@ -42,7 +43,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-
+app.use(nocache());
 db.connect((err) => {
   if (err) console.log("Database connection failed");
   else console.log("Connection success");

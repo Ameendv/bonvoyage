@@ -17,13 +17,14 @@
             </td>
             <td><span class="">{{this.rooms.category}} rooms</span></td>
             <td>
-              <p class="text-info"><span class="small mark font-weight-bold">Hurry! only
+              <p class="text-danger">{{#if this.rooms.hurryMsg}}<span class="small mark font-weight-bold"><i
+                    class="bi bi-lightning-fill"></i>Hurry! only
                   {{#if this.rooms.displayremaining}}
                   {{this.rooms.remainingQty}}
                   {{else}}
                   {{this.rooms.qty}}
                   {{/if}}
-                  rooms left</span>
+                  rooms left</span>{{/if}}
               </p>
             </td>
           </tr>

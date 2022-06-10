@@ -112,7 +112,7 @@ router.post('/login', (req, res) => {
   });
 });
 
-router.get('/searchRooms', (req, res) => {
+router.get('/searchRooms', verifyLogin,(req, res) => {
   res.redirect('/');
 });
 
@@ -148,10 +148,19 @@ router.post('/searchRooms', (req, res) => {
     .getRooms(req.body)
     .then((rooms) => {
 
-      for(const x in rooms){
-        if(rooms[x].rooms.remainingQty){
-          rooms[x].rooms.displayremaining=true
+      for (const x in rooms) {
+        if (rooms[x].rooms.remainingQty) {
+          rooms[x].rooms.displayremaining = true
+
+          if (rooms[x].rooms.remainingQty < 3 || rooms[x].rooms.qty < 3){
+            rooms[x].rooms.hurryMsg=true
+          }else
+          {
+            rooms[x].rooms.simpleMsg=true
+          }
         }
+        
+        
       }
       res.render('users/roomsList', {
         rooms,
@@ -169,7 +178,7 @@ router.post('/searchRooms', (req, res) => {
     });
 });
 
-router.get('/roomDetails', (req, res) => {
+router.get('/roomDetails',(req, res) => {
   const roomId = req.query.id;
   userHelpers.getRoomDetails(roomId).then((roomDetails) => {
     req.session.roomDetails = roomDetails;
@@ -285,7 +294,7 @@ router.post('/verifyPayment', (req, res) => {
     });
 });
 
-router.get('/bookingStatus', (req, res) => {
+router.get('/bookingStatus',verifyLogin, (req, res) => {
   req.session.bookingDetails.bookingDate = dateFormat(
     req.session.bookingDetails.bookingDate,
   );
@@ -302,7 +311,7 @@ router.post('/paymentFailed', (req, res) => {
   console.log(req.body);
 });
 
-router.get('/profile', (req, res) => {
+router.get('/profile', verifyLogin,(req, res) => {
   userHelpers.getProfile(req.query.id).then((details) => {
     res.render('users/profile', {
       user: req.session.loggedIn,
@@ -344,7 +353,7 @@ router.post('/loginBook', (req, res) => {
   });
 });
 
-router.get('/viewBookings', (req, res) => {
+router.get('/viewBookings', verifyLogin,(req, res) => {
   userHelpers.getBookings(req.query.id).then((bookings) => {
     const booking = bookings.bookings;
 
@@ -364,7 +373,6 @@ router.get('/viewBookings', (req, res) => {
         }
       }
     }
-   
     res.render('users/viewBookings', {
       booking,
       viewbookings: true,
