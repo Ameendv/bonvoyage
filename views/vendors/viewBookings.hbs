@@ -18,7 +18,7 @@
       <tr>
         <th>Customer</th>
         <th>Booking date</th>
-        <th>Category</th>
+        <th>Details</th>
         <th>check In</th>
         <th>Check out</th>
         <th>Bill Amount</th>
@@ -29,29 +29,82 @@
     <tbody>
       {{#each bookingData}}
       <tr class="mt-2">
-        <td>{{this.name}}</td>
+        <td><button type="button" class="btn btn-outline-dark" data-bs-toggle="modal"
+            data-bs-target="#exampleModal{{this._id}}">
+            {{this.name}}
+          </button></td>
+        <div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{this.name}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body d-flex justify-content-center">
+                <ul>
+                  <li>Email : {{this.email}}</li>
+                  <li>Number : {{this.number}}</li>
+                  <li>District : {{this.district}}</li>
+                  <li>State : {{this.state}}</li>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <td>{{this.bookings.bookingDate}}</td>
-        <td>{{this.bookings.category}}</td>
+        <td><button type="button" class="btn btn-outline-dark" data-bs-toggle="modal"
+            data-bs-target="#exampleModal{{this._id}}d">
+            View
+          </button></td>
+          <div class="modal fade" id="exampleModal{{this._id}}d" tabindex="-1" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{this.name}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body d-flex justify-content-center">
+                <ul>
+                  <li>Category : {{this.bookings.category}}</li>
+                  <li>No : {{this.bookings.roomCount}}</li>
+                  <li>Guests : {{this.bookings.guests}}</li>
+                  <li>Days : {{this.bookings.days}}</li>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <td>{{this.bookings.checkIn}}</td>
         <td>{{this.bookings.checkOut}}</td>
-        <td>{{this.bookings.billAmt}}</td>
+        <td>{{this.bookings.amountPaid}}</td>
         <td>{{this.bookings.bookingStatus}}</td>
-       <td> {{#if this.bookings.isActive}}
-        <button class="badge badge-success text-sm" disabled>Active</button>
-        {{else}}
-        {{#if this.bookings.canCancel}}
-        <button class="badge badge-danger text-sm "
+        <td> {{#if this.bookings.isActive}}
+          <button class="badge badge-success text-sm" disabled>Active</button>
+          {{else}}
+          {{#if this.bookings.canCancel}}
+          <button class="badge badge-danger text-sm "
             onclick="cancelBooking('{{this.bookings.bookingId}}')">Cancel</button>
-        {{else}}
-        {{#if this.bookings.cancelled}}
-        <button class="badge badge-primary text-sm" disabled>Cancelled</button>
-        {{else}}
-        {{#if this.bookings.checkedOut}}
-        Checked out
-        {{/if}}
-        {{/if}}
-        {{/if}}
-        {{/if}}</td>
+          {{else}}
+          {{#if this.bookings.cancelled}}
+          <button class="badge badge-primary text-sm" disabled>Cancelled</button>
+          {{else}}
+          {{#if this.bookings.checkedOut}}
+          Checked out
+          {{/if}}
+          {{/if}}
+          {{/if}}
+          {{/if}}
+        </td>
       </tr>
       {{/each}}
 
@@ -61,9 +114,3 @@
 
   </table>
 </div>
-
-<script>
-
-
-
-</script>

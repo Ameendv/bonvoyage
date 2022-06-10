@@ -1,4 +1,5 @@
 <div class="col-lg-10 ms-auto pt-5 mt-3 bg-light" >
+    <h2 class="bg-light">{{bookings.0.bookings.hotelName}}</h2>
     <table border="0" cellspacing="5" cellpadding="5">
         <tbody>
             <tr>
@@ -45,6 +46,8 @@
                     {{else}}
                     {{#if this.bookings.checkedOut}}
                     Checked out
+                    {{else}}
+                    <button class="badge badge-warning text-sm" disabled>Reserved</button>
 
                     {{/if}}
                     {{/if}}

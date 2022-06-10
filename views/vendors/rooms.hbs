@@ -8,6 +8,8 @@
         <th>Category</th>
         <th>Images</th>
         <th>Ameneties</th>
+        <th>Price</th>
+        <th>Offer Price</th>
         <th>Rooms</th>
 
 
@@ -110,10 +112,7 @@
                         }}
                         <span class="ms-5"><i class="fa-solid fa-square-parking me-3"></i>Free parking</span>{{/if}}
                       </li>
-                      <li class="list-group-item">{{#if
-                        this.rooms.ameneties.powerbackup
-                        }}<span class="ms-5"><i class="fa-solid fa-car-battery me-3"></i>Power backup</span>{{/if}}</li>
-                    </ul>
+                      
                   </div>
 
                 </div>
@@ -125,6 +124,8 @@
             </div>
           </div>
         </td>
+        <td>{{this.rooms.actualPrice}}</td>
+        <td>{{this.rooms.price}}</td>
         <td>{{this.rooms.qty}}</td>
 
 

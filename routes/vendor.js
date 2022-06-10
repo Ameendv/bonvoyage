@@ -128,7 +128,7 @@ router.post('/addrooms', store.array('file'), (req, res) => {
 
     ameneties: {},
   };
-  roomData.offer = Math.round(100 - ((roomData.price / roomData.actualPrice) * 100)); 
+  roomData.offer = Math.round(100 - ((roomData.price / roomData.actualPrice) * 100));
   console.log(roomData);
   if (req.body.ac === 'on') {
     roomData.ameneties.ac = true;
@@ -167,7 +167,7 @@ router.post('/addrooms', store.array('file'), (req, res) => {
     });
 
     vendorHelpers.roomUpload(data.roomId, finalImg).then((status) => {
-      req.session.added=true
+      req.session.added = true
       res.redirect('/vendor/addRooms');
     }).catch(((error) => {
       console.log(error);
@@ -215,28 +215,32 @@ router.post('/editRooms', store.array('file'), (req, res) => {
     const { files } = req;
 
     if (!files) {
+      console.log(files,"not")
       const error = new Error('Please select file');
       error.httpStatusCode = 400;
       return next(error);
-    }
-    const imgArray = files.map((file) => {
-      const img = fs.readFileSync(file.path);
+    } else {
+      console.log(files,"not")
+      const imgArray = files.map((file) => {
+        const img = fs.readFileSync(file.path);
 
-      return encode_image = img.toString('base64');
-    });
-
-    const finalImg = [];
-    imgArray.map((src, index) => {
-      const result = finalImg.push({
-        filename: files[index].originalname,
-        contentType: files[index].mimetype,
-        imageBase64: src,
+        return encode_image = img.toString('base64');
       });
-    });
-    vendorHelpers.editRoomImage(req.query.id, finalImg).then((status) => {
-      req.session.edited = true;
-      res.redirect('/vendor/editRooms');
-    });
+
+      const finalImg = [];
+      imgArray.map((src, index) => {
+        const result = finalImg.push({
+          filename: files[index].originalname,
+          contentType: files[index].mimetype,
+          imageBase64: src,
+        });
+      });
+      vendorHelpers.editRoomImage(req.query.id, finalImg).then((status) => {
+        req.session.edited = true;
+        res.redirect('/vendor/editRooms');
+      });
+    }
+
   });
 });
 
@@ -254,7 +258,7 @@ router.get('/viewBookings', (req, res) => {
       checkOut = new Date(bookingData[x].bookings.checkOut).setHours(0, 0, 0, 0);
       now = new Date().setHours(0, 0, 0, 0);
 
-      if (now >= checkIn && now <= checkIn) {
+      if (now >= checkIn && now <= checkOut) {
         bookingData[x].bookings.isActive = true;
       } else if (now < checkIn) {
         if (bookingData[x].bookings.bookingStatus === 'cancelled') {
@@ -266,7 +270,7 @@ router.get('/viewBookings', (req, res) => {
         bookingData[x].bookings.checkedOut = true;
       }
     }
-    console.log(bookingData);
+    console.log(bookingData,"Bookings");
 
     res.render('vendors/viewBookings', {
       vendor: req.session.vendor,

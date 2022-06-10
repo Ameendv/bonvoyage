@@ -4,7 +4,9 @@
       <tr>
         <th>Name</th>
         <th>Category</th>
+        <th>Rooms</th>
         <th>Price</th>
+        <th>Offer Price</th>
         <th>Image</th>
       
       </tr>
@@ -14,6 +16,8 @@
       <tr>
         <td>{{this.name}}</td>
         <td>{{this.rooms.category}}</td>
+        <td>{{this.rooms.qty}}</td>
+        <td>{{this.rooms.actualPrice}}</td>
         <td>{{this.rooms.price}}</td>
         <td><button type="button" class="btn btn-primary" data-toggle="modal"
             data-target="#exampleModal1{{this.rooms.roomId}}">

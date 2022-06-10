@@ -320,10 +320,6 @@ $('#max1').blur(function () {
   );
 })
 
-
-
-
-
 $(document).ready(function () {
   // Create date inputs
   min1Date = new Date($('#min1'), {
@@ -335,7 +331,7 @@ $(document).ready(function () {
 
   // DataTables initialisation
   var table = $('#sales').DataTable({
-    order: [[3, 'asc']]
+    order: [[3,'asc']]
   });
 
   // Refilter the table

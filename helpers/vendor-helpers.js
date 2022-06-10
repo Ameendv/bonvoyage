@@ -35,7 +35,7 @@ module.exports = {
     });
   },
   idUpload: (id, idProof) => {
-   
+
     return new Promise(async (resolve, reject) => {
       db.get()
         .collection(collection.VENDOR_COLLECTION)
@@ -158,8 +158,10 @@ module.exports = {
     resolve(room);
   }),
   updateRoom: (roomData, roomId) => new Promise(async (resolve, reject) => {
+
     roomData.isAvailable = true;
     roomData.roomId = ObjectId(roomId);
+    console.log(roomData)
     db.get()
       .collection(collection.VENDOR_COLLECTION)
       .updateOne(
@@ -168,7 +170,13 @@ module.exports = {
         },
         {
           $set: {
-            'rooms.$': { ...roomData },
+            'rooms.$.price': roomData.price,
+            'rooms.$.category': roomData.category,
+            'rooms.$.actualPrice': roomData.actualPrice,
+            'rooms.$.offer': roomData.offer,
+            'rooms.$.ameneties': roomData.ameneties,
+            'rooms.$.isAvailable': roomData.isAvailable,
+            'rooms.$.roomId': roomData.roomId
           },
         },
       )
@@ -260,7 +268,7 @@ module.exports = {
           },
         ])
         .toArray();
-     
+
       resolve(sales);
     });
   },

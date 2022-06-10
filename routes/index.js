@@ -364,7 +364,7 @@ router.get('/viewBookings', (req, res) => {
         }
       }
     }
-    console.log(booking, 'booking', req.session.user, 'details');
+   
     res.render('users/viewBookings', {
       booking,
       viewbookings: true,

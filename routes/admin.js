@@ -138,7 +138,7 @@ router.get('/viewBookings', (req, res) => {
         checkOut = new Date(bookings[x].bookings.checkOut).setHours(0, 0, 0, 0);
         now = new Date().setHours(0, 0, 0, 0);
 
-        if (now >= checkIn && now <= checkIn) {
+        if (now >= checkIn && now <= checkOut) {
           bookings[x].bookings.isActive = true;
         } else if (now < checkIn) {
           if (bookings[x].bookings.bookingStatus === 'cancelled') {
@@ -148,6 +148,7 @@ router.get('/viewBookings', (req, res) => {
           bookings[x].bookings.checkedOut = true;
         }
       }
+      console.log(bookings);
       res.render('admin/viewBookings', { admin, bookings });
     })
     .catch((error) => {
