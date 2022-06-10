@@ -112,7 +112,7 @@ router.post('/login', (req, res) => {
   });
 });
 
-router.get('/searchRooms', verifyLogin,(req, res) => {
+router.get('/searchRooms',(req, res) => {
   res.redirect('/');
 });
 
@@ -174,7 +174,7 @@ router.post('/searchRooms', (req, res) => {
       });
     })
     .catch((error) => {
-      console.error();
+      res.redirect('/')
     });
 });
 
@@ -182,7 +182,7 @@ router.get('/roomDetails',(req, res) => {
   const roomId = req.query.id;
   userHelpers.getRoomDetails(roomId).then((roomDetails) => {
     req.session.roomDetails = roomDetails;
-
+ 
     res.render('users/roomDetails', {
       user: req.session.loggedIn,
       userName: req.session.userName,
@@ -193,11 +193,18 @@ router.get('/roomDetails',(req, res) => {
       details: req.session.user,
       locations: req.session.locations,
     });
+  }).catch((error)=>{
+    
+    
+    res.send(error)
   });
 });
 
 router.get('/bookNow', (req, res) => {
-  const roomId = req.query.id;
+  
+  
+  const roomId = req.query.id
+  console.log(roomId,"id")
 
   userHelpers.getRoomDetails(roomId).then((roomDetails) => {
     console.log(roomDetails);
@@ -225,7 +232,10 @@ router.get('/bookNow', (req, res) => {
       details: req.session.user,
       searchbar: true,
     });
+  }).catch((error)=>{
+   res.redirect('/')
   });
+  
 });
 
 router.post('/confirmBook', (req, res) => {

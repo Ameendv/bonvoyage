@@ -134,20 +134,26 @@ module.exports = {
     resolve(rooms);
   }),
   getRoomDetails: (roomId) => new Promise(async (resolve, reject) => {
-    const room = await db
-      .get()
-      .collection(collection.VENDOR_COLLECTION)
-      .aggregate([
-        {
-          $unwind: '$rooms',
-        },
-        {
-          $match: { 'rooms.roomId': ObjectId(roomId) },
-        },
-      ])
-      .toArray();
+    try {
+      const room = await db
+        .get()
+        .collection(collection.VENDOR_COLLECTION)
+        .aggregate([
+          {
+            $unwind: '$rooms',
+          },
+          {
+            $match: { 'rooms.roomId': ObjectId(roomId) },
+          },
+        ])
+        .toArray();
+      resolve(room);
+    } catch(error) {
+      reject(error)
+    }
 
-    resolve(room);
+
+
   }),
   doBookings: (details, userId) => new Promise(async (resolve, reject) => {
     db.get()
@@ -279,7 +285,7 @@ module.exports = {
       .get()
       .collection(collection.USER_COLLECTION)
       .findOne({ _id: ObjectId(userId) });
-      console.log(bookings);
+    console.log(bookings);
     resolve(bookings);
   }),
   cancelBooking: (bookingId) => new Promise(async (resolve, reject) => {
