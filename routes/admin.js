@@ -67,19 +67,19 @@ router.get('/usersList', verifyLogin, (req, res) => {
   });
 });
 
-router.get('/roomsList', (req, res) => {
+router.get('/roomsList', verifyLogin,(req, res) => {
   adminHelpers.getRooms(req.query.id).then((rooms) => {
     res.render('admin/roomsList', { admin, rooms });
   });
 });
 
-router.get('/block/:id', (req, res) => {
+router.get('/block/:id',verifyLogin, (req, res) => {
   adminHelpers.doBlock(req.params.id).then((status) => {
     res.json(status);
   });
 });
 
-router.get('/unblock/:id', (req, res) => {
+router.get('/unblock/:id',verifyLogin, (req, res) => {
   adminHelpers.doUnblock(req.params.id).then((status) => {
     res.json(status);
   });
@@ -129,7 +129,7 @@ router.post('/unBlockVendor', (req, res) => {
     });
 });
 
-router.get('/viewBookings', (req, res) => {
+router.get('/viewBookings',verifyLogin, (req, res) => {
   adminHelpers
     .viewBookings(req.query.id)
     .then((bookings) => {
@@ -156,7 +156,7 @@ router.get('/viewBookings', (req, res) => {
     });
 });
 
-router.get('/viewUserBooking', (req, res) => {
+router.get('/viewUserBooking',verifyLogin, (req, res) => {
   
   res.render('admin/viewUserBookings', {
     booking: req.session.booking,
@@ -165,7 +165,7 @@ router.get('/viewUserBooking', (req, res) => {
   });
 });
 
-router.get('/viewUserBookings', (req, res) => {
+router.get('/viewUserBookings',verifyLogin, (req, res) => {
   userHelpers.getBookings(req.query.userId).then((bookings) => {
     const booking = bookings.bookings;
 
@@ -190,7 +190,7 @@ router.get('/viewUserBookings', (req, res) => {
   });
 });
 
-router.get('/sales', (req, res) => {
+router.get('/sales',verifyLogin, (req, res) => {
   adminHelpers.getSales().then((sales) => {
     
     res.render('admin/sales', { admin, sales });
