@@ -148,7 +148,7 @@ module.exports = {
         ])
         .toArray();
       resolve(room);
-    } catch(error) {
+    } catch (error) {
       reject(error)
     }
 
@@ -252,11 +252,16 @@ module.exports = {
       });
   }),
   getProfile: (userId) => new Promise(async (resolve, reject) => {
-    const user = await db
-      .get()
-      .collection(collection.USER_COLLECTION)
-      .findOne({ _id: ObjectId(userId) });
-    resolve(user);
+    try {
+      const user = await db
+        .get()
+        .collection(collection.USER_COLLECTION)
+        .findOne({ _id: ObjectId(userId) });
+      resolve(user);
+    }
+    catch {
+      reject(error)
+    }
   }),
   updateProfile: (data, userId) => {
     return new Promise((resolve, reject) => {
@@ -281,12 +286,17 @@ module.exports = {
     });
   },
   getBookings: (userId) => new Promise(async (resolve, reject) => {
-    const bookings = await db
-      .get()
-      .collection(collection.USER_COLLECTION)
-      .findOne({ _id: ObjectId(userId) });
-    console.log(bookings);
-    resolve(bookings);
+    try {
+      const bookings = await db
+        .get()
+        .collection(collection.USER_COLLECTION)
+        .findOne({ _id: ObjectId(userId) });
+      console.log(bookings);
+      resolve(bookings);
+    }
+    catch {
+      reject(error)
+    }
   }),
   cancelBooking: (bookingId) => new Promise(async (resolve, reject) => {
     db.get()

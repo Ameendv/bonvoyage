@@ -194,9 +194,8 @@ router.get('/roomDetails',(req, res) => {
       locations: req.session.locations,
     });
   }).catch((error)=>{
-    
-    
-    res.send(error)
+    console.log(error)
+    res.redirect('/')
   });
 });
 
@@ -305,7 +304,7 @@ router.post('/verifyPayment', (req, res) => {
 });
 
 router.get('/bookingStatus',verifyLogin, (req, res) => {
-  req.session.bookingDetails.bookingDate = dateFormat(
+  try {req.session.bookingDetails.bookingDate = dateFormat(
     req.session.bookingDetails.bookingDate,
   );
   res.render('users/bookingPlaced', {
@@ -314,7 +313,10 @@ router.get('/bookingStatus',verifyLogin, (req, res) => {
     dates: req.session.dates,
     user: req.session.loggedIn,
     details: req.session.user,
-  });
+  });}
+  catch{
+    console.log(error)
+  }
 });
 
 router.post('/paymentFailed', (req, res) => {
@@ -329,6 +331,8 @@ router.get('/profile', verifyLogin,(req, res) => {
 
       details,
     });
+  }).catch((error)=>{
+    console.lof(error)
   });
 });
 
@@ -389,6 +393,8 @@ router.get('/viewBookings', verifyLogin,(req, res) => {
       user: req.session.loggedIn,
       details: req.session.user,
     });
+  }).catch((error)=>{
+    console.log(error)
   });
 });
 
