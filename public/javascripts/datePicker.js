@@ -21,3 +21,5 @@ flatpickr(".datepicker1", {
     });
   },
 });
+
+

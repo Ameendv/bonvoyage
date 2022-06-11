@@ -332,7 +332,7 @@ router.get('/profile', verifyLogin,(req, res) => {
       details,
     });
   }).catch((error)=>{
-    console.lof(error)
+    res.redirect('/')
   });
 });
 
@@ -394,7 +394,7 @@ router.get('/viewBookings', verifyLogin,(req, res) => {
       details: req.session.user,
     });
   }).catch((error)=>{
-    console.log(error)
+    res.redirect('/')
   });
 });
 

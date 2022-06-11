@@ -2653,3 +2653,22 @@ input::-webkit-calendar-picker-indicator {
         
         
     }
+
+
+    input.error {
+      border:1px solid #99182c;
+  }
+  span.arrow {
+      height:17px;
+      background: url('http://i45.tinypic.com/f9ifz6.png') no-repeat center left;
+      top:4px;
+  }
+  label.error {
+      border-top:1px solid #99182c;
+      border-bottom:1px solid #99182c;
+      border-right:1px solid #99182c;    
+      color:black;
+      padding:1px 5px 1px 5px;
+      font-size:small;
+  
+  }

@@ -259,7 +259,7 @@ module.exports = {
         .findOne({ _id: ObjectId(userId) });
       resolve(user);
     }
-    catch {
+    catch(error) {
       reject(error)
     }
   }),
@@ -286,7 +286,7 @@ module.exports = {
     });
   },
   getBookings: (userId) => new Promise(async (resolve, reject) => {
-    try {
+    try { 
       const bookings = await db
         .get()
         .collection(collection.USER_COLLECTION)
@@ -294,7 +294,7 @@ module.exports = {
       console.log(bookings);
       resolve(bookings);
     }
-    catch {
+    catch(error) {
       reject(error)
     }
   }),

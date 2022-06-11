@@ -159,8 +159,20 @@ $(document).ready(() => {
         required: true,
       },
     },
+    messages:{
+      location: "Please select a location",
+        checkOut: "Select time period",
+    },
+    errorPlacement: function(error, element) {
+      element.attr("placeholder", error.text());
+      
+  }
+    
   });
 });
+
+
+
 
 // $(function () {
 //     $("#date-in").datepicker();
