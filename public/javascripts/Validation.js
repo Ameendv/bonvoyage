@@ -352,4 +352,72 @@ $(document).ready(function () {
   });
 });
 
+//vendor adding rooms validations
+addRooms
 
+$(document).ready(() => {
+  $("#addRooms").validate({
+    rules: {
+      price: {
+        required: true,
+      },
+      actualPrice: {
+        required: true,
+      },
+      category: {
+        required: true,
+      },
+      qty: {
+        required: true,
+      },
+     
+    },
+    messages:{
+      price: "Please enter an Offer price",
+        actualPrice: "Enter the price",
+        category: "Choose a category",
+        qty: "Enter no of rooms",
+       
+    },
+    errorPlacement: function(error, element) {
+      element.attr("placeholder", error.text());
+      
+  }
+    
+  });
+});
+
+//validation for edit rooms
+
+
+$(document).ready(() => {
+  $("#editRooms").validate({
+    rules: {
+      price: {
+        required: true,
+      },
+      actualPrice: {
+        required: true,
+      },
+      category: {
+        required: true,
+      },
+      qty: {
+        required: true,
+      },
+     
+    },
+    messages:{
+      price: "Please enter an Offer price",
+        actualPrice: "Enter the price",
+        category: "Choose a category",
+        qty: "Enter no of rooms",
+       
+    },
+    errorPlacement: function(error, element) {
+      element.attr("placeholder", error.text());
+      
+  }
+    
+  });
+});

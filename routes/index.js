@@ -404,6 +404,10 @@ router.post('/cancelBooking', (req, res) => {
   });
 });
 
+router.get('/contactUs',(req,res)=>{
+  res.render('users/contact')
+})
+
 router.get('/logout', (req, res) => {
   req.session.loggedIn = false;
   req.session.user = false;
