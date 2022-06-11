@@ -6,24 +6,13 @@ const vendorHelpers = require('../helpers/vendor-helpers');
 const store = require('../middleware/multer');
 const fs = require('fs');
 const verifyLogin = (req, res, next) => {
-  if (req.session.loggedIn) {
+  if (req.session.vendorLogged) {
     next();
   } else {
-    res.redirect('vendor/login');
+    res.redirect('/vendor/login');
   }
 };
 
-function imageUpload(location, id, image) {
-  return new Promise(async (resolve, reject) => {
-    await image.mv(`./public/images/${location}/${id}.jpg`, (err, done) => {
-      if (!err) {
-        resolve(true);
-      } else {
-        resolve(err);
-      }
-    });
-  });
-}
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
@@ -109,7 +98,7 @@ router.post('/login', (req, res) => {
   });
 });
 
-router.get('/rooms',verifyLogin, (req, res) => {
+router.get('/rooms', verifyLogin,(req, res) => {
   vendorHelpers.getRooms(req.session.vendor.id).then((rooms) => {
     console.log(rooms, 'rooms');
     res.render('vendors/rooms', { rooms, vendor: req.session.vendor });
@@ -251,14 +240,14 @@ router.post('/editRooms', store.array('file'), (req, res) => {
   });
 });
 
-router.get('/deleteRoom',verifyLogin, (req, res) => {
+router.get('/deleteRoom', verifyLogin,(req, res) => {
   console.log(req.query.roomId);
   vendorHelpers.deleteRoom(req.query.id).then((status) => {
     res.redirect('/vendor/rooms');
   });
 });
 
-router.get('/viewBookings', verifyLogin,(req, res) => {
+router.get('/viewBookings',verifyLogin, (req, res) => {
   vendorHelpers.getBookings(req.session.vendor.id).then((bookingData) => {
     for (const x in bookingData) {
       checkIn = new Date(bookingData[x].bookings.checkIn).setHours(0, 0, 0, 0);
@@ -298,7 +287,7 @@ router.get('/sales', verifyLogin,(req, res) => {
   });
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', verifyLogin,(req, res) => {
   req.session.vendorLogged = false;
   res.redirect('/vendor');
 });
