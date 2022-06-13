@@ -22,7 +22,7 @@
                     <!--Grid column-->
                     <div class="col-md-6">
                         <div class="md-form mb-0">
-                            <input type="text" id="name" name="name" class="form-control">
+                            <input type="text" id="name" name="name" class="form-control message">
                             <label for="name" class="">Your name</label>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                     <!--Grid column-->
                     <div class="col-md-6">
                         <div class="md-form mb-0">
-                            <input type="text" id="email" name="email" class="form-control">
+                            <input type="text" id="email" name="email" class="form-control message">
                             <label for="email" class="">Your email</label>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="md-form mb-0">
-                            <input type="text" id="subject" name="subject" class="form-control">
+                            <input type="text" id="subject" name="subject" class="form-control message">
                             <label for="subject" class="">Subject</label>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                     <div class="col-md-12">
 
                         <div class="md-form">
-                            <textarea type="text" id="message" name="message" rows="2" class="form-control md-textarea"></textarea>
+                            <input type="text" id="message" name="message" rows="2" class="form-control md-textarea message"></textarea>
                             <label for="message">Your message</label>
                         </div>
 
@@ -69,7 +69,7 @@
             </form>
 
             <div class="text-center text-md-left">
-                <a class="btn btn-success text-white" onclick="document.getElementById('contact-form').submit();">Send</a>
+                <a class="btn btn-success text-white" onclick='sendMessage(document.getElementById("name").value,document.getElementById("email").value,document.getElementById("subject").value,document.getElementById("message").value)'>Send</a>
             </div>
             <div class="status"></div>
         </div>

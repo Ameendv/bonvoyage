@@ -353,7 +353,7 @@ $(document).ready(function () {
 });
 
 //vendor adding rooms validations
-addRooms
+
 
 $(document).ready(() => {
   $("#addRooms").validate({

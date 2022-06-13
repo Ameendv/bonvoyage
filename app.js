@@ -5,7 +5,9 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const hbs = require("express-handlebars");
 const session = require("express-session");
+const flash = require('req-flash');
 const nocache = require("nocache");
+
 
 // const fileUpload = require("express-fileupload");
 const indexRouter = require("./routes/index");
@@ -37,6 +39,7 @@ app.use(
     cookie: { maxAge: 600000 },
   })
 );
+app.use(flash());
 
 app.use(logger("dev"));
 app.use(express.json());

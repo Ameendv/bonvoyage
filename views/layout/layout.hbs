@@ -42,6 +42,7 @@
 
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500" rel="stylesheet" />
+    
 
 
 
@@ -77,6 +78,25 @@
 
 
   {{{body}}}
+{{!-- for socket connection in front end --}}
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io('http://localhost:3000')
+
+  socket.on('connection')
+
+  const sendMessage=(name,subject,email,message)=>{
+    const data={
+      name:name,
+      subject:subject,
+      email:email,
+      message:message
+    }
+    socket.emit('message',data)
+  }
+</script>
+
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
   crossorigin="anonymous"></script>
@@ -132,7 +152,7 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
+<script src="/socket.io/socket.io.js"></script>
 
 <script src="/javascripts/Validation.js"></script>
 <script src="/javascripts/roomDetails.js"></script>

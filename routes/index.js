@@ -12,6 +12,8 @@ const { application } = require('express');
 const fs = require('fs');
 const userHelpers = require('../helpers/user-helpers');
 const store = require('../middleware/multer');
+const { FlowTestUserContext } = require('twilio/lib/rest/studio/v2/flow/testUser');
+var nodemailer=require('nodemailer')
 
 const verifyLogin = (req, res, next) => {
   if (req.session.loggedIn) {
@@ -35,6 +37,8 @@ router.get('/', (req, res) => {
       user: req.session.loggedIn,
       details: req.session.user,
       locations: req.session.locations,
+     
+      
     });
   });
 });
@@ -112,7 +116,7 @@ router.post('/login', (req, res) => {
   });
 });
 
-router.get('/searchRooms',(req, res) => {
+router.get('/searchRooms', (req, res) => {
   res.redirect('/');
 });
 
@@ -152,15 +156,14 @@ router.post('/searchRooms', (req, res) => {
         if (rooms[x].rooms.remainingQty) {
           rooms[x].rooms.displayremaining = true
 
-          if (rooms[x].rooms.remainingQty < 3 || rooms[x].rooms.qty < 3){
-            rooms[x].rooms.hurryMsg=true
-          }else
-          {
-            rooms[x].rooms.simpleMsg=true
+          if (rooms[x].rooms.remainingQty < 3 || rooms[x].rooms.qty < 3) {
+            rooms[x].rooms.hurryMsg = true
+          } else {
+            rooms[x].rooms.simpleMsg = true
           }
         }
-        
-        
+
+
       }
       res.render('users/roomsList', {
         rooms,
@@ -178,11 +181,11 @@ router.post('/searchRooms', (req, res) => {
     });
 });
 
-router.get('/roomDetails',(req, res) => {
+router.get('/roomDetails', (req, res) => {
   const roomId = req.query.id;
   userHelpers.getRoomDetails(roomId).then((roomDetails) => {
     req.session.roomDetails = roomDetails;
- 
+
     res.render('users/roomDetails', {
       user: req.session.loggedIn,
       userName: req.session.userName,
@@ -193,17 +196,17 @@ router.get('/roomDetails',(req, res) => {
       details: req.session.user,
       locations: req.session.locations,
     });
-  }).catch((error)=>{
+  }).catch((error) => {
     console.log(error)
     res.redirect('/')
   });
 });
 
 router.get('/bookNow', (req, res) => {
-  
-  
+
+
   const roomId = req.query.id
-  console.log(roomId,"id")
+  console.log(roomId, "id")
 
   userHelpers.getRoomDetails(roomId).then((roomDetails) => {
     console.log(roomDetails);
@@ -231,10 +234,10 @@ router.get('/bookNow', (req, res) => {
       details: req.session.user,
       searchbar: true,
     });
-  }).catch((error)=>{
-   res.redirect('/')
+  }).catch((error) => {
+    res.redirect('/')
   });
-  
+
 });
 
 router.post('/confirmBook', (req, res) => {
@@ -303,18 +306,21 @@ router.post('/verifyPayment', (req, res) => {
     });
 });
 
-router.get('/bookingStatus',verifyLogin, (req, res) => {
-  try {req.session.bookingDetails.bookingDate = dateFormat(
-    req.session.bookingDetails.bookingDate,
-  );
-  res.render('users/bookingPlaced', {
-    booked: true,
-    bookingDetails: req.session.bookingDetails,
-    dates: req.session.dates,
-    user: req.session.loggedIn,
-    details: req.session.user,
-  });}
-  catch{
+router.get('/bookingStatus', verifyLogin, (req, res) => {
+  try {
+    req.session.bookingDetails.bookingDate = dateFormat(
+      req.session.bookingDetails.bookingDate,
+    );
+    res.render('users/bookingPlaced', {
+      booked: true,
+      bookingDetails: req.session.bookingDetails,
+      dates: req.session.dates,
+      user: req.session.loggedIn,
+      details: req.session.user,
+      message:req.flash('message')
+    });
+  }
+  catch(error) {
     console.log(error)
   }
 });
@@ -323,7 +329,7 @@ router.post('/paymentFailed', (req, res) => {
   console.log(req.body);
 });
 
-router.get('/profile', verifyLogin,(req, res) => {
+router.get('/profile', verifyLogin, (req, res) => {
   userHelpers.getProfile(req.query.id).then((details) => {
     res.render('users/profile', {
       user: req.session.loggedIn,
@@ -331,7 +337,7 @@ router.get('/profile', verifyLogin,(req, res) => {
 
       details,
     });
-  }).catch((error)=>{
+  }).catch((error) => {
     res.redirect('/')
   });
 });
@@ -367,7 +373,7 @@ router.post('/loginBook', (req, res) => {
   });
 });
 
-router.get('/viewBookings', verifyLogin,(req, res) => {
+router.get('/viewBookings', verifyLogin, (req, res) => {
   userHelpers.getBookings(req.query.id).then((bookings) => {
     const booking = bookings.bookings;
 
@@ -393,7 +399,7 @@ router.get('/viewBookings', verifyLogin,(req, res) => {
       user: req.session.loggedIn,
       details: req.session.user,
     });
-  }).catch((error)=>{
+  }).catch((error) => {
     res.redirect('/')
   });
 });
@@ -404,7 +410,7 @@ router.post('/cancelBooking', (req, res) => {
   });
 });
 
-router.get('/contactUs',(req,res)=>{
+router.get('/contactUs', (req, res) => {
   res.render('users/contact')
 })
 
@@ -419,6 +425,34 @@ router.get('/ajaxCheck/:id', (req, res) => {
     res.json(roomDetails);
   });
 });
+
+router.post('/confirmMail', (req, res) => {
+  console.log(req.body)
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'ameendv00@gmail.com',
+      pass: 'tssssgihxcamdddu'
+    }
+  });
+  
+  var mailOptions = {
+    from: 'ameendv00@gmail.com',
+    to: req.session.user.email,
+    subject: `Booking confirmation at ${req.body.name}`,
+    text: `Your booking at Hotel ${req.body.name} through BONVOYAGE is confirmed.Check in date is ${req.body.checkIn} and checkout date will be ${req.body.checkOut}.Enjoy your stay!!`
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+      res.redirect('/')
+      
+    }
+  });
+})
 
 function dateFormat(date) {
   const dateData = date.split('-'); // For example

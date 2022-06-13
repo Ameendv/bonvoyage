@@ -1,102 +1,133 @@
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <section class="h-100 h-custom" style="background-color: #eee;">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-lg-8 col-xl-6">
                 <div class="card border-top border-bottom border-3" style="border-color: #ffc23d !important;">
                     <div class="card-body p-5">
+                        <form action="/confirmMail" method="post">
+                            <span class="d-flex justify-content-end">
+                                <input size="3" name="name" class="lead fw-bold mb-5 m-auto "
+                                    style="color: #ffc23d;border: none;background-color: transparent;"
+                                    value="{{bookingDetails.hotelName}}">
 
-                        <span class="d-flex justify-content-center">
-                            <p class="lead fw-bold mb-5 m-auto" style="color: #ffc23d;">{{bookingDetails.hotelName}}</p>
-                        </span>
+                            </span>
 
-                        <div class="row">
-                            <div class="col mb-3">
-                                <p class="small text-muted mb-1">Date</p>
-                                <p>{{bookingDetails.bookingDate}}</p>
-                            </div>
-                            <div class="col mb-3">
-                                <p class="small text-muted mb-1">Order No.</p>
-                                <p>012j1gvs356c</p>
-                            </div>
-                        </div>
-
-                        <div class="mx-n5 px-5 py-4" style="background-color: #f2f2f2;">
                             <div class="row">
-                                <div class="col-md-8 col-lg-7">
-                                    <p>Rooms :</p>
+                                <div class="col mb-3">
+                                    <p class="small text-muted mb-1">Date</p>
+                                    <input name="date" value="{{bookingDetails.bookingDate}}" readonly
+                                        style="border: none;">
                                 </div>
-                                <div class="col-md-4 col-lg-5">
-                                    <p>{{bookingDetails.roomCount}} Nos</p>
-                                </div>
-                                <div class="col-md-8 col-lg-7">
-                                    <p>Guests :</p>
-                                </div>
-                                <div class="col-md-4 col-lg-5">
-                                    <p>{{bookingDetails.guests}} Person</p>
-                                </div>
-                                <div class="col-md-8 col-lg-7">
-                                    <p>category : </p>
-                                </div>
-                                <div class="col-md-4 col-lg-5">
-                                    <p>{{bookingDetails.category}}</p>
-                                </div>
-                                <div class="col-md-8 col-lg-7">
-                                    <p>Amount :</p>
-                                </div>
-                                <div class="col-md-4 col-lg-5">
-                                    <p> ₹ {{bookingDetails.billAmt}}</p>
-                                </div>
-                                <div class="col-md-8 col-lg-7">
-                                    <p>Payment Method :</p>
-                                </div>
-                                <div class="col-md-4 col-lg-5">
-                                    <p>{{bookingDetails.paymentMode}}</p>
-                                </div>
-
-
-                                <div class="col-md-8 col-lg-7">
-                                    <p>Check-in : </p>
-                                </div>
-                                <div class="col-md-4 col-lg-5">
-                                    <p>{{dates.checkInDate}}</p>
-                                </div>
-
-
-                                <div class="col-md-8 col-lg-7">
-                                    <p class="mb-0">Check-out:</p>
-                                </div>
-                                <div class="col-md-4 col-lg-5">
-                                    <p class="mb-0">{{dates.checkOutDate}}</p>
+                                <div class="col mb-3">
+                                    <p class="small text-muted mb-1">Order No.</p>
+                                    <p>012j1gvs356c</p>
                                 </div>
                             </div>
-                        </div>
 
-                        <span class="d-flex justify-content-center p-3">
-                           <a href="/"> <button class="btn  btn-lg btn-success">Ok</button></a>
-                        </span>
+                            <div class="mx-n5 px-5 py-4" style="background-color: #f2f2f2;">
+                                <div class="row">
+                                    <div class="col-md-8 col-lg-7">
+                                        <p>Rooms :</p>
+                                    </div>
+                                    <div class="col-md-4 col-lg-5">
+
+                                        <input name="roomCount" value="{{bookingDetails.roomCount}} Nos" readonly
+                                            style="border: none;background-color:transparent;">
+                                    </div>
+                                    <div class="col-md-8 col-lg-7">
+                                        <p>Guests :</p>
+                                    </div>
+                                    <div class="col-md-4 col-lg-5">
+
+                                        <input name="guests" value="{{bookingDetails.guests}} Person" readonly
+                                            style="border: none;background-color:transparent;">
+                                    </div>
+                                    <div class="col-md-8 col-lg-7">
+                                        <p>category : </p>
+                                    </div>
+                                    <div class="col-md-4 col-lg-5">
+
+                                        <input name="category" value="{{bookingDetails.category}}" readonly
+                                            style="border: none;background-color:transparent;">
+                                    </div>
+                                    <div class="col-md-8 col-lg-7">
+                                        <p>Amount :</p>
+                                    </div>
+                                    <div class="col-md-4 col-lg-5">
+
+                                        <input name="amount" value="₹ {{bookingDetails.billAmt}}" readonly
+                                            style="border: none;background-color:transparent;">
+                                    </div>
+                                    <div class="col-md-8 col-lg-7">
+                                        <p>Payment Method :</p>
+                                    </div>
+                                    <div class="col-md-4 col-lg-5">
+
+                                        <input name="payMode" value="{{bookingDetails.paymentMode}}" readonly
+                                            style="border: none;background-color:transparent;">
+                                    </div>
+
+
+                                    <div class="col-md-8 col-lg-7">
+                                        <p>Check-in : </p>
+                                    </div>
+                                    <div class="col-md-4 col-lg-5">
+
+                                        <input name="checkIn" value="{{dates.checkInDate}}" readonly
+                                            style="border: none;background-color:transparent;">
+                                    </div>
+
+
+                                    <div class="col-md-8 col-lg-7">
+                                        <p class="mb-0">Check-out:</p>
+                                    </div>
+                                    <div class="col-md-4 col-lg-5">
+
+                                        <input name="checkOut" value="{{dates.checkOutDate}}" readonly
+                                            style="border: none;background-color:transparent;">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span class="d-flex justify-content-center p-3">
+                                <div> {{#if message}}
+                                    <p>{{message}}</p>
+                                    {{/if}}
+
+                                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop">
+                                        OK
+                                    </button>
+                                </div>
+                            </span>
+                            <!-- Button trigger modal -->
+
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Email has been sent to your mail id
+                                        </div>
+                                        <div class="modal-footer">
+                                            
+                                           <a href="/" class="btn" data-bs-dismiss="modal">Ok</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
 
                     </div>
 
