@@ -13,14 +13,11 @@
   </table>
 
 
-    <table id="sales" class="table text-dark" style="background-color: #FFE8D2;height: 100%;">
+    <table id="sales" class="table text-dark" style="background-color: #FFE8D2;">
         <thead class="" style="color: #750404;">
             <tr>
                 <th>Date</th>
-                <th>Customer</th>
-                <th>Room</th>
                 
-                <th>Payment Mode</th>
                 <th>Sales</th>
                 
                
@@ -29,11 +26,8 @@
         <tbody>
             {{#each sales}}
             <tr class="mt-2">
-                <td>{{this._id.bookingDate}}</td>
-                <td>{{this._id.name}}</td>
-                <td>{{this._id.category}}</td>
+                <td>{{this._id}}</td>
                 
-                <td>{{this._id.paymentMode}}</td>
                 <td>{{this.total}}</td>
                 
             </tr>

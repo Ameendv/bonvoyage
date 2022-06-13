@@ -16,7 +16,29 @@ const verifyLogin = (req, res, next) => {
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  if (req.session.vendorLogged) res.render('vendors/vendorHome', { vendor: req.session.vendor });
+
+  if (req.session.vendorLogged) {
+    vendorHelpers.getTotalSales(req.session.vendor.id).then((sales) => {
+      
+      vendorHelpers.getRoomCount(req.session.vendor.id).then((count)=>{
+        vendorHelpers.getTodaysBookings((req.session.vendor.id)).then((bookingCount)=>{
+          vendorHelpers.getReservations(req.session.vendor.id).then((reservations)=>{
+            vendorHelpers.getDailySales(req.session.vendor.id).then((dateSales)=>{
+             console.log(dateSales)
+              const booking=bookingCount.length
+          res.render('vendors/vendorHome', { vendor: req.session.vendor,sales,count,booking,reservations,dateSales });
+            })
+            
+          })
+          
+        })
+        
+      })
+      
+      
+    })
+
+  }
   else {
     res.redirect('/vendor/login');
   }
@@ -81,6 +103,7 @@ router.post('/login', (req, res) => {
       req.session.vendorUser = response.user;
 
       req.session.vendor = response;
+
       if (response.vendor.isApproved == true && response.vendor.isBlocked != true) {
         res.redirect('/vendor');
       } else if (response.vendor.isBlocked) {
@@ -98,14 +121,14 @@ router.post('/login', (req, res) => {
   });
 });
 
-router.get('/rooms', verifyLogin,(req, res) => {
+router.get('/rooms', verifyLogin, (req, res) => {
   vendorHelpers.getRooms(req.session.vendor.id).then((rooms) => {
     console.log(rooms, 'rooms');
     res.render('vendors/rooms', { rooms, vendor: req.session.vendor });
   });
 });
 
-router.get('/addRooms',verifyLogin,(req, res) => {
+router.get('/addRooms', verifyLogin, (req, res) => {
   res.render('vendors/addRooms', {
     vendor: req.session.vendor,
     added: req.session.added,
@@ -173,7 +196,7 @@ router.post('/addrooms', store.array('file'), (req, res) => {
   });
 });
 
-router.get('/editRooms', verifyLogin,(req, res) => {
+router.get('/editRooms', verifyLogin, (req, res) => {
   vendorHelpers.editRoom(req.query.id).then((room) => {
     res.render('vendors/editRooms', {
       vendor: req.session.vendor,
@@ -211,12 +234,12 @@ router.post('/editRooms', store.array('file'), (req, res) => {
     const { files } = req;
 
     if (!files) {
-      console.log(files,"not")
+      console.log(files, "not")
       const error = new Error('Please select file');
       error.httpStatusCode = 400;
       return next(error);
     } else {
-      console.log(files,"not")
+      console.log(files, "not")
       const imgArray = files.map((file) => {
         const img = fs.readFileSync(file.path);
 
@@ -240,14 +263,14 @@ router.post('/editRooms', store.array('file'), (req, res) => {
   });
 });
 
-router.get('/deleteRoom', verifyLogin,(req, res) => {
+router.get('/deleteRoom', verifyLogin, (req, res) => {
   console.log(req.query.roomId);
   vendorHelpers.deleteRoom(req.query.id).then((status) => {
     res.redirect('/vendor/rooms');
   });
 });
 
-router.get('/viewBookings',verifyLogin, (req, res) => {
+router.get('/viewBookings', verifyLogin, (req, res) => {
   vendorHelpers.getBookings(req.session.vendor.id).then((bookingData) => {
     for (const x in bookingData) {
       checkIn = new Date(bookingData[x].bookings.checkIn).setHours(0, 0, 0, 0);
@@ -266,7 +289,7 @@ router.get('/viewBookings',verifyLogin, (req, res) => {
         bookingData[x].bookings.checkedOut = true;
       }
     }
-    console.log(bookingData,"Bookings");
+    console.log(bookingData, "Bookings");
 
     res.render('vendors/viewBookings', {
       vendor: req.session.vendor,
@@ -275,19 +298,19 @@ router.get('/viewBookings',verifyLogin, (req, res) => {
   });
 });
 
-router.get('/cancellation', verifyLogin,(req, res) => {
+router.get('/cancellation', verifyLogin, (req, res) => {
   vendorHelpers.getCancelled(req.session.vendor.id).then((cancelled) => {
     res.render('vendors/cancellations', { vendor: req.session.vendor, cancelled });
   });
 });
 
-router.get('/sales', verifyLogin,(req, res) => {
+router.get('/sales', verifyLogin, (req, res) => {
   vendorHelpers.getSales(req.query.id).then((sales) => {
     res.render('vendors/sales', { vendor: req.session.vendor, sales });
   });
 });
 
-router.get('/logout', verifyLogin,(req, res) => {
+router.get('/logout', verifyLogin, (req, res) => {
   req.session.vendorLogged = false;
   res.redirect('/vendor');
 });

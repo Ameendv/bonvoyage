@@ -1,39 +1,35 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
-    integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-<script src="https://www.gstatic.com/charts/loader.js">
-</script>
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
 
 <div class="col-lg-10 ms-auto pt-5 mt-3 d-flex flew-row justify-content-around" style="background-color: #FFE8D2;">
-    <div class="card ms-2 bg-light  " style="width: 13rem;height: 7rem;">
-        <div class="card-body" >
+    <div class="card ms-2 bg-light col-xs-12 col-md-6 col-lg-3" style="width: 13rem;height: 7rem;">
+        <div class="card-body ">
             <h5 class="card-title">Total Sales </h5>
-            <h6 class="card-subtitle mb-2 text-muted">32000/-</h6>
+            <h6 class="card-subtitle mb-2 text-muted">₹ {{sales.0.total}}</h6>
 
         </div>
 
     </div>
-     <div class="card ms-2 bg-light" style="width: 13rem;height: 7rem;">
+    <div class="card ms-2 bg-light col-xs-12 col-md-6 col-lg-3" style="width: 13rem;height: 7rem;">
         <div class="card-body">
             <h5 class="card-title">Total rooms</h5>
-            <h6 class="card-subtitle mb-2 text-muted">12</h6>
+            <h6 class="card-subtitle mb-2 text-muted">{{count.0.total}}</h6>
 
         </div>
 
     </div>
-     <div class="card ms-2 bg-light" style="width: 13rem;height: 7rem;">
+    <div class="card ms-2 bg-light col-xs-12 col-md-6 col-lg-3 " style="width: 13rem;height: 7rem;">
         <div class="card-body">
-            <h5 class="card-title">Bookings</h5>
-            <h6 class="card-subtitle mb-2 text-muted">10</h6>
+            <h5 class="card-title">Todays bookings</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{booking}}</h6>
 
         </div>
 
     </div>
-     <div class="card ms-2 bg-light" style="width: 13rem;height: 7rem;">
+    <div class="card ms-2 bg-light col-xs-12 col-md-6 col-lg-3 " style="width: 13rem;height: 7rem;">
         <div class="card-body">
             <h5 class="card-title">Reservations</h5>
-            <h6 class="card-subtitle mb-2 text-muted">3</h6>
+            <h6 class="card-subtitle mb-2 text-muted">{{reservations.0.total}}</h6>
 
         </div>
 
@@ -47,50 +43,67 @@
 
 <div class="col-lg-10 ms-auto pt-5  d-flex flew-row" style="background-color: #FFE8D2;height: 100%;">
 
-    <div class="col-lg-5 me-auto pt-5 mt-3" style="background-color: #ffe8d2;height: 100%;">
-        <div id="myChart" style="max-width:700px; height:400px;"></div>
+    <div class="col-lg-5 me-auto pt-5 mt-3 col-xs-12 col-lg-6" style="background-color: #ffe8d2;height: 100%;">
+        <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
     </div>
-    <div class="col-lg-5 me-auto pt-5 mt-3" style="background-color: #ffe8d2;height: 100%;">
-        <div id="myPlot" style="max-width:700px; height:400px"></div>
+    <div class="col-lg-5 me-auto pt-5 mt-3 col-xs-12 col-lg-6" style="background-color: #ffe8d2;height: 100%;">
+        <canvas id="myChart1" style="width:100%;max-width:600px"></canvas>
     </div>
 
-
+    
 </div>
+
 <script>
-    google.charts.load('current', { packages: ['corechart'] });
+    
 
-    google.charts.setOnLoadCallback(drawChart);
+    var xValues = [{{dateSales.date}}];
+    var yValues = [{{dateSales.sales1}}];
 
-    var xArray = ["Italy", "France", "Spain", "USA", "Argentina"];
-    var yArray = [55, 49, 44, 24, 15];
+    new Chart("myChart", {
+        type: "line",
+        data: {
+            labels: xValues,
+            datasets: [{
+                fill: false,
+                lineTension: 0,
+                backgroundColor: "rgba(0,0,255,1.0)",
+                borderColor: "rgba(0,0,0,0.1)",
+                data: yValues
+            }]
+        },
+        options: {
+            legend: { display: false },
+            scales: {
+                yAxes: [{ ticks: { min: 3000, max: 20000 } }],
+            }
+        }
+    });
 
-    var data = [{
-        x: xArray,
-        y: yArray,
-        type: "bar"
-    }];
 
-    var layout = { title: "World Wide Wine Production" };
+    var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+var yValues = [55, 49, 44, 24, 15];
+var barColors = [
+  "#b91d47",
+  "#00aba9",
+  "#2b5797",
+  "#e8c3b9",
+  "#1e7145"
+];
 
-    Plotly.newPlot("myPlot", data, layout);
-
-
-
-    function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-            ['Contry', 'Mhl'],
-            ['Italy', 54.8],
-            ['France', 48.6],
-            ['Spain', 44.4],
-            ['USA', 23.9],
-            ['Argentina', 14.5]
-        ]);
-
-        var options = {
-            title: 'World Wide Wine Production'
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('myChart'));
-        chart.draw(data, options);
+new Chart("myChart1", {
+  type: "pie",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "World Wide Wine Production 2018"
     }
+  }
+});
 </script>

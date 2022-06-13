@@ -343,7 +343,7 @@ $(document).ready(function () {
 
   // DataTables initialisation
   var table = $('#sales').DataTable({
-    order: [[3,'asc']]
+   
   });
 
   // Refilter the table

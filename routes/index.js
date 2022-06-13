@@ -13,7 +13,7 @@ const fs = require('fs');
 const userHelpers = require('../helpers/user-helpers');
 const store = require('../middleware/multer');
 const { FlowTestUserContext } = require('twilio/lib/rest/studio/v2/flow/testUser');
-var nodemailer=require('nodemailer')
+var nodemailer = require('nodemailer')
 
 const verifyLogin = (req, res, next) => {
   if (req.session.loggedIn) {
@@ -37,8 +37,8 @@ router.get('/', (req, res) => {
       user: req.session.loggedIn,
       details: req.session.user,
       locations: req.session.locations,
-     
-      
+
+
     });
   });
 });
@@ -317,10 +317,10 @@ router.get('/bookingStatus', verifyLogin, (req, res) => {
       dates: req.session.dates,
       user: req.session.loggedIn,
       details: req.session.user,
-      message:req.flash('message')
+      message: req.flash('message')
     });
   }
-  catch(error) {
+  catch (error) {
     console.log(error)
   }
 });
@@ -435,21 +435,20 @@ router.post('/confirmMail', (req, res) => {
       pass: 'tssssgihxcamdddu'
     }
   });
-  
+
   var mailOptions = {
     from: 'ameendv00@gmail.com',
     to: req.session.user.email,
     subject: `Booking confirmation at ${req.body.name}`,
     text: `Your booking at Hotel ${req.body.name} through BONVOYAGE is confirmed.Check in date is ${req.body.checkIn} and checkout date will be ${req.body.checkOut}.Enjoy your stay!!`
   };
-  
-  transporter.sendMail(mailOptions, function(error, info){
+
+  transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
     } else {
       console.log('Email sent: ' + info.response);
       res.redirect('/')
-      
     }
   });
 })
