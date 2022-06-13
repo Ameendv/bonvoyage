@@ -19,23 +19,26 @@ router.get('/', (req, res, next) => {
 
   if (req.session.vendorLogged) {
     vendorHelpers.getTotalSales(req.session.vendor.id).then((sales) => {
-      
-      vendorHelpers.getRoomCount(req.session.vendor.id).then((count)=>{
-        vendorHelpers.getTodaysBookings((req.session.vendor.id)).then((bookingCount)=>{
-          vendorHelpers.getReservations(req.session.vendor.id).then((reservations)=>{
-            vendorHelpers.getDailySales(req.session.vendor.id).then((dateSales)=>{
-             console.log(dateSales)
-              const booking=bookingCount.length
-          res.render('vendors/vendorHome', { vendor: req.session.vendor,sales,count,booking,reservations,dateSales });
+
+      vendorHelpers.getRoomCount(req.session.vendor.id).then((count) => {
+        vendorHelpers.getTodaysBookings((req.session.vendor.id)).then((bookingCount) => {
+          vendorHelpers.getReservations(req.session.vendor.id).then((reservations) => {
+            vendorHelpers.getDailySales(req.session.vendor.id).then((dateSales) => {
+              vendorHelpers.getModeSales(req.session.vendor.id).then((datas) => {
+                console.log(datas,datas)
+                const booking = bookingCount.length
+                res.render('vendors/vendorHome', { vendor: req.session.vendor, sales, count, booking, reservations, dateSales ,datas});
+              })
+
             })
-            
+
           })
-          
+
         })
-        
+
       })
-      
-      
+
+
     })
 
   }

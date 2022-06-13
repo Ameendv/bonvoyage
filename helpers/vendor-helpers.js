@@ -432,5 +432,38 @@ module.exports = {
 
       resolve(datas);
     })
+  },
+  getModeSales:(hotelId)=>{
+    return new Promise(async(resolve,reject)=>{
+      let modeSales=await db.get().collection(collection.USER_COLLECTION).aggregate([{
+        $unwind: "$bookings",
+      },
+      {
+        $match: {
+          $and: [
+            { "bookings.hotelId": ObjectId(hotelId) },
+            { "bookings.bookingStatus": {$ne:"cancelled"} },
+          ],
+        },
+      },
+      {
+        $group: {
+          _id: "$bookings.paymentMode",
+          total: { $sum: "$bookings.billAmt" },
+        },
+      },]).toArray()
+
+      let mode = []
+      let total = []
+      let datas = {
+        mode, total
+      }
+      for (const x in modeSales) {
+        datas.mode[x] = modeSales[x]._id,
+          datas.total[x] = modeSales[x].total
+      }
+      resolve(datas)
+    })
   }
+  
 };
