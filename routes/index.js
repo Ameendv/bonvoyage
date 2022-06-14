@@ -40,6 +40,8 @@ router.get('/', (req, res) => {
 
 
     });
+  }).catch((error)=>{
+    res.redirect('/')
   });
 });
 
@@ -282,6 +284,8 @@ router.post('/confirmBook', (req, res) => {
             });
         }
       }
+    }).catch((error)=>{
+      res.redirect('/')
     });
 });
 
@@ -356,6 +360,8 @@ router.post('/updateProfile', (req, res) => {
   userHelpers.updateProfile(data, req.body.userId).then((status) => {
     console.log(status);
     res.json({ data: true });
+  }).catch((error)=>{
+    res.redirect('/')
   });
 });
 

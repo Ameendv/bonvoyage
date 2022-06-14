@@ -5,6 +5,7 @@ const Razorpay = require('razorpay');
 const { resolve } = require('path');
 const db = require('../config/connection');
 const collection = require('../config/collection');
+const { reject } = require('promise');
 
 const instance = new Razorpay({
   key_id: 'rzp_test_pVpVEwHMBqRS5h',
@@ -62,6 +63,7 @@ module.exports = {
     }
   }),
   getLocation: () => new Promise(async (resolve, reject) => {
+    try{
     const locations = await db
       .get()
       .collection(collection.VENDOR_COLLECTION)
@@ -71,9 +73,13 @@ module.exports = {
         { $group: { _id: '$district' } },
       ])
       .toArray();
-    resolve(locations);
+    resolve(locations);}
+    catch(error){
+      reject(error)
+    }
   }),
   getRooms: (searchDatas) => new Promise(async (resolve, reject) => {
+    try{
     console.log(searchDatas);
     const rooms = await db
       .get()
@@ -131,7 +137,10 @@ module.exports = {
       }
     }
 
-    resolve(rooms);
+    resolve(rooms);}
+    catch(error){
+      reject(error)
+    }
   }),
   getRoomDetails: (roomId) => new Promise(async (resolve, reject) => {
     try {
@@ -156,7 +165,7 @@ module.exports = {
 
   }),
   doBookings: (details, userId) => new Promise(async (resolve, reject) => {
-    db.get()
+    try{db.get()
       .collection(collection.USER_COLLECTION)
       .updateOne(
         { _id: ObjectId(userId) },
@@ -169,7 +178,10 @@ module.exports = {
       )
       .then((status) => {
         resolve(status);
-      });
+      });}
+      catch(error){
+        reject(error)
+      }
   }),
   updateQty: (details) => new Promise(async (resolve, reject) => {
     await db
@@ -263,7 +275,7 @@ module.exports = {
       reject(error)
     }
   }),
-  updateProfile: (data, userId) => {
+  updateProfile: (data, userId) => {try{
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.USER_COLLECTION)
@@ -283,7 +295,10 @@ module.exports = {
         .then((status) => {
           resolve(status);
         });
-    });
+    });}
+    catch(error){
+      reject(error)
+    }
   },
   getBookings: (userId) => new Promise(async (resolve, reject) => {
     try { 
