@@ -5,6 +5,7 @@ const router = express.Router();
 const vendorHelpers = require('../helpers/vendor-helpers');
 const store = require('../middleware/multer');
 const fs = require('fs');
+
 const verifyLogin = (req, res, next) => {
   if (req.session.vendorLogged) {
     next();
@@ -13,36 +14,62 @@ const verifyLogin = (req, res, next) => {
   }
 };
 
-
 /* GET home page. */
 router.get('/', (req, res, next) => {
-
   if (req.session.vendorLogged) {
     vendorHelpers.getTotalSales(req.session.vendor.id).then((sales) => {
-
-      vendorHelpers.getRoomCount(req.session.vendor.id).then((count) => {
-        vendorHelpers.getTodaysBookings((req.session.vendor.id)).then((bookingCount) => {
-          vendorHelpers.getReservations(req.session.vendor.id).then((reservations) => {
-            vendorHelpers.getDailySales(req.session.vendor.id).then((dateSales) => {
-              vendorHelpers.getModeSales(req.session.vendor.id).then((datas) => {
-                console.log(datas,datas)
-                const booking = bookingCount.length
-                res.render('vendors/vendorHome', { vendor: req.session.vendor, sales, count, booking, reservations, dateSales ,datas});
-              })
-
+      vendorHelpers
+        .getRoomCount(req.session.vendor.id)
+        .then((count) => {
+          vendorHelpers
+            .getTodaysBookings(req.session.vendor.id)
+            .then((bookingCount) => {
+              vendorHelpers
+                .getReservations(req.session.vendor.id)
+                .then((reservations) => {
+                  vendorHelpers
+                    .getDailySales(req.session.vendor.id)
+                    .then((dateSales) => {
+                      vendorHelpers
+                        .getModeSales(req.session.vendor.id)
+                        .then((datas) => {
+                          const booking = bookingCount.length;
+                          res.render('vendors/vendorHome', {
+                            vendor: req.session.vendor,
+                            sales,
+                            count,
+                            booking,
+                            reservations,
+                            dateSales,
+                            datas,
+                          });
+                        })
+                        .catch((error) => {
+                          console.log(error);
+                          res.redirect('/');
+                        });
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                      res.redirect('/vendor');
+                    });
+                })
+                .catch((error) => {
+                  console.log(error);
+                  res.redirect('/vendor');
+                });
             })
-
-          })
-
+            .catch((error) => {
+              console.log(error);
+              res.redirect('/vendor');
+            });
         })
-
-      })
-
-
-    })
-
-  }
-  else {
+        .catch((error) => {
+          console.log(error);
+          res.redirect('/vendor');
+        });
+    });
+  } else {
     res.redirect('/vendor/login');
   }
 });
@@ -70,7 +97,7 @@ router.post('/signup', store.array('idProof'), (req, res, next) => {
       const imgArray = files.map((file) => {
         const img = fs.readFileSync(file.path);
 
-        return encode_image = img.toString('base64');
+        return (encode_image = img.toString('base64'));
       });
       imgArray.map((src, index) => {
         const finalImg = {
@@ -107,7 +134,10 @@ router.post('/login', (req, res) => {
 
       req.session.vendor = response;
 
-      if (response.vendor.isApproved == true && response.vendor.isBlocked != true) {
+      if (
+        response.vendor.isApproved == true
+        && response.vendor.isBlocked != true
+      ) {
         res.redirect('/vendor');
       } else if (response.vendor.isBlocked) {
         res.send('Please contact admin');
@@ -150,7 +180,9 @@ router.post('/addrooms', store.array('file'), (req, res) => {
 
     ameneties: {},
   };
-  roomData.offer = Math.round(100 - ((roomData.price / roomData.actualPrice) * 100));
+  roomData.offer = Math.round(
+    100 - (roomData.price / roomData.actualPrice) * 100,
+  );
   console.log(roomData);
   if (req.body.ac === 'on') {
     roomData.ameneties.ac = true;
@@ -176,7 +208,7 @@ router.post('/addrooms', store.array('file'), (req, res) => {
     const imgArray = files.map((file) => {
       const img = fs.readFileSync(file.path);
 
-      return encode_image = img.toString('base64');
+      return (encode_image = img.toString('base64'));
     });
 
     const finalImg = [];
@@ -188,14 +220,20 @@ router.post('/addrooms', store.array('file'), (req, res) => {
       });
     });
 
-    vendorHelpers.roomUpload(data.roomId, finalImg).then((status) => {
-      req.session.added = true
-      res.redirect('/vendor/addRooms');
-    }).catch(((error) => {
-      console.log(error);
-    }));
+    vendorHelpers
+      .roomUpload(data.roomId, finalImg)
+      .then((status) => {
+        req.session.added = true;
+        res.redirect('/vendor/addRooms');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     req.session.roomId = data.roomId;
+  }).catch((error) => {
+    console.log();
+    res.redirect('/vendor')
   });
 });
 
@@ -206,6 +244,9 @@ router.get('/editRooms', verifyLogin, (req, res) => {
       room,
       edited: req.session.edited,
     });
+  }).catch((error) => {
+    console.log(error);
+    res.redirect('/vendor')
   });
 });
 
@@ -219,7 +260,9 @@ router.post('/editRooms', store.array('file'), (req, res) => {
 
     ameneties: {},
   };
-  roomData.offer = Math.round(100 - ((roomData.price / roomData.actualPrice) * 100));
+  roomData.offer = Math.round(
+    100 - (roomData.price / roomData.actualPrice) * 100,
+  );
   if (req.body.ac === 'on') {
     roomData.ameneties.ac = true;
   }
@@ -237,32 +280,33 @@ router.post('/editRooms', store.array('file'), (req, res) => {
     const { files } = req;
 
     if (!files) {
-      console.log(files, "not")
+      console.log(files, 'not');
       const error = new Error('Please select file');
       error.httpStatusCode = 400;
       return next(error);
-    } else {
-      console.log(files, "not")
-      const imgArray = files.map((file) => {
-        const img = fs.readFileSync(file.path);
-
-        return encode_image = img.toString('base64');
-      });
-
-      const finalImg = [];
-      imgArray.map((src, index) => {
-        const result = finalImg.push({
-          filename: files[index].originalname,
-          contentType: files[index].mimetype,
-          imageBase64: src,
-        });
-      });
-      vendorHelpers.editRoomImage(req.query.id, finalImg).then((status) => {
-        req.session.edited = true;
-        res.redirect('/vendor/editRooms');
-      });
     }
+    console.log(files, 'not');
+    const imgArray = files.map((file) => {
+      const img = fs.readFileSync(file.path);
 
+      return (encode_image = img.toString('base64'));
+    });
+
+    const finalImg = [];
+    imgArray.map((src, index) => {
+      const result = finalImg.push({
+        filename: files[index].originalname,
+        contentType: files[index].mimetype,
+        imageBase64: src,
+      });
+    });
+    vendorHelpers.editRoomImage(req.query.id, finalImg).then((status) => {
+      req.session.edited = true;
+      res.redirect('/vendor/editRooms');
+    });
+  }).catch((error) => {
+    console.log(error);
+    res.redirect('/vendor')
   });
 });
 
@@ -277,7 +321,12 @@ router.get('/viewBookings', verifyLogin, (req, res) => {
   vendorHelpers.getBookings(req.session.vendor.id).then((bookingData) => {
     for (const x in bookingData) {
       checkIn = new Date(bookingData[x].bookings.checkIn).setHours(0, 0, 0, 0);
-      checkOut = new Date(bookingData[x].bookings.checkOut).setHours(0, 0, 0, 0);
+      checkOut = new Date(bookingData[x].bookings.checkOut).setHours(
+        0,
+        0,
+        0,
+        0,
+      );
       now = new Date().setHours(0, 0, 0, 0);
 
       if (now >= checkIn && now <= checkOut) {
@@ -292,7 +341,7 @@ router.get('/viewBookings', verifyLogin, (req, res) => {
         bookingData[x].bookings.checkedOut = true;
       }
     }
-    console.log(bookingData, "Bookings");
+    console.log(bookingData, 'Bookings');
 
     res.render('vendors/viewBookings', {
       vendor: req.session.vendor,
@@ -303,7 +352,10 @@ router.get('/viewBookings', verifyLogin, (req, res) => {
 
 router.get('/cancellation', verifyLogin, (req, res) => {
   vendorHelpers.getCancelled(req.session.vendor.id).then((cancelled) => {
-    res.render('vendors/cancellations', { vendor: req.session.vendor, cancelled });
+    res.render('vendors/cancellations', {
+      vendor: req.session.vendor,
+      cancelled,
+    });
   });
 });
 
@@ -318,7 +370,6 @@ router.get('/logout', verifyLogin, (req, res) => {
   res.redirect('/vendor');
 });
 
-
 router.post('/imageUpload', store.array('images', 12), (req, res, next) => {
   console.log('hai');
   const { files } = req;
@@ -329,7 +380,7 @@ router.post('/imageUpload', store.array('images', 12), (req, res, next) => {
     error.httpStatusCode = 400;
     return next(error);
   }
-  console.log(('image uploaded'));
+  console.log('image uploaded');
 });
 
 module.exports = router;

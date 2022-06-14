@@ -3,9 +3,9 @@ const bcrypt = require('bcrypt');
 const { ObjectId } = require('mongodb');
 const Razorpay = require('razorpay');
 const { resolve } = require('path');
+const { reject } = require('promise');
 const db = require('../config/connection');
 const collection = require('../config/collection');
-const { reject } = require('promise');
 
 const instance = new Razorpay({
   key_id: 'rzp_test_pVpVEwHMBqRS5h',
@@ -63,83 +63,82 @@ module.exports = {
     }
   }),
   getLocation: () => new Promise(async (resolve, reject) => {
-    try{
-    const locations = await db
-      .get()
-      .collection(collection.VENDOR_COLLECTION)
-      .aggregate([
-        { $unwind: '$rooms' },
-        { $match: { 'rooms.qty': { $gte: 1 } } },
-        { $group: { _id: '$district' } },
-      ])
-      .toArray();
-    resolve(locations);}
-    catch(error){
-      reject(error)
+    try {
+      const locations = await db
+        .get()
+        .collection(collection.VENDOR_COLLECTION)
+        .aggregate([
+          { $unwind: '$rooms' },
+          { $match: { 'rooms.qty': { $gte: 1 } } },
+          { $group: { _id: '$district' } },
+        ])
+        .toArray();
+      resolve(locations);
+    } catch (error) {
+      reject(error);
     }
   }),
   getRooms: (searchDatas) => new Promise(async (resolve, reject) => {
-    try{
-    console.log(searchDatas);
-    const rooms = await db
-      .get()
-      .collection(collection.VENDOR_COLLECTION)
-      .aggregate([
-        { $match: { district: searchDatas.location } },
-        { $unwind: '$rooms' },
-        { $project: { idProof: 0 } },
-      ])
-      .toArray();
-    const bookedRooms = await db
-      .get()
-      .collection(collection.USER_COLLECTION)
-      .aggregate([
-        { $unwind: '$bookings' },
-        {
-          $match: {
-            $or: [
-              {
-                $and: [
-                  { 'bookings.checkOut': { $gte: searchDatas.checkIn } },
-                  { 'bookings.checkIn': { $lte: searchDatas.checkOut } },
-                ],
-              },
-              {
-                $and: [
-                  { 'bookings.checkOut': { $gte: searchDatas.checkOut } },
-                  { 'bookings.checkIn': { $lte: searchDatas.checkIn } },
-                ],
-              },
-            ],
+    try {
+      
+      const rooms = await db
+        .get()
+        .collection(collection.VENDOR_COLLECTION)
+        .aggregate([
+          { $match: { district: searchDatas.location } },
+          { $unwind: '$rooms' },
+          { $project: { idProof: 0 } },
+        ])
+        .toArray();
+      const bookedRooms = await db
+        .get()
+        .collection(collection.USER_COLLECTION)
+        .aggregate([
+          { $unwind: '$bookings' },
+          {
+            $match: {
+              $or: [
+                {
+                  $and: [
+                    { 'bookings.checkOut': { $gte: searchDatas.checkIn } },
+                    { 'bookings.checkIn': { $lte: searchDatas.checkOut } },
+                  ],
+                },
+                {
+                  $and: [
+                    { 'bookings.checkOut': { $gte: searchDatas.checkOut } },
+                    { 'bookings.checkIn': { $lte: searchDatas.checkIn } },
+                  ],
+                },
+              ],
+            },
           },
-        },
-        {
-          $project: { bookings: 1 }
-        },
-      ])
-      .toArray();
+          {
+            $project: { bookings: 1 },
+          },
+        ])
+        .toArray();
 
+      for (const x in rooms) {
+        for (const y in bookedRooms) {
+          if (rooms[x].rooms.roomId.equals(bookedRooms[y].bookings.roomId)) {
+            //  rooms[x].rooms.bookingCount=count++
 
-    for (const x in rooms) {
-      for (const y in bookedRooms) {
-        if (rooms[x].rooms.roomId.equals(bookedRooms[y].bookings.roomId)) {
-          //  rooms[x].rooms.bookingCount=count++
-
-          rooms[x].rooms.remainingQty = rooms[x].rooms.qty - bookedRooms[y].bookings.roomCount;
-          if (
-            rooms[x].rooms.remainingQty == 0
-            || rooms[x].rooms.remainingQty < searchDatas.room
-            || rooms[x].rooms.qty < searchDatas.room
-          ) {
-            rooms.splice(x, 1);
+            rooms[x].rooms.remainingQty = rooms[x].rooms.qty - bookedRooms[y].bookings.roomCount;
+            if (
+              rooms[x].rooms.remainingQty == 0
+                || rooms[x].rooms.remainingQty < searchDatas.room
+                || rooms[x].rooms.qty < searchDatas.room
+            ) {
+              rooms.splice(x, 1);
+            }
           }
         }
       }
-    }
 
-    resolve(rooms);}
-    catch(error){
-      reject(error)
+      resolve(rooms);
+    } catch (error) {
+      reject(error);
     }
   }),
   getRoomDetails: (roomId) => new Promise(async (resolve, reject) => {
@@ -158,30 +157,28 @@ module.exports = {
         .toArray();
       resolve(room);
     } catch (error) {
-      reject(error)
+      reject(error);
     }
-
-
-
   }),
   doBookings: (details, userId) => new Promise(async (resolve, reject) => {
-    try{db.get()
-      .collection(collection.USER_COLLECTION)
-      .updateOne(
-        { _id: ObjectId(userId) },
-        {
-          $push: {
-            bookings: { ...details },
+    try {
+      db.get()
+        .collection(collection.USER_COLLECTION)
+        .updateOne(
+          { _id: ObjectId(userId) },
+          {
+            $push: {
+              bookings: { ...details },
+            },
           },
-        },
-        { upsert: true },
-      )
-      .then((status) => {
-        resolve(status);
-      });}
-      catch(error){
-        reject(error)
-      }
+          { upsert: true },
+        )
+        .then((status) => {
+          resolve(status);
+        });
+    } catch (error) {
+      reject(error);
+    }
   }),
   updateQty: (details) => new Promise(async (resolve, reject) => {
     await db
@@ -204,7 +201,7 @@ module.exports = {
             .collection(collection.VENDOR_COLLECTION)
             .updateOne(
               {
-                'rooms.qty': { $lt: 1 }
+                'rooms.qty': { $lt: 1 },
               },
               {
                 $set: { 'rooms.$.isAvailable': false },
@@ -241,7 +238,7 @@ module.exports = {
     if (hmac == details['payment[razorpay_signature]']) {
       resolve();
     } else {
-      console.log(err);
+      
       reject(err);
     }
   }),
@@ -270,47 +267,46 @@ module.exports = {
         .collection(collection.USER_COLLECTION)
         .findOne({ _id: ObjectId(userId) });
       resolve(user);
-    }
-    catch(error) {
-      reject(error)
+    } catch (error) {
+      reject(error);
     }
   }),
-  updateProfile: (data, userId) => {try{
-    return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.USER_COLLECTION)
-        .updateOne(
-          { _id: ObjectId(userId) },
-          {
-            $set: {
-              name: data.name,
-              number: data.number,
-              email: data.email,
-              country: data.country,
-              state: data.state,
-              district: data.district,
+  updateProfile: (data, userId) => {
+    try {
+      return new Promise((resolve, reject) => {
+        db.get()
+          .collection(collection.USER_COLLECTION)
+          .updateOne(
+            { _id: ObjectId(userId) },
+            {
+              $set: {
+                name: data.name,
+                number: data.number,
+                email: data.email,
+                country: data.country,
+                state: data.state,
+                district: data.district,
+              },
             },
-          },
-        )
-        .then((status) => {
-          resolve(status);
-        });
-    });}
-    catch(error){
-      reject(error)
+          )
+          .then((status) => {
+            resolve(status);
+          });
+      });
+    } catch (error) {
+      reject(error);
     }
   },
   getBookings: (userId) => new Promise(async (resolve, reject) => {
-    try { 
+    try {
       const bookings = await db
         .get()
         .collection(collection.USER_COLLECTION)
         .findOne({ _id: ObjectId(userId) });
-      console.log(bookings);
+      
       resolve(bookings);
-    }
-    catch(error) {
-      reject(error)
+    } catch (error) {
+      reject(error);
     }
   }),
   cancelBooking: (bookingId) => new Promise(async (resolve, reject) => {
