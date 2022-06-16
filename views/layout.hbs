@@ -2,23 +2,22 @@
 <html>
 
 <head>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <meta http-equiv='Cache-Control' , content='no-store, no-cache, must-revalidate'>
   <meta http-equiv='Pragma' , content='no-cache'>
   <metahttp-equiv='Expires', content='-1'>
     <title>{{title}}</title>
 
-
+   
 
     {{#if booked}}
-    <link rel="stylesheet" href="/stylesheets/booked.css" type="text/css">
-    {{else}}
-    {{#if viewbookings}}
-    <link rel="stylesheet" href="/stylesheets/bookings.css" type="text/css">
-    {{else}}
+     <link rel="stylesheet" href="/stylesheets/booked.css" type="text/css">
+     {{else}}
+     {{#if viewbookings}}
+  <link rel="stylesheet" href="/stylesheets/bookings.css" type="text/css">
+     {{else}}
     <link rel='stylesheet' href='/stylesheets/style.css' />
-
+    
     <link rel="stylesheet" href="/stylesheets/roomsLists.css" type="text/css">
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="/stylesheets/font-awesome.min.css" type="text/css">
@@ -32,8 +31,9 @@
     <link rel="stylesheet" href="/stylesheets/vendor.css" type="text/css" />
     <link href="/stylesheets/main.css" rel="stylesheet" />
     {{/if}}{{/if}}
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+      
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -42,7 +42,7 @@
 
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500" rel="stylesheet" />
-
+    
 
 
 
@@ -78,45 +78,43 @@
 
 
   {{{body}}}
-  {{!-- for socket connection in front end --}}
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    const socket = io('http://localhost:3000')
+{{!-- for socket connection in front end --}}
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io('http://localhost:3000')
 
-    socket.on('connection')
+  socket.on('connection')
 
-    const sendMessage = (name, subject, email, message) => {
-      const data = {
-        name: name,
-        subject: subject,
-        email: email,
-        message: message
-      }
-      socket.emit('message', data)
+  const sendMessage=(name,subject,email,message)=>{
+    const data={
+      name:name,
+      subject:subject,
+      email:email,
+      message:message
     }
-  </script>
+    socket.emit('message',data)
+  }
+</script>
 
 
 
-  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-    crossorigin="anonymous"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+  
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 
-  <script type="text/javascript" charset="utf8"
-    src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
-
-  <script src="https://kit.fontawesome.com/8c3e75cefb.js" crossorigin="anonymous"></script>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+ <script src="https://kit.fontawesome.com/8c3e75cefb.js" crossorigin="anonymous"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popper/javascript/core@2.10.2/dist/umd/popper.min.js"
-    integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
-    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popper/javascript/core@2.10.2/dist/umd/popper.min.js"
+  integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 
 
   <script src="/javascripts/choices.js"></script>
   <script src="/javascripts/flatpickr.js"></script>
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script>
     const choices = new Choices('[data-trigger]',
       {
@@ -127,7 +125,7 @@
   </script>
 
 
-
+ 
 </body>
 
 
@@ -145,7 +143,7 @@
 
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
-
+  
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 
 
