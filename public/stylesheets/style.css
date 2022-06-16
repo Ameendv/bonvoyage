@@ -36,10 +36,10 @@
 
 html,
 body {
-  height: 100%;
+  
   font-family: "Cabin", sans-serif;
   -webkit-font-smoothing: antialiased;
-  font-smoothing: antialiased;
+ 
 }
 h1,
 h2,
