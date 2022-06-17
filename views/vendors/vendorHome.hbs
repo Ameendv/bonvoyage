@@ -1,8 +1,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
 
-<div class="col-lg-10 ms-auto pt-5 mt-3 d-flex flew-row justify-content-around" style="background-color: #FFE8D2;">
-    <div class="card ms-2 bg-light col-xs-12 col-md-6 col-lg-3" style="width: 13rem;height: 7rem;">
+<div class="col-xs-12 col-lg-10 ms-auto pt-5 mt-3 d-flex  flex-wrap justify-content-around" style="background-color: #FFE8D2;">
+    <div class="card ms-2 bg-light col-xs-12 col-md-6 col-lg-3 mb-3" style="width: 13rem;height: 7rem;">
         <div class="card-body ">
             <h5 class="card-title">Total Sales </h5>
             <h6 class="card-subtitle mb-2 text-muted">₹ {{sales.0.total}}</h6>
@@ -10,7 +10,7 @@
         </div>
 
     </div>
-    <div class="card ms-2 bg-light col-xs-12 col-md-6 col-lg-3" style="width: 13rem;height: 7rem;">
+    <div class="card ms-2 bg-light col-xs-12 col-md-6 col-lg-3 mb-3" style="width: 13rem;height: 7rem;">
         <div class="card-body">
             <h5 class="card-title">Total rooms</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{count.0.total}}</h6>
@@ -18,7 +18,7 @@
         </div>
 
     </div>
-    <div class="card ms-2 bg-light col-xs-12 col-md-6 col-lg-3 " style="width: 13rem;height: 7rem;">
+    <div class="card ms-2 bg-light col-xs-12 col-md-6 col-lg-3 mb-3" style="width: 13rem;height: 7rem;">
         <div class="card-body">
             <h5 class="card-title">Todays bookings</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{booking}}</h6>
@@ -26,7 +26,7 @@
         </div>
 
     </div>
-    <div class="card ms-2 bg-light col-xs-12 col-md-6 col-lg-3 " style="width: 13rem;height: 7rem;">
+    <div class="card ms-2 bg-light col-xs-12 col-md-6 col-lg-3 mb-3" style="width: 13rem;height: 7rem;">
         <div class="card-body">
             <h5 class="card-title">Reservations</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{reservations.0.total}}</h6>
@@ -41,13 +41,13 @@
 
 
 
-<div class="col-lg-10 ms-auto pt-5  d-flex flew-row" style="background-color: #FFE8D2;height: 100%;">
+<div class="col-lg-10 ms-auto pt-5  d-flex flex-wrap flew-row" style="background-color: #FFE8D2;">
 
-    <div class="col-lg-5 me-auto pt-5 mt-3 col-xs-12 col-lg-6" style="background-color: #ffe8d2;height: 100%;">
+    <div class="col-lg-5 me-auto pt-5 mt-3 col-xs-12 col-lg-6" style="background-color: #ffffff;height: 100%;">
         <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
     </div>
-    <div class="col-lg-5 me-auto pt-5 mt-3 col-xs-12 col-lg-6" style="background-color: #ffe8d2;height: 100%;">
-        <canvas id="myChart1" style="width:100%;max-width:600px"></canvas>
+    <div class="col-lg-5 me-auto pt-5 mt-3 col-xs-12 col-lg-6" style="background-color: #ffffff;height: 100%;">
+        <canvas id="myChart1" style="width:100%;"></canvas>
     </div>
 
     
@@ -74,7 +74,7 @@
         options: {
             legend: { display: false },
             scales: {
-                yAxes: [{ ticks: { min: 3000, max: 20000 } }],
+                yAxes: [{ ticks: { min: 4000, max: 20000 } }],
             }
         }
     });
