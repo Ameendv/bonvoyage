@@ -12,6 +12,15 @@ const verifyLogin = (req, res, next) => {
   }
 };
 
+const authUser = (req, res, next) => {
+  if (!req.session.adminLog) {
+    next();
+  } else {
+    res.redirect('/admin');
+  }
+};
+
+
 /* GET home page. */
 router.get('/', (req, res, next) => {
   if (req.session.adminLog) {
@@ -22,7 +31,7 @@ router.get('/', (req, res, next) => {
   }
 });
 
-router.get('/login', (req, res) => {
+router.get('/login',authUser, (req, res) => {
   if (req.session.adminLog) {
     res.redirect('/admin');
   } else {
