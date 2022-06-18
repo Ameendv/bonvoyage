@@ -14,6 +14,14 @@ const verifyLogin = (req, res, next) => {
   }
 };
 
+const authUser = (req, res, next) => {
+  if (!req.session.vendorLogged) {
+    next();
+  } else {
+    res.redirect('/vendor');
+  }
+};
+
 /* GET home page. */
 router.get('/', (req, res, next) => {
   if (req.session.vendorLogged) {
@@ -74,7 +82,7 @@ router.get('/', (req, res, next) => {
   }
 });
 
-router.get('/signup', (_, res) => {
+router.get('/signup',authUser,(_, res) => {
   res.render('vendors/vendorSignup', {
     LocationSelector: true,
     preventHeader: true,
@@ -116,7 +124,7 @@ router.post('/signup', store.array('idProof'), (req, res, next) => {
   });
 });
 
-router.get('/login', (req, res) => {
+router.get('/login',authUser, (req, res) => {
   res.render('vendors/vendorSignin', {
     mailErr: req.session.emailErr,
     passwordErr: req.session.passwordErr,
